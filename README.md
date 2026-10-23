@@ -1,59 +1,81 @@
-
-# SuperDex
-Exploring dexterous manipulation with differentiable world models, inspired by SuperMimic.
+[README.md](https://github.com/user-attachments/files/33852113/README.md)
 # SuperDex
 
-**Learning Dexterous Manipulation with a Differentiable World Model**
+### Differentiable World Models for Dexterous Manipulation
 
-让灵巧手在学习到的世界模型中练习，在物理环境中验证。
+**Learn the dynamics. Imagine the motion. Control the hand.**
 
-SuperDex 是一个受 [SuperMimic](https://supermimic.github.io/) 启发的灵巧操作研究项目构想，探索将“学习可微分世界模型，再通过模型优化控制策略”的思路用于多指机器人手。项目计划从物体在手中的姿态调整入手，逐步扩展到稳定抓取、手指协同和连续操作。
+SuperDex explores dexterous manipulation through learned dynamics and gradient-based policy optimization. Inspired by [SuperMimic](https://supermimic.github.io/), it brings the idea of learning control through a differentiable world model to the interaction between a multi-fingered robotic hand and an object.
 
-> 当前状态：项目规划阶段。本仓库的 README 描述拟实现的方案，尚未提供训练代码、预训练模型或实验结果。SuperDex 是独立项目构想，与 SuperMimic 官方团队无关联。
+The central question is simple: **can a hand learn to manipulate objects by practicing inside a learned model of its world?**
 
-## 核心思路
+This README presents the SuperDex system design and methodology.
 
-灵巧操作需要同时处理手指运动、物体动力学和频繁变化的接触关系。SuperDex 计划学习一个以手部状态、物体状态和控制动作为输入的动力学模型，在模型预测的轨迹上优化策略，并持续用物理仿真数据修正预测误差。
+## Overview
 
-预期的训练循环：
+Dexterous manipulation couples articulated motion with changing contacts, friction, and object dynamics. SuperDex approaches this problem with a shared world model and a goal-conditioned controller: the model predicts the consequences of actions, while the controller learns which actions move the object toward its goal.
 
-1. **收集经验**：在物理仿真中执行当前策略，记录手、物体和接触状态的变化。
-2. **学习世界模型**：拟合状态转移，学习动作如何影响手指与物体。
-3. **在模型中练习**：通过短时预测轨迹上的梯度更新控制策略，优化任务完成度和动作平滑性。
-4. **回到仿真验证**：检查物体姿态误差、掉落率和模型误差，再收集新的训练数据。
+The design connects three components:
 
-世界模型与策略将交替更新；策略优化时固定世界模型参数，但保留经过模型的动作梯度。这一设计不要求对物理仿真器本身求导。
+- **A differentiable world model** for predicting hand-object state transitions.
+- **A goal-conditioned policy** for coordinating finger motion across target object poses.
+- **A simulation feedback loop** for collecting experience and checking whether imagined behavior transfers back to the physical simulation.
 
-## 计划探索的能力
+## Architecture
 
-| 方向 | 目标 |
+| Component | Role |
 | --- | --- |
-| 物体姿态调整 | 将手中物体旋转到目标方向，同时避免掉落 |
-| 接触状态建模 | 利用指尖与物体的接触信息改善动力学预测 |
-| 示范动作跟踪 | 将参考手部运动和物体轨迹作为策略的学习目标 |
-| 多目标控制 | 用目标条件控制策略处理不同目标姿态 |
-| 鲁棒性训练 | 随机化质量、摩擦和观测噪声，评估策略适应性 |
+| State representation | Encodes hand joint positions and velocities, object pose and motion, and contact observations. |
+| World model | Predicts the next hand-object state from the current state and control action. |
+| Control policy | Maps observations and a task goal to bounded actuator commands. |
+| Task objective | Combines object pose tracking, object retention, and smooth control. |
+| Experience buffer | Stores simulator transitions for world-model updates. |
+| Evaluation protocol | Measures task performance in simulation independently of model predictions. |
 
-## 首个实验目标
+## Method
 
-以固定基座的单只灵巧手和一个简单刚体物体为起点，实现可重复的物体姿态调整任务。优先完成仿真中的训练与评估闭环，再考虑更多物体、更多手型和真实硬件。
+### Learn from interaction
 
-计划记录任务成功率、物体姿态误差、掉落率、训练耗时，以及世界模型的单步和多步预测误差。所有性能结论将以实际实验为准。
+The policy interacts with a rigid-body simulator to collect state-action transitions. These transitions supervise the world model, grounding its predictions in simulated hand-object dynamics.
 
-## 开发路线
+### Optimize through imagination
 
-- [x] 明确项目定位与初步方案
-- [ ] 搭建灵巧手与物体交互的仿真环境
-- [ ] 实现经验采集与世界模型训练
-- [ ] 实现基于模型预测的策略优化
-- [ ] 加入目标条件与示范轨迹
-- [ ] 建立评估脚本与基线对比
-- [ ] 发布可复现的配置、结果与演示
+Starting from sampled states, the policy generates actions inside the learned model. Short imagined trajectories provide a differentiable objective for improving task performance. Model parameters remain fixed during each policy update, while gradients flow through the predicted dynamics to the policy.
 
-## 参考与致谢
+This formulation takes gradients through the learned model; it does not require differentiating the simulator itself.
 
-本项目的方法灵感来自 **SuperMimic: Scaling Humanoid Whole-Body Control with One Differentiable World Model**。
+### Close the loop
 
-- [SuperMimic 项目主页](https://supermimic.github.io/)
+World-model fitting and policy optimization alternate with new simulator experience. Evaluating the policy back in simulation exposes prediction errors and behavior that exploits inaccuracies in the model.
 
-上述灵巧手任务、接触建模与开发路线属于 SuperDex 的拟议扩展，不代表 SuperMimic 已实现这些功能。
+## Task Formulations
+
+- **In-hand reorientation:** rotate a grasped object toward a target orientation while maintaining control.
+- **Grasp stabilization:** preserve a desired object pose under disturbances and changing initial conditions.
+- **Trajectory tracking:** follow reference object poses alongside coordinated finger motion.
+- **Sequential manipulation:** connect a sequence of target poses into a continuous manipulation task.
+
+The reference setting is a single fixed-base dexterous hand manipulating a rigid object. Object geometry, mass, friction, and observation noise define the conditions for robustness evaluation.
+
+## Evaluation
+
+The evaluation protocol separates control performance from model accuracy:
+
+| Category | Metrics |
+| --- | --- |
+| Task completion | Success rate, completion time, and object drop rate |
+| Tracking quality | Object position and orientation error |
+| Control quality | Action magnitude and temporal smoothness |
+| Model fidelity | One-step and multi-step state prediction error |
+| Training cost | Environment interactions and end-to-end training time |
+| Robustness | Performance across held-out physical parameters and initial states |
+
+Task definitions, success thresholds, evaluation seeds, and compute settings belong alongside any reported results so comparisons remain reproducible.
+
+## Acknowledgments
+
+SuperDex draws methodological inspiration from **SuperMimic: Scaling Humanoid Whole-Body Control with One Differentiable World Model**.
+
+[SuperMimic Project Page](https://supermimic.github.io/)
+
+SuperDex is an independent exploration of these ideas for dexterous manipulation and is not affiliated with the SuperMimic authors. The hand-object architecture and task formulations described here are SuperDex design choices.
