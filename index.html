@@ -1,0 +1,865 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <meta name="description"
+    content="SuperDex: Scaling Dexterous Hand–Object Tracking with One Object-Conditioned Differentiable World Model">
+  <meta name="keywords" content="Dexterous Manipulation, Differentiable World Model, Hand-Object Tracking, Robot Learning, Sim-to-Real">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>
+    SuperDex: Scaling Dexterous Hand–Object Tracking with One Object-Conditioned Differentiable World Model
+  </title>
+
+  <link rel="icon" type="image/svg+xml" href="./static/images/logo.svg" />
+
+  <link href="https://fonts.googleapis.com/css?family=Google+Sans|Noto+Sans|Castoro" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.9.4/css/bulma.min.css">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/jpswalsh/academicons@1/css/academicons.min.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.css">
+  <link rel="stylesheet" href="./static/css/index.css">
+
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.js"></script>
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/contrib/auto-render.min.js"></script>
+</head>
+
+
+<body>
+
+<!-- ======================= Landing hero ======================= -->
+<section class="hero is-link is-fullheight landing">
+  <canvas id="rollout-canvas" aria-hidden="true"></canvas>
+  <div class="overlay"></div>
+
+  <!-- Hero head: will stick at the top -->
+  <div class="hero-head is-hidden-mobile">
+    <header class="navbar">
+      <div class="container is-size-5">
+        <div class="navbar-menu">
+          <div class="navbar-end">
+            <span class="navbar-item pl-4 pr-4" title="Paper coming soon" style="opacity:0.6; cursor:default;">
+              <span class="icon" style="margin-right:5px;"><i class="fas fa-file-pdf"></i></span>
+              <span>Paper (soon)</span>
+            </span>
+            <a href="#method" class="navbar-item pl-4 pr-4">
+              <span class="icon" style="margin-right:5px;"><i class="fas fa-diagram-project"></i></span>
+              <span>Method</span>
+            </a>
+            <span class="navbar-item pl-4 pr-4">
+              <a href="https://github.com/jackzedgar/SuperDex" class="button is-inverted is-large github-link">
+                <span class="icon"><i class="fab fa-github"></i></span>
+                <span>Code</span>
+              </a>
+            </span>
+          </div>
+        </div>
+      </div>
+    </header>
+  </div>
+
+  <!-- Hero content: will be in the middle -->
+  <div class="hero-body">
+    <div class="container has-text-centered">
+      <h1 class="title is-1 publication-title hero-title">SuperDex</h1>
+      <h2 class="subtitle publication-title hero-subtitle">
+        Scaling Dexterous Hand–Object Tracking with<br>One Object-Conditioned Differentiable World Model
+      </h2>
+      <p class="hero-tagline">Learn the dynamics. Imagine the motion. Control the hand.</p>
+      <div class="column has-text-centered is-hidden-tablet">
+        <div class="publication-links">
+          <span class="link-block">
+            <a href="https://github.com/jackzedgar/SuperDex" class="external-link button is-normal is-rounded is-dark" target="_blank">
+              <span class="icon"><i class="fab fa-github"></i></span>
+              <span>Code</span>
+            </a>
+          </span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Hero footer: will stick at the bottom -->
+  <div class="hero-foot">
+    <nav class="tabs is-boxed is-fullwidth is-size-5">
+      <ul>
+        <li><a href="#overview">Overview</a></li>
+        <li><a href="#method">Method</a></li>
+        <li><a href="#tests">Decisive Tests</a></li>
+        <li><a href="#experiments">Experiments</a></li>
+        <li><a href="#real-world">Real-World Deployment</a></li>
+      </ul>
+    </nav>
+  </div>
+</section>
+
+<!-- ======================= Title & authors ======================= -->
+<section class="hero">
+  <div class="hero-body">
+    <div class="container">
+      <div class="columns is-centered">
+        <div class="column has-text-centered">
+          <h1 class="title is-2 publication-title">SuperDex: Scaling Dexterous Hand–Object Tracking with<br>One Object-Conditioned Differentiable World Model</h1>
+
+          <div class="is-size-4 publication-authors">
+            <span class="author-block" style="font-size: 95%;">
+              <span class="author-name">Tianhao Zang</span><sup>1,2,*</sup>,&nbsp;&nbsp;
+              <span class="author-name">Shixuan Chen</span><sup>1,3,*</sup>,&nbsp;&nbsp;
+              <span class="author-name">Wei Zhang</span><sup>1</sup>
+            </span>
+          </div>
+
+          <div class="is-size-6 publication-authors" style="margin-top: 0.6em; line-height: 1.7;">
+            <span class="author-block"><sup>1</sup>College of Information Science and Technology, Eastern Institute of Technology, Ningbo, P. R. China</span><br>
+            <span class="author-block"><sup>2</sup>University of Maryland, USA</span>&nbsp;&nbsp;&nbsp;
+            <span class="author-block"><sup>3</sup>Inner Mongolia University, China</span>
+          </div>
+
+          <div class="is-size-6 publication-authors" style="margin-top: 0.4em;">
+            <span class="author-block"><sup>*</sup> Equal contribution</span>
+          </div>
+
+          <div class="status-pill"><i class="fas fa-flask"></i>&nbsp; Work in progress — the paper, code and results will be released here.</div>
+
+          <div class="column has-text-centered">
+            <div class="publication-links">
+              <span class="link-block">
+                <a class="external-link button is-normal is-rounded is-dark" disabled title="Coming soon">
+                  <span class="icon"><i class="fas fa-file-pdf"></i></span>
+                  <span>Paper (coming soon)</span>
+                </a>
+              </span>
+              <span class="link-block">
+                <a class="external-link button is-normal is-rounded is-dark" disabled title="Coming soon">
+                  <span class="icon"><i class="ai ai-arxiv"></i></span>
+                  <span>arXiv (coming soon)</span>
+                </a>
+              </span>
+              <span class="link-block">
+                <a href="https://github.com/jackzedgar/SuperDex" class="external-link button is-normal is-rounded is-dark" target="_blank">
+                  <span class="icon"><i class="fab fa-github"></i></span>
+                  <span>Code</span>
+                </a>
+              </span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ======================= Abstract ======================= -->
+<section class="section is-small" id="abstract">
+  <div class="container is-max-desktop">
+    <h2 class="title is-1 has-text-centered is-size-3-mobile">Abstract</h2>
+    <div class="content has-text-justified">
+      <p>
+        Training one policy that tracks thousands of human hand–object demonstrations with a dexterous robot hand is
+        still limited by compute: reinforcement learning with PPO needs many GPU-days, and current generalist trackers
+        are trained on at most a few hundred trajectories. SuperMimic recently showed that, for humanoid whole-body
+        tracking, a differentiable world model fitted to simulator logs lets a policy be optimized by backpropagating
+        through imagined rollouts, reducing training cost by orders of magnitude.
+      </p>
+      <p>
+        Dexterous manipulation breaks the assumptions behind that result. The object is underactuated and moves only
+        through intermittent contact, every object brings its own geometry and physics, and stick–slip contact makes
+        the dynamics hard to predict. <b>SuperDex</b> brings the differentiable-world-model recipe to dexterous
+        hand–object tracking and, before scaling up, tests the three assumptions most likely to fail in transfer:
+        that object motion is <i>predictable</i>, that analytic gradients through the learned model are
+        <i>useful</i> under contact, and that one model can <i>amortize</i> over many objects.
+      </p>
+      <p>
+        SuperDex keeps SuperMimic's three-stage loop and changes it in four places: an object-conditioned world model
+        that reads signed-distance features of hand query points, two minimal gradient repairs (pre-contact distance
+        shaping and critic takeover where gradients explode), a capped start distribution, and a perception channel
+        that models pose noise, latency and tracking loss outside the world model. We target a single tracking policy
+        covering all 1,944 OakInk-V2 and HOT3D trajectories (140 objects) at no more than one-fifth of the GPU hours
+        of a same-simulator PPO baseline, evaluated in closed loop on a real xArm7 + Wuji hand.
+      </p>
+    </div>
+
+    <div class="stat-row">
+      <div class="stat"><div class="num">1,944</div><div class="lbl">trajectories tracked by one policy</div></div>
+      <div class="stat"><div class="num">140</div><div class="lbl">objects, single-hand and bimanual</div></div>
+      <div class="stat"><div class="num">≤ 1/5</div><div class="lbl">GPU·h target vs. same-simulator PPO</div></div>
+      <div class="stat"><div class="num">520</div><div class="lbl">planned closed-loop real-robot trials</div></div>
+    </div>
+  </div>
+</section>
+
+<!-- ======================= Overview ======================= -->
+<section class="section is-small" id="overview">
+  <div class="container is-max-desktop">
+    <h2 class="title is-1 has-text-centered is-size-3-mobile">Overview</h2>
+
+    <div class="overview-grid">
+      <div class="ov-card" style="--c: var(--wm);">
+        <div class="ov-icon"><i class="fas fa-cube"></i></div>
+        <div class="ov-title">Object-Conditioned World Model</div>
+        <div class="ov-text">One differentiable model of hand–object dynamics, conditioned on object geometry and physics.</div>
+      </div>
+      <div class="overview-op">+</div>
+      <div class="ov-card" style="--c: var(--grad);">
+        <div class="ov-icon"><i class="fas fa-wave-square"></i></div>
+        <div class="ov-title">Contact-Aware Gradients</div>
+        <div class="ov-text">BPTT through imagined rollouts, repaired where contact makes gradients vanish or explode.</div>
+      </div>
+      <div class="overview-op">+</div>
+      <div class="ov-card" style="--c: var(--percep);">
+        <div class="ov-icon"><i class="fas fa-robot"></i></div>
+        <div class="ov-title">Deployable Closed Loop</div>
+        <div class="ov-text">Identified wrist and actuators, a calibrated perception channel, and real data fed back into the model.</div>
+      </div>
+      <div class="overview-op">=</div>
+      <div class="ov-card" style="--c: var(--accent);">
+        <div class="ov-icon"><i class="fas fa-hand"></i></div>
+        <div class="ov-title">Scalable Dexterous Tracking</div>
+        <div class="ov-text">A generalist hand–object tracker trained at a fraction of the compute of PPO.</div>
+      </div>
+    </div>
+
+    <h2 class="title is-3 is-size-4-mobile">Why Is This Hard?</h2>
+    <div class="content">
+      <p>
+        SuperMimic reduced the cost of humanoid whole-body tracking from about 21,000 GPU·h to 3 hours on a single
+        H100, and names object interaction as its missing piece. That missing piece is exactly what makes dexterous
+        tracking difficult. Three properties of hand–object interaction put the transfer at risk:
+      </p>
+    </div>
+    <div class="card-grid">
+      <div class="mini-card">
+        <h4><i class="fas fa-link-slash" style="color:var(--grad)"></i>&nbsp; Underactuated objects</h4>
+        <p>The object moves only through contact. Without contact, $\partial\,\text{object} / \partial\,\text{hand} \approx 0$,
+          so BPTT gradients can vanish during approach and grasp, and become ill-conditioned when contacts switch.</p>
+      </div>
+      <div class="mini-card">
+        <h4><i class="fas fa-shapes" style="color:var(--wm)"></i>&nbsp; Object-specific dynamics</h4>
+        <p>All humanoid motions share one body. In dexterous manipulation the hand is shared, but every object has its
+          own geometry, mass and friction.</p>
+      </div>
+      <div class="mini-card">
+        <h4><i class="fas fa-bolt" style="color:var(--start)"></i>&nbsp; Contact sensitivity</h4>
+        <p>Stick–slip and bifurcations with light objects push a deterministic world model toward the mean; object
+          position and orientation errors already dominate the failures of PPO-based trackers.</p>
+      </div>
+    </div>
+
+    <div class="table-wrap">
+      <table class="table is-paper is-hoverable">
+        <thead>
+          <tr><th></th><th>SuperMimic (humanoid)</th><th>DexMimic (dexterous hand)</th><th class="ours">SuperDex (ours, target)</th></tr>
+        </thead>
+        <tbody>
+          <tr><td><b>Learning</b></td><td>Differentiable WM + BPTT + critic</td><td>PPO + value-guided reset allocation</td><td class="ours">Object-conditioned differentiable WM + BPTT + critic</td></tr>
+          <tr><td><b>Compute</b></td><td>1× H100, 3 h</td><td>8× A100, 65,536 parallel envs</td><td class="ours">≤ 1/5 GPU·h of a same-simulator PPO baseline</td></tr>
+          <tr><td><b>Training scale</b></td><td>129,514 motions (264 h)</td><td>500 trajectories (of 1,944)</td><td class="ours">All 1,944 trajectories</td></tr>
+          <tr><td><b>Contact</b></td><td>Ground only</td><td>140 objects, single- and bimanual</td><td class="ours">140 objects, single- and bimanual</td></tr>
+          <tr><td><b>Real robot</b></td><td>Unitree G1, closed loop, qualitative</td><td>xArm + Wuji hand, open-loop replay</td><td class="ours">xArm7 + Wuji hand, closed loop, 520 quantified trials</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</section>
+
+<!-- ======================= Method ======================= -->
+<section class="section is-small" id="method">
+  <div class="container is-max-desktop">
+    <h2 class="title is-1 has-text-centered is-size-3-mobile">Method</h2>
+
+    <h2 class="title is-3 is-size-4-mobile">One Loop, Four Changes</h2>
+    <div class="content">
+      <p>
+        SuperDex keeps SuperMimic's three-stage loop: collect experience in simulation, fit a world model, and improve
+        the policy by backpropagating through the frozen world model. Changes land in exactly four places, each tied to
+        one hypothesis and one diagnostic. Real-robot data flows back into the world model for system identification
+        and residual fine-tuning.
+      </p>
+    </div>
+
+    <div class="figure">
+      <svg viewBox="0 0 1000 410" role="img" aria-label="SuperDex training loop with three stages and four modifications" style="font-family:'Noto Sans',sans-serif;">
+        <defs>
+          <marker id="arr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+            <path d="M0,0 L10,5 L0,10 z" fill="#495057"/>
+          </marker>
+        </defs>
+
+        <!-- Modification tags -->
+        <g>
+          <rect x="20" y="10" width="290" height="66" rx="10" fill="#fff4e6" stroke="#e67700" stroke-width="1.5"/>
+          <text x="165" y="36" text-anchor="middle" font-size="15" font-weight="700" fill="#a34700">Start distributions</text>
+          <text x="165" y="58" text-anchor="middle" font-size="12.5" fill="#7a3d00">settled anchors · capped mixture (≤ 5× uniform)</text>
+          <line x1="165" y1="76" x2="165" y2="110" stroke="#e67700" stroke-width="1.5" stroke-dasharray="4 3"/>
+
+          <rect x="355" y="10" width="290" height="66" rx="10" fill="#e3fafc" stroke="#0c8599" stroke-width="1.5"/>
+          <text x="500" y="36" text-anchor="middle" font-size="15" font-weight="700" fill="#0b7285">Object-conditioned world model</text>
+          <text x="500" y="58" text-anchor="middle" font-size="12.5" fill="#095c6b">SDF query features φ · geometry code b_o · ξ</text>
+          <line x1="500" y1="76" x2="500" y2="110" stroke="#0c8599" stroke-width="1.5" stroke-dasharray="4 3"/>
+
+          <rect x="690" y="10" width="290" height="66" rx="10" fill="#f3f0ff" stroke="#7048e8" stroke-width="1.5"/>
+          <text x="835" y="36" text-anchor="middle" font-size="15" font-weight="700" fill="#5f3dc4">Gradient repairs</text>
+          <text x="835" y="58" text-anchor="middle" font-size="12.5" fill="#4b2fb3">pre-contact distance shaping · critic takeover</text>
+          <line x1="835" y1="76" x2="835" y2="110" stroke="#7048e8" stroke-width="1.5" stroke-dasharray="4 3"/>
+        </g>
+
+        <!-- Stages (unchanged SuperMimic loop) -->
+        <g>
+          <rect x="20" y="110" width="290" height="110" rx="12" fill="#fff" stroke="#343a40" stroke-width="1.8"/>
+          <text x="165" y="142" text-anchor="middle" font-size="17" font-weight="700" fill="#212529">① Collect in simulation</text>
+          <text x="165" y="168" text-anchor="middle" font-size="13" fill="#495057">MuJoCo Warp · 4,096 envs per GPU</text>
+          <text x="165" y="190" text-anchor="middle" font-size="13" fill="#495057">execute a + ε, store in replay buffer</text>
+
+          <rect x="355" y="110" width="290" height="110" rx="12" fill="#fff" stroke="#343a40" stroke-width="1.8"/>
+          <text x="500" y="142" text-anchor="middle" font-size="17" font-weight="700" fill="#212529">② Fit world model f_ω</text>
+          <text x="500" y="168" text-anchor="middle" font-size="13" fill="#495057">k = 8 autoregressive windows</text>
+          <text x="500" y="190" text-anchor="middle" font-size="13" fill="#495057">object-stratified sampling</text>
+
+          <rect x="690" y="110" width="290" height="110" rx="12" fill="#fff" stroke="#343a40" stroke-width="1.8"/>
+          <text x="835" y="142" text-anchor="middle" font-size="17" font-weight="700" fill="#212529">③ Improve policy π_θ</text>
+          <text x="835" y="168" text-anchor="middle" font-size="13" fill="#495057">imagine H = 32 steps in frozen f_ω</text>
+          <text x="835" y="190" text-anchor="middle" font-size="13" fill="#495057">BPTT + critic bootstrap</text>
+        </g>
+
+        <!-- Loop arrows -->
+        <line x1="310" y1="165" x2="352" y2="165" stroke="#495057" stroke-width="2" marker-end="url(#arr)"/>
+        <text x="332" y="157" text-anchor="middle" font-size="11.5" fill="#495057">buffer</text>
+        <line x1="645" y1="165" x2="687" y2="165" stroke="#495057" stroke-width="2" marker-end="url(#arr)"/>
+        <text x="667" y="157" text-anchor="middle" font-size="11.5" fill="#495057">frozen</text>
+        <path d="M760,220 L760,262 L120,262 L120,223" fill="none" stroke="#495057" stroke-width="2" marker-end="url(#arr)"/>
+        <text x="600" y="255" text-anchor="middle" font-size="12.5" fill="#495057">updated policy π_θ</text>
+
+        <!-- Perception channel tag -->
+        <rect x="690" y="300" width="290" height="66" rx="10" fill="#fff0f6" stroke="#d6336c" stroke-width="1.5"/>
+        <text x="835" y="326" text-anchor="middle" font-size="15" font-weight="700" fill="#a61e4d">Perception channel C_ζ</text>
+        <text x="835" y="348" text-anchor="middle" font-size="12.5" fill="#871c43">pose noise · latency · tracking loss</text>
+        <line x1="900" y1="300" x2="900" y2="220" stroke="#d6336c" stroke-width="1.5" stroke-dasharray="4 3"/>
+
+        <!-- Real robot and data flow back -->
+        <rect x="20" y="300" width="290" height="80" rx="12" fill="#f8f9fa" stroke="#868e96" stroke-width="1.5" stroke-dasharray="6 4"/>
+        <text x="165" y="330" text-anchor="middle" font-size="15" font-weight="700" fill="#343a40">Real robot (closed loop)</text>
+        <text x="165" y="354" text-anchor="middle" font-size="12.5" fill="#495057">xArm7 + Wuji hand · FoundationPose 30 Hz</text>
+        <line x1="230" y1="262" x2="230" y2="297" stroke="#868e96" stroke-width="1.8" stroke-dasharray="5 4" marker-end="url(#arr)"/>
+        <text x="238" y="286" font-size="11.5" fill="#495057">deploy</text>
+        <path d="M310,340 L500,340 L500,223" fill="none" stroke="#868e96" stroke-width="1.8" stroke-dasharray="5 4" marker-end="url(#arr)"/>
+        <text x="405" y="360" text-anchor="middle" font-size="11.5" fill="#495057">real data → ξ inference</text>
+        <text x="405" y="376" text-anchor="middle" font-size="11.5" fill="#495057">+ residual fine-tuning</text>
+      </svg>
+      <div class="legend">
+        <span class="plain" style="--c:#fff">unchanged SuperMimic loop</span>
+        <span style="--c:#0c8599">world model (A1, A3)</span>
+        <span style="--c:#7048e8">gradients (A2)</span>
+        <span style="--c:#e67700">start distributions</span>
+        <span style="--c:#d6336c">deployment</span>
+      </div>
+      <p class="caption">SuperDex training loop: three stages kept from SuperMimic, four changes, and real-robot data flowing back into the world model.</p>
+    </div>
+
+    <!-- World model -->
+    <h2 class="title is-3 is-size-4-mobile">Object-Conditioned World Model</h2>
+    <div class="content">
+      <p>
+        The default world model (W1) adds a single input to SuperMimic's 3×2048 MLP: the local geometry of the object
+        around the hand. For 21 hand query points (5 fingertips and 16 link points), we look up the distance and gradient
+        in a precomputed object signed-distance field (voxels ≤ 3 mm). Because the field is defined everywhere, this
+        feature has a non-zero gradient with respect to the action even <i>before</i> contact happens.
+      </p>
+      <div class="eq">\[
+        \phi_t=\Big[\max\big(\mathrm{sdf}_o(p_\iota),\,-3\,\mathrm{mm}\big),\ \nabla\mathrm{sdf}_o(p_\iota)\Big]_{\iota=1}^{21},
+        \qquad p_\iota=\big(T^{o|w}_t\big)^{-1}\,\mathrm{FK}^{w}_\iota(q_t)
+      \]</div>
+      <div class="eq">\[
+        \Delta\hat s=\mathrm{MLP}_\omega\big([\bar s_t,\ a_t,\ \xi,\ \phi_t]\big),\qquad \hat s_{t+1}=\hat s_t\oplus\Delta\hat s
+      \]</div>
+      <ul>
+        <li><b>Equivariant inputs.</b> States are stored in the world frame and mapped into the wrist's yaw-local frame
+          before entering the network, so a resting object always has a zero predicted increment and the model cannot
+          create "ghost" pulling forces.</li>
+        <li><b>Simulation context $\xi$.</b> Friction, mass, center of mass, inertia, finger offsets, PD gains and
+          actuation delay are randomized per episode; a fixed 128-d geometry code $b_o$ (BPS-1024 + PCA) identifies the object.</li>
+        <li><b>Only dynamics is learned.</b> Reward, observation, contact distance and termination are computed
+          analytically from the predicted state. The loss is a normalized $k=8$-step autoregressive state error with
+          object components weighted ×4 and windows sampled with stratification by object.</li>
+        <li><b>Fallbacks, not defaults.</b> If the decisive tests fail, the object head switches to a contact-wrench
+          model with Newton–Euler integration (W2), or the model gains FiLM conditioning and cross-attention over object points.</li>
+      </ul>
+    </div>
+
+    <!-- Policy learning -->
+    <h2 class="title is-3 is-size-4-mobile">Learning Through Imagination, Repaired for Contact</h2>
+    <div class="content">
+      <p>
+        The policy is deterministic and is updated exactly as in SuperMimic: starting from states the simulator actually
+        reached, it imagines $H=32$ steps inside the frozen world model and maximizes the soft-survival return with a
+        critic bootstrap at the horizon:
+      </p>
+      <div class="eq">\[
+        \hat J(\theta)=\frac{1}{N}\sum_{n=1}^{N}\Big[\sum_{h=0}^{H-1}\gamma^{h}\,\hat c_{n,h}\,\upsilon_{n,h}\,\hat r_{n,h+1}
+        +\gamma^{H}\,\hat c_{n,H}\,\upsilon_{n,H}\,V_{n,H}\Big]
+      \]</div>
+      <p>SuperDex adds two minimal repairs, one on the reward side and one on the gradient side.</p>
+    </div>
+
+    <div class="columns is-variable is-5 is-vcentered">
+      <div class="column is-half">
+        <div class="content">
+          <p><b>1 · Pre-contact distance shaping.</b> A reference-gated SDF contact term activates when the reference
+            fingertip is within 1 cm of the surface, and every tracking kernel becomes dual-scale:</p>
+          <div class="eq">\[
+            \kappa_\sigma(e)=0.7\,e^{-e^{2}/\sigma^{2}}+0.3\,e^{-e^{2}/(5\sigma)^{2}}
+          \]</div>
+          <p>Gradients then survive up to roughly $10\sigma$ of error. This hardly matters for PPO, but it is critical for BPTT.</p>
+        </div>
+      </div>
+      <div class="column is-half">
+        <div class="figure" style="margin-top:0;">
+          <svg id="kernel-chart" class="kernel-chart" viewBox="0 0 440 210" role="img" aria-label="Single Gaussian versus dual-scale tracking kernel"></svg>
+        </div>
+      </div>
+    </div>
+
+    <div class="content">
+      <p><b>2 · Critic takeover where gradients explode.</b> While backpropagating through each imagined state, a sample
+        whose normalized state gradient exceeds $\chi=3$ times the median over active samples has its gradient replaced
+        by a version truncated at that step and bootstrapped by the critic:</p>
+      <div class="eq">\[
+        G_{n,h}\leftarrow\begin{cases}G^{\mathrm{tr}}_{n,h}, & \|\sigma\odot G_{n,h}\|>\chi\cdot\mathrm{med}_{n'\in\mathcal A_h}\|\sigma\odot G_{n',h}\|\\[2pt]
+        G_{n,h}, & \text{otherwise}\end{cases}
+      \]</div>
+      <p>Without explosions the update is identical to SuperMimic, and $\chi=\infty$ recovers the original. The rule is a
+        forward-identity, backward-replace autograd hook of about 20 lines. If the decisive test shows the gradient is
+        still unreliable, a simulator-anchored α-mixture of first- and zero-order gradients (a generalization of
+        Suh et&nbsp;al., 2022) is switched on.</p>
+    </div>
+
+    <h4 class="title is-6 has-text-centered" style="margin-bottom:0.3rem;">DexGradScope — gradient diagnostics stratified by contact phase</h4>
+    <div class="phase-strip">
+      <span>free approach</span><i class="fas fa-chevron-right"></i>
+      <span>contact onset</span><i class="fas fa-chevron-right"></i>
+      <span>stable contact</span><i class="fas fa-chevron-right"></i>
+      <span>release</span><i class="fas fa-chevron-right"></i>
+      <span>slip</span>
+    </div>
+    <div class="content">
+      <p>
+        To measure whether the gradients are useful, DexGradScope compares the first-order gradient through the world
+        model against a zero-order reference estimated in the true simulator (512 antithetic pairs), with a split-half
+        correction of the cosine. It reports corrected cosine, signal-to-noise ratio, critic-takeover rate and effective
+        smoothing bandwidth $\sigma^{*}$ for each of the five contact phases. It only logs and never steers training.
+      </p>
+    </div>
+
+    <!-- Start distributions & perception -->
+    <div class="columns is-variable is-5">
+      <div class="column">
+        <h2 class="title is-3 is-size-4-mobile">Capped Start Distribution</h2>
+        <div class="content">
+          <p>
+            Simulator resets are drawn per 0.5 s phase bin, indexed globally across trajectories, from SuperMimic's mixture
+            of 50% uniform, 40% return-based and 10% memory terms, with one addition: no bin may exceed
+            <b>5×</b> its uniform share.
+          </p>
+          <div class="eq">\[
+            p_{\mathrm{sim}}(b)=\min\Big(\tfrac{5}{|\mathcal S|},\ \lambda\,\tilde p_b\Big)
+          \]</div>
+          <p>
+            The cap bounds the budget wasted on unlearnable references without having to identify them first. Resets use
+            physically settled anchor states, and imagination starts from states the simulator actually reached.
+          </p>
+        </div>
+      </div>
+      <div class="column">
+        <h2 class="title is-3 is-size-4-mobile">Perception Channel C<sub>ζ</sub></h2>
+        <div class="content">
+          <p>
+            SuperMimic's additive noise $o=\bar o+\eta$ becomes $o_t=C_\zeta(\bar o_{\le t})$, placed <i>outside</i> the world model:
+          </p>
+          <ul>
+            <li>per-episode pose bias and AR(1) jitter that grows with occlusion;</li>
+            <li>a two-state tracked/lost Markov chain whose loss rate rises with occlusion;</li>
+            <li>vision latency sampled from the measured histogram (≈ 50–90 ms) at 30 Hz.</li>
+          </ul>
+          <p>
+            All parameters are fitted on a 2-hour real calibration set with OptiTrack ground truth. Because the world model
+            predicts only noise-free states, changing the perception setup does not require retraining it.
+          </p>
+        </div>
+      </div>
+    </div>
+
+    <details class="more">
+      <summary>Show Algorithm 1 (SuperDex training loop)</summary>
+      <div class="algo">Algorithm 1  SuperDex training
+Input: reference set D, settled anchors {s̃_b}, world model f_ω, policy π_θ, critic V_ψ,
+       replay buffer 𝓑, per-bin signal table {Ḡ, μ}
+
+for iter = 1, 2, … do
+  # ① Collect in simulation
+  for finished envs: pick bin ~ p_sim; reset to anchor s̃_b (else a surviving state from 𝓑_b);
+                     sample ξ and the initial perception-channel state
+  execute a_t + ε_t; write (s, a + ε, ε, episode id, perception state Z, occ) to 𝓑 (FIFO)
+  at episode end: compute ν from logs with the narrow-kernel reward; update Ḡ and μ
+
+  # ② Fit the world model
+  sample 10 mini-batches × 2,048 windows (k = 8, object-stratified); accumulate; one Adam step on ω
+
+  # ③ Improve the policy (ω frozen)
+  sample 4,096 start states ~ ρ_img; imagine H = 32 steps through C_ζ
+  backprop Ĵ, replacing exploding per-sample state gradients by their critic-bootstrapped version
+  clip parameter gradients (global norm 1.0, element-wise 0.1) → Adam step on θ
+  fit V_ψ on fixed GAE targets (5 epochs × 4 mini-batches)
+
+  # ④ Logging (every 10k iterations, gradient study runs only)
+  DexGradScope snapshot
+end for</div>
+    </details>
+
+    <details class="more">
+      <summary>Show reward terms (10 terms in 8 groups vs. 19 in DexMimic)</summary>
+      <div class="table-wrap">
+        <table class="table is-paper">
+          <thead><tr><th>Term</th><th>Scale</th><th>Weight</th></tr></thead>
+          <tbody>
+            <tr><td>Object position</td><td>σ = 2 cm</td><td>2.0</td></tr>
+            <tr><td>Object orientation</td><td>σ = 0.3 rad</td><td>1.0</td></tr>
+            <tr><td>Object linear and angular velocity</td><td>0.25 m/s, 3.14 rad/s</td><td>0.3</td></tr>
+            <tr><td>Wrist pose</td><td>3 cm, 0.3 rad</td><td>0.5</td></tr>
+            <tr><td>Hand keypoints (5 fingertips + 5 middle phalanges, object frame)</td><td>σ = 0.1·L<sub>hand</sub></td><td>1.0</td></tr>
+            <tr><td>Reference-gated contact distance (SDF)</td><td>1 cm</td><td>1.0</td></tr>
+            <tr><td>Action smoothness</td><td>—</td><td>−0.1</td></tr>
+            <tr><td>Joint limits</td><td>—</td><td>−2</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <p class="is-size-7 has-text-grey">Lengths are normalized by hand length, so switching hands needs no re-tuning. An episode terminates when the object position error exceeds 6 cm, orientation error exceeds 0.8 rad, or wrist error exceeds 10 cm; in imagination the same thresholds give an analytic soft termination.</p>
+    </details>
+  </div>
+</section>
+
+<!-- ======================= Decisive tests ======================= -->
+<section class="section is-small" id="tests">
+  <div class="container is-max-desktop">
+    <h2 class="title is-1 has-text-centered is-size-3-mobile">Three Hypotheses, Three Decisive Tests</h2>
+    <div class="content">
+      <p>
+        Rather than building the full system first, SuperDex turns each risk of the transfer into a pre-registered,
+        falsifiable test on <b>Probe-40</b>, a set of 40 trajectories in four strata (stable grasp-and-carry, in-hand
+        reorientation or regrasp, bimanual handover, and light-object tool use). Each test has a pre-written fallback,
+        and a failed test is itself a result: it tells us where analytic gradients through learned models stop working
+        under dexterous contact.
+      </p>
+    </div>
+
+    <div class="card-grid" style="grid-template-columns:repeat(auto-fit, minmax(190px, 1fr));">
+      <div class="mini-card">
+        <h4><span class="tag hyp" style="--c:var(--wm)">A1</span>Predictable</h4>
+        <p>Over 8 steps, object-motion prediction error stays far below the success threshold (3 cm / 30°), including at contact switches.</p>
+      </div>
+      <div class="mini-card">
+        <h4><span class="tag hyp" style="--c:var(--grad)">A2</span>Useful gradients</h4>
+        <p>BPTT through the world model reaches PPO's success rate with far less compute, including before contact and at contact switches.</p>
+      </div>
+      <div class="mini-card">
+        <h4><span class="tag hyp" style="--c:var(--wm)">A3</span>Amortizable</h4>
+        <p>Growing from 10 to 120 objects barely raises world-model error, and error on held-out objects stays bounded.</p>
+      </div>
+      <div class="mini-card">
+        <h4><span class="tag hyp" style="--c:var(--percep)">D</span>Deployable</h4>
+        <p>Simulated success carries over to the real hand in closed loop, measured as a sim-to-real retention ratio.</p>
+      </div>
+    </div>
+
+    <div class="table-wrap">
+      <table class="table is-paper is-hoverable">
+        <thead>
+          <tr><th>Test</th><th>Setup</th><th>Pass</th><th>Partial → fallback</th><th>Fail → fallback</th></tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><b>G1</b> · A1</td>
+            <td>~12M transitions from PPO checkpoints at ~20/50/80% success; W0 vs. W1, 3 seeds each</td>
+            <td>Median 8-step object error ≤ 3 mm / 3°; P90 at contact switches ≤ 8 mm / 8°; ≥ 80% of windows with 32-step error ≤ 1.5 cm</td>
+            <td>Up-weight switch windows → W2 contact-wrench head → halve physics step</td>
+            <td>Simulator forward + model backward, or model predicts the hand only</td>
+          </tr>
+          <tr>
+            <td><b>G2</b> · A2</td>
+            <td>SuperDex and PPO on the world model (5 seeds each), PPO in the simulator at 1/4/8 GPUs, SHAC as reference</td>
+            <td>Reach the 8-GPU PPO success rate (within 3 pp) with ≤ 1/5 the GPU·h; corrected gradient cosine ≥ 0.5 (≥ 0.3 at switches)</td>
+            <td>2–5× speed-up or lagging at switches: enable the α-mixture</td>
+            <td>&lt; 2× speed-up: PPO-on-world-model route, or an analysis paper</td>
+          </tr>
+          <tr>
+            <td><b>G3</b> · A3</td>
+            <td>Nested sets of 10 / 35 / 70 / 120 objects; error on 10 fixed probe objects and 20 held-out objects</td>
+            <td>Probe-object error grows ≤ 25%; held-out error ≤ 1.5× seen-object error</td>
+            <td>Add capacity → FiLM conditioning → cross-attention over object points</td>
+            <td>Per-category models with few-shot adaptation; narrower generalization claim</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</section>
+
+<!-- ======================= Experiments ======================= -->
+<section class="section is-small" id="experiments">
+  <div class="container is-max-desktop">
+    <h2 class="title is-1 has-text-centered is-size-3-mobile">Experimental Design</h2>
+    <div class="content">
+      <p>
+        Every claim made by DexMimic gets a matching SuperDex number under the same protocol, plus experiments it does not
+        have: world-model fidelity, gradient quality and quantified closed-loop deployment. Main conclusions come only from
+        controlled comparisons with the same simulator, hardware, observations and rewards, reported in both GPU·h and
+        environment steps.
+      </p>
+    </div>
+
+    <h2 class="title is-3 is-size-4-mobile">Data and Splits</h2>
+    <div class="content">
+      <p>
+        OakInk-V2 + HOT3D provide 1,944 trajectories (1,302 single-hand, 642 bimanual) over 140 objects, retargeted to the
+        Wuji hand in MuJoCo and resampled to 50 Hz. A physical-feasibility filter is applied with per-stage counts
+        published, and all splits are frozen and hashed before any training.
+      </p>
+    </div>
+    <div class="table-wrap">
+      <table class="table is-paper">
+        <thead><tr><th>Split</th><th>Composition</th><th>Purpose</th></tr></thead>
+        <tbody>
+          <tr><td><b>Probe-40</b></td><td>4 strata × 10 trajectories</td><td>Decisive tests</td></tr>
+          <tr><td><b>Hard-50</b></td><td>DexMimic's 50 hard bimanual tasks</td><td>Direct comparison and baseline calibration</td></tr>
+          <tr><td><b>Train</b></td><td>≈ 1,480 trajectories</td><td>Main training</td></tr>
+          <tr><td><b>L2: held-out trajectories</b></td><td>Seen objects, 10% sampled per object (≈ 190)</td><td>Unseen-trajectory generalization, plus success vs. novelty curve</td></tr>
+          <tr><td><b>L3: held-out objects</b></td><td>All trajectories of 20 objects, stratified by category and mass (≈ 270)</td><td>Unseen-object generalization</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <h2 class="title is-3 is-size-4-mobile">Baselines</h2>
+    <div class="table-wrap">
+      <table class="table is-paper">
+        <thead><tr><th>ID</th><th>Baseline</th><th>Isolates</th></tr></thead>
+        <tbody>
+          <tr><td>B1</td><td>PPO in simulation, uniform reference-state initialization</td><td>Vanilla, both mechanisms off</td></tr>
+          <tr><td>B2</td><td>PPO + failure-rate sampling (BeyondMimic)</td><td>Most direct source-method baseline</td></tr>
+          <tr><td>B3</td><td>DexMimic re-implemented in MuJoCo Warp (PPO + value-guided reset allocation)</td><td>Main baseline, calibrated on Hard-50</td></tr>
+          <tr><td>B4</td><td>PPO on the same world model with the same resets</td><td>The contribution of first-order gradients</td></tr>
+          <tr><td>B5</td><td>SuperMimic transferred directly (W0, no repairs)</td><td>The contribution of SuperDex's changes</td></tr>
+          <tr><td>B6</td><td>SHAC through a differentiable simulator (MJX), Probe-40 only</td><td>"Why not just use a differentiable simulator?"</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="content">
+      <p class="is-size-7 has-text-grey">All baselines share observations, rewards, domain randomization and network size, with an equal budget of 24 random-search tuning trials on Probe-40.</p>
+    </div>
+
+    <h2 class="title is-3 is-size-4-mobile">Experiments</h2>
+    <div class="table-wrap">
+      <table class="table is-paper is-hoverable">
+        <thead><tr><th>ID</th><th>Experiment</th><th>Counterpart in DexMimic</th><th>Measures</th></tr></thead>
+        <tbody>
+          <tr><td>E1</td><td>Main comparison on Hard-50</td><td>Table I</td><td>Success rate with 50 rollouts per task</td></tr>
+          <tr><td>E2</td><td>Scaling curve: 20 / 50 / 200 / 500 / 1,944 trajectories</td><td>Table III, Fig. 6a</td><td>Training success; GPU·h to target success</td></tr>
+          <tr><td>E3</td><td>Zero-shot generalization</td><td>Fig. 6a</td><td>L2, L3 and the novelty curve</td></tr>
+          <tr><td>E4</td><td>Fine-tuning to 20 unseen trajectories</td><td>Fig. 6b</td><td>GPU·h to 80% success</td></tr>
+          <tr><td>E5</td><td>Start-distribution ablation (5 reset schemes × 4 scales)</td><td>Tables II, III</td><td>FastFail, CVaR10, forgetting index</td></tr>
+          <tr><td>E6</td><td>World-model and gradient ablations (20 configurations)</td><td>—</td><td>Each module's individual gain</td></tr>
+          <tr><td>E7</td><td>Object amortization: 10 / 35 / 70 / 120 objects</td><td>—</td><td>World-model error, L3 success</td></tr>
+          <tr><td>E8</td><td>Cross-embodiment: Wuji, Inspire, Shadow, Allegro, one hyper-parameter set</td><td>Table IV</td><td>1,000 rollouts per run</td></tr>
+          <tr><td>E9</td><td>Per-trajectory and failure analysis on all 1,944 trajectories</td><td>Fig. S2, App. C.2</td><td>Success distribution and failure modes</td></tr>
+          <tr><td>E10</td><td>Decisive tests G1–G3</td><td>—</td><td>See the table above</td></tr>
+          <tr><td>E11</td><td>Object-trajectory-only goal interface</td><td>—</td><td>Object-tracking success, RL vs. distillation</td></tr>
+          <tr><td>E12</td><td>Policies for real-world deployment</td><td>Open-loop replay</td><td>See Real-World Deployment</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="columns is-variable is-5">
+      <div class="column">
+        <h2 class="title is-3 is-size-4-mobile">Metrics</h2>
+        <div class="content">
+          <ul>
+            <li><b>Tracking:</b> success rate with DexMimic thresholds (30° / 3 cm / 8 cm / 6 cm), a strict variant (15° / 1.5 cm), per-quantity errors, and CVaR10 — the mean success of the worst 10% of trajectories.</li>
+            <li><b>Efficiency:</b> H100 GPU·h to target success (including data collection and world-model training), simulator steps and imagined steps.</li>
+            <li><b>World model:</b> 8- and 32-step object error, stratified by contact phase and object.</li>
+            <li><b>Gradients:</b> DexGradScope's per-phase metrics.</li>
+          </ul>
+        </div>
+      </div>
+      <div class="column">
+        <h2 class="title is-3 is-size-4-mobile">Statistical Protocol</h2>
+        <div class="content">
+          <ul>
+            <li>5 seeds for main claims, 3 seeds elsewhere; diverged runs are counted and reported.</li>
+            <li>50 rollouts per trajectory with randomized $\xi$; final success is measured only in the simulator, never from imagined returns.</li>
+            <li>95% confidence intervals from a hierarchical bootstrap (seeds, then trajectories); paired comparisons per trajectory; Holm correction for ablations.</li>
+            <li>Thresholds, splits and the two primary metrics (success rate and CVaR10) are pre-registered.</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ======================= Real world ======================= -->
+<section class="section is-small" id="real-world">
+  <div class="container is-max-desktop">
+    <h2 class="title is-1 has-text-centered is-size-3-mobile">Real-World Deployment</h2>
+    <div class="content">
+      <p>
+        SuperDex is evaluated in <b>closed loop</b> with quantified trial statistics, using the same 8 skills and 8
+        objects as DexMimic's real-robot experiments and pairing every condition with its open-loop replay protocol.
+      </p>
+    </div>
+
+    <div class="columns is-variable is-5">
+      <div class="column">
+        <h2 class="title is-3 is-size-4-mobile">Hardware and Perception</h2>
+        <div class="content">
+          <ul>
+            <li><b>Robot:</b> xArm7 arm with a 20-DoF Wuji right hand.</li>
+            <li><b>Perception:</b> two fixed RealSense D435i cameras; FoundationPose tracks the object pose at 30 Hz. OptiTrack provides ground truth for evaluation and calibration only.</li>
+            <li><b>Control:</b> 50 Hz real-time C++ loop, arm setpoints interpolated to 250 Hz, a 50 ms watchdog and velocity, torque and workspace limits.</li>
+            <li><b>Objects:</b> the same 8 3D-printed OakInk objects, weighed to within 5% of the nominal mass.</li>
+            <li><b>System identification:</b> step and chirp excitation for the arm (wrist step error &lt; 3 mm), fingers and fingertip contact softness.</li>
+          </ul>
+        </div>
+      </div>
+      <div class="column">
+        <h2 class="title is-3 is-size-4-mobile">Skills and Protocol</h2>
+        <div class="card-grid" style="grid-template-columns:1fr; margin-top:0.5rem;">
+          <div class="mini-card"><h4><span class="tag is-light">T1</span>Lift, move</h4></div>
+          <div class="mini-card"><h4><span class="tag is-light">T2</span>Pour, tilt, shake, scoop</h4></div>
+          <div class="mini-card"><h4><span class="tag is-light">T3</span>Brush, use a mouse</h4><p>Tool use with frequent contact switches.</p></div>
+        </div>
+        <div class="content">
+          <p class="is-size-7 has-text-grey">10 fixed placements per skill with ±2 cm / ±15° yaw perturbations; method order randomized and operators blind to the method; the seed with median simulated success is deployed, not the best one.</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="table-wrap">
+      <table class="table is-paper is-hoverable">
+        <thead><tr><th>Condition</th><th>Description</th><th>Trials</th></tr></thead>
+        <tbody>
+          <tr><td>R1 · Open-loop replay (DexMimic protocol)</td><td>Replay successful simulated rollouts of the PPO baseline</td><td>80</td></tr>
+          <tr><td>R2 · Open-loop replay of SuperDex</td><td>Isolates the value of closing the loop</td><td>80</td></tr>
+          <tr><td>R3 · PPO baseline, closed loop</td><td>Baseline policy on the same deployment stack</td><td>80</td></tr>
+          <tr class="ours"><td>M1 · SuperDex, zero-shot closed loop</td><td>Trained in simulation only</td><td>80</td></tr>
+          <tr class="ours"><td>M2 · SuperDex + real-world fine-tuning</td><td>After ξ inference and residual fine-tuning</td><td>80</td></tr>
+          <tr><td>Real-world ablations</td><td>4 skills × 10 trials × 3 variants: OptiTrack perception, no C<sub>ζ</sub> in training, no latency model</td><td>120</td></tr>
+          <tr><td><b>Total</b></td><td>≈ 80 s per trial, ≈ 12 robot-hours including resets</td><td><b>520</b></td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <h2 class="title is-3 is-size-4-mobile">Real Data Flows Back into the World Model</h2>
+    <div class="card-grid">
+      <div class="mini-card">
+        <h4><i class="fas fa-sliders" style="color:var(--wm)"></i>&nbsp; ξ inference</h4>
+        <p>With the world model frozen, infer the hand parameters and per-object physics from 8-step real windows, then narrow the simulator's randomization around the estimate and keep training.</p>
+      </div>
+      <div class="mini-card">
+        <h4><i class="fas fa-layer-group" style="color:var(--wm)"></i>&nbsp; Residual fine-tuning</h4>
+        <p>A zero-initialized 2×256 residual on top of the frozen model, trained only on real windows and used only for imagination that starts from real states.</p>
+      </div>
+      <div class="mini-card">
+        <h4><i class="fas fa-clock-rotate-left" style="color:var(--wm)"></i>&nbsp; Latency compensation</h4>
+        <p>Optionally roll the world model forward from the last valid visual pose using proprioception and issued commands to estimate the current object pose.</p>
+      </div>
+    </div>
+    <div class="content">
+      <p>
+        Results are reported with Wilson 95% intervals and paired McNemar tests, together with the sim-to-real retention
+        ratio (real success / simulated success). Comparing OptiTrack and FoundationPose perception separates the
+        perception gap from the dynamics gap.
+      </p>
+    </div>
+  </div>
+</section>
+
+<!-- ======================= Contributions ======================= -->
+<section class="section is-small" id="contributions">
+  <div class="container is-max-desktop">
+    <h2 class="title is-1 has-text-centered is-size-3-mobile">Expected Contributions</h2>
+    <div class="content">
+      <ol>
+        <li>The first generalist dexterous hand–object tracker trained with a learned differentiable world model and BPTT, compared against re-implemented DexMimic and PPO in the same simulator, on the same hardware and over multiple seeds, targeting ≤ 1/5 of their GPU·h.</li>
+        <li>An object-conditioned world model with an error curve showing whether one model amortizes over a hundred objects, or where it stops.</li>
+        <li>A contact-phase analysis of learned-model gradients under dexterous contact — DexGradScope, first- vs. zero-order gradient maps and effective smoothing bandwidth — together with two minimal repairs.</li>
+        <li>Quantified closed-loop real-robot evaluation: 8 skills, 520 trials, paired against open-loop replay, with a calibrated perception channel and real data fed back into the world model.</li>
+        <li>A rigorous, open evaluation protocol: three evaluation sets, pre-registered thresholds and a same-simulator re-implementation of DexMimic.</li>
+      </ol>
+    </div>
+  </div>
+</section>
+
+<!-- ======================= BibTeX ======================= -->
+<section class="section is-small" id="bibtex">
+  <div class="container is-max-desktop">
+    <h2 class="title is-1 has-text-centered is-size-3-mobile">BibTeX</h2>
+    <p>
+      If you find our work useful in your research, please consider citing:
+    </p>
+    <br>
+    <pre class="bibtex"><code>@misc{zang2026superdex,
+  title={SuperDex: Scaling Dexterous Hand-Object Tracking with One Object-Conditioned Differentiable World Model},
+  author={Zang, Tianhao and Chen, Shixuan and Zhang, Wei},
+  year={2026},
+  howpublished={\url{https://github.com/jackzedgar/SuperDex}}
+}</code></pre>
+    <br>
+    <p>
+      If you have any questions, please open an issue on <a href="https://github.com/jackzedgar/SuperDex/issues">GitHub</a>.
+    </p>
+  </div>
+</section>
+
+<!-- ======================= Acknowledgments ======================= -->
+<section class="section is-small" id="acknowledgments">
+  <div class="container is-max-desktop">
+    <h2 class="title is-3 is-size-4-mobile">Acknowledgments</h2>
+    <div class="content">
+      <p>
+        SuperDex draws methodological inspiration from
+        <a href="https://supermimic.github.io/">SuperMimic: Scaling Humanoid Whole-Body Control with One Differentiable World Model</a>.
+        SuperDex is an independent exploration of these ideas for dexterous manipulation and is not affiliated with the
+        SuperMimic authors. The hand–object architecture and task formulations described here are SuperDex design choices.
+      </p>
+      <p class="is-size-7">
+        Related work:
+        <a href="https://arxiv.org/abs/2610.28480">SuperMimic</a> ·
+        <a href="https://arxiv.org/abs/2610.19089">DexMimic</a> ·
+        <a href="https://arxiv.org/abs/2508.08241">BeyondMimic</a> ·
+        <a href="https://arxiv.org/abs/2412.12089">SAPO / Rewarped</a> ·
+        <a href="https://arxiv.org/abs/2202.00817">Suh et al., 2022</a>
+      </p>
+    </div>
+  </div>
+</section>
+
+<footer class="footer">
+  <div class="container">
+    <div class="columns is-centered">
+      <div class="column is-8">
+        <div class="content has-text-centered">
+          <p>
+            Website template modified from <a href="https://dex4d.github.io/">Dex4D</a> and
+            <a href="https://nerfies.github.io/">Nerfies</a>.
+          </p>
+          <p>
+            This website is licensed under a <a rel="license"
+              href="http://creativecommons.org/licenses/by-sa/4.0/">Creative
+              Commons Attribution-ShareAlike 4.0 International License</a>.
+          </p>
+        </div>
+      </div>
+    </div>
+  </div>
+</footer>
+
+<script src="./static/js/index.js"></script>
+</body>
+
+</html>

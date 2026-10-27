@@ -1,0 +1,402 @@
+:root {
+  --accent: #e8590c;
+  --ink: #1f2430;
+  --muted: #5c6370;
+  --line: #e3e6eb;
+  --panel: #f6f7f9;
+  --link: hsl(204, 86%, 45%);
+  --wm: #0c8599;      /* world model change */
+  --grad: #7048e8;    /* gradient repairs */
+  --start: #e67700;   /* start distribution */
+  --percep: #d6336c;  /* perception channel */
+}
+
+body {
+  font-family: 'Noto Sans', sans-serif;
+  color: var(--ink);
+  background: #fff;
+}
+
+.publication-title,
+.publication-authors,
+.title {
+  font-family: 'Google Sans', 'Noto Sans', sans-serif;
+}
+
+.publication-authors a {
+  color: var(--link) !important;
+}
+
+.publication-authors a:hover {
+  text-decoration: underline;
+}
+
+.author-block {
+  display: inline-block;
+}
+
+.author-name {
+  color: var(--link);
+}
+
+.link-block a {
+  margin-top: 5px;
+  margin-bottom: 5px;
+}
+
+.link-block .button[disabled] {
+  opacity: 0.55;
+}
+
+/* ---------- Hero (replaces the video background of the template) ---------- */
+.hero.landing {
+  overflow: hidden;
+  position: relative;
+  background: radial-gradient(120% 90% at 70% 40%, #17305a 0%, #0b1426 55%, #060a14 100%);
+}
+
+#rollout-canvas {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  display: block;
+}
+
+.overlay {
+  position: absolute;
+  inset: 0;
+  background-color: rgba(0, 0, 0, 0.25);
+  z-index: 1;
+}
+
+.hero-body,
+.hero-head,
+.hero-foot {
+  z-index: 2;
+}
+
+.landing .hero-title {
+  font-size: 10rem;
+  letter-spacing: -0.02em;
+  line-height: 1.05;
+  margin-bottom: 2rem !important;
+}
+
+.landing .hero-subtitle {
+  font-size: 2.6rem;
+  line-height: 1.25;
+  opacity: 0.95;
+}
+
+.landing .hero-tagline {
+  margin-top: 1.5rem;
+  font-size: 1.25rem;
+  opacity: 0.8;
+  font-style: italic;
+}
+
+.landing .hero-foot .tabs a {
+  color: rgba(255, 255, 255, 0.85);
+  border-color: transparent;
+}
+
+.landing .hero-foot .tabs a:hover {
+  background: rgba(255, 255, 255, 0.12);
+  color: #fff;
+}
+
+@media screen and (max-width: 768px) {
+  .landing .hero-title { font-size: 4.5rem; }
+  .landing .hero-subtitle { font-size: 1.35rem; }
+  .landing .hero-tagline { font-size: 1rem; }
+}
+
+/* ---------- Section headings (template style) ---------- */
+h2.title.is-3.is-size-4-mobile {
+  display: inline-block;
+  text-decoration-line: underline;
+  text-decoration-color: var(--accent);
+  text-decoration-thickness: 3px;
+  text-underline-offset: 0.08em;
+  margin-top: 1.25rem;
+}
+
+.section .content p,
+.section .content li {
+  line-height: 1.7;
+}
+
+.status-pill {
+  display: inline-block;
+  margin-top: 0.75rem;
+  padding: 0.35rem 0.9rem;
+  border-radius: 999px;
+  background: #fff4e6;
+  border: 1px solid #ffd8a8;
+  color: #a34700;
+  font-size: 0.95rem;
+}
+
+/* ---------- Overview equation of three parts ---------- */
+.overview-grid {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto minmax(0, 1fr) auto minmax(0, 1fr) auto minmax(0, 1fr);
+  gap: 0.6rem;
+  align-items: stretch;
+}
+
+.overview-op {
+  align-self: center;
+  font-size: 1.6rem;
+  font-weight: 700;
+  color: var(--muted);
+}
+
+.ov-card {
+  border-radius: 12px;
+  padding: 1rem 0.9rem;
+  background: var(--panel);
+  border-top: 4px solid var(--c, var(--accent));
+  text-align: center;
+}
+
+.ov-card .ov-icon {
+  font-size: 1.8rem;
+  color: var(--c, var(--accent));
+  margin-bottom: 0.4rem;
+}
+
+.ov-card .ov-title {
+  font-family: 'Google Sans', sans-serif;
+  font-weight: 700;
+  font-size: 1.05rem;
+  margin-bottom: 0.35rem;
+}
+
+.ov-card .ov-text {
+  font-size: 0.9rem;
+  color: var(--muted);
+  line-height: 1.45;
+}
+
+@media screen and (max-width: 900px) {
+  .overview-grid { grid-template-columns: 1fr; }
+  .overview-op { justify-self: center; }
+}
+
+/* ---------- Key numbers ---------- */
+.stat-row {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 1rem;
+  margin: 2rem 0 0.5rem;
+}
+
+.stat {
+  text-align: center;
+  padding: 0.75rem 0.5rem;
+  border-left: 1px solid var(--line);
+}
+
+.stat:first-child { border-left: none; }
+
+.stat .num {
+  font-family: 'Google Sans', sans-serif;
+  font-size: 2.2rem;
+  font-weight: 700;
+  color: var(--ink);
+  line-height: 1.1;
+}
+
+.stat .lbl {
+  font-size: 0.88rem;
+  color: var(--muted);
+  margin-top: 0.3rem;
+}
+
+@media screen and (max-width: 768px) {
+  .stat-row { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .stat:nth-child(3) { border-left: none; }
+}
+
+/* ---------- Figures ---------- */
+.figure {
+  margin: 1.5rem 0 0.5rem;
+}
+
+.figure svg {
+  width: 100%;
+  height: auto;
+  display: block;
+}
+
+.legend .plain::before {
+  box-shadow: inset 0 0 0 1.5px #343a40;
+}
+
+.figure .caption {
+  font-size: 0.92rem;
+  color: var(--muted);
+  margin-top: 0.6rem;
+  text-align: center;
+}
+
+.legend {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 0.4rem 1.2rem;
+  font-size: 0.88rem;
+  color: var(--muted);
+  margin-top: 0.4rem;
+}
+
+.legend span::before {
+  content: "";
+  display: inline-block;
+  width: 0.8rem;
+  height: 0.8rem;
+  border-radius: 3px;
+  margin-right: 0.4rem;
+  vertical-align: -0.1rem;
+  background: var(--c);
+}
+
+/* ---------- Tension / hypothesis cards ---------- */
+.card-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(230px, 1fr));
+  gap: 1rem;
+  margin: 1.25rem 0;
+}
+
+.mini-card {
+  border: 1px solid var(--line);
+  border-radius: 12px;
+  padding: 1rem 1.1rem;
+  background: #fff;
+}
+
+.mini-card h4 {
+  font-family: 'Google Sans', sans-serif;
+  font-weight: 700;
+  font-size: 1.05rem;
+  margin-bottom: 0.4rem;
+}
+
+.mini-card h4 .tag {
+  margin-right: 0.4rem;
+  vertical-align: 0.1rem;
+}
+
+.mini-card p {
+  font-size: 0.93rem;
+  color: #3d434e;
+  line-height: 1.55;
+}
+
+.tag.hyp {
+  background: var(--c, var(--accent));
+  color: #fff;
+  font-weight: 700;
+}
+
+/* ---------- Tables ---------- */
+.table-wrap {
+  overflow-x: auto;
+  margin: 1rem 0 1.25rem;
+}
+
+.table.is-paper {
+  font-size: 0.9rem;
+  width: 100%;
+}
+
+.table.is-paper thead th {
+  border-bottom: 2px solid var(--ink);
+  font-family: 'Google Sans', sans-serif;
+  white-space: nowrap;
+}
+
+.table.is-paper td,
+.table.is-paper th {
+  vertical-align: top;
+  padding: 0.5em 0.7em;
+}
+
+.table.is-paper tbody tr:last-child td {
+  border-bottom: 2px solid var(--ink);
+}
+
+.table.is-paper .ours {
+  background: #fff8f2;
+}
+
+/* ---------- Equations & code ---------- */
+.eq {
+  overflow-x: auto;
+  padding: 0.25rem 0;
+  margin: 0.75rem 0;
+}
+
+.algo {
+  background: var(--panel);
+  border-radius: 10px;
+  padding: 1rem 1.2rem;
+  font-size: 0.85rem;
+  line-height: 1.6;
+  white-space: pre;
+  overflow-x: auto;
+}
+
+details.more {
+  margin: 1rem 0;
+}
+
+details.more summary {
+  cursor: pointer;
+  font-weight: 600;
+  color: var(--link);
+}
+
+/* ---------- Phase strip ---------- */
+.phase-strip {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.4rem;
+  justify-content: center;
+  margin: 0.75rem 0 1rem;
+}
+
+.phase-strip span {
+  padding: 0.3rem 0.8rem;
+  border-radius: 999px;
+  background: #f1edff;
+  color: #4b2fb3;
+  font-size: 0.88rem;
+}
+
+.phase-strip i {
+  align-self: center;
+  color: #b4a6ee;
+  font-size: 0.8rem;
+}
+
+/* ---------- Kernel chart ---------- */
+.kernel-chart text {
+  font-family: 'Noto Sans', sans-serif;
+  font-size: 11px;
+  fill: var(--muted);
+}
+
+/* ---------- BibTeX ---------- */
+pre.bibtex {
+  background: var(--panel);
+  border-radius: 10px;
+  font-size: 0.85rem;
+}
+
+.footer {
+  padding: 3rem 1.5rem 4rem;
+}
