@@ -1,0 +1,54 @@
+{
+  "seed": 280043,
+  "task_manifest": "configs/a1_probe40_v1.json",
+  "formal_target_real_controls": 1048576,
+  "maximum_collector_gpu_hours": 44,
+  "development_eval_seeds": [
+    280046,
+    280047,
+    280048,
+    280049
+  ],
+  "quality_bands": {
+    "20": [
+      0.15,
+      0.3
+    ],
+    "50": [
+      0.4,
+      0.6
+    ],
+    "80": [
+      0.7,
+      0.9
+    ]
+  },
+  "quality_selection": "First complete 160-condition development evaluation entering the band; actual per-task rates reported. Missing bands remain missing, no relabeling.",
+  "network": "Encoder/decoder 2048,1024,512,256; latent32; critic256,128",
+  "ppo": {
+    "gamma": 0.99,
+    "lambda": 0.95,
+    "epochs": 5,
+    "minibatches": 4,
+    "clip": 0.2,
+    "entropy": 0.001,
+    "adam_lr": 0.0002,
+    "betas": [
+      0.9,
+      0.95
+    ],
+    "global_grad_clip": 1,
+    "component_grad_clip": 0.1,
+    "schedule": "cosine to0.03floor at80percent"
+  },
+  "sampler": "Global bin mixture .5uniform+.4hard anchored+.1memory, cap5/usable; allocation statistics synchronized once per rollout, deterministic rank-order merge. Per-worker independent random sampling.",
+  "cold_start_clarification": "A source-qualified task without any settled anchor or surviving replay state receives explicit cold reference attempts until real25-control-surviving fallback states exist; these attempts are tagged, never renamed settled anchors. Original initialization undefined for this case.",
+  "workers": "Four independent processes; one active nworld=1 per process, inactive per-task scenes cached; shared actor/critic and one optimizer on rank0. No DDP and no coupled contact worlds.",
+  "perception": "Ideal simulation observations for A1 collector; no claim of calibrated real sensor channel.",
+  "success": "Whole trajectory, time-average DexMimic regular 3cm30deg/hand8cm/tip6cm; strict1.5cm15deg withsamehandlimits. Historical spoon criterion unchanged.",
+  "stopping": "Stop on prescribed interaction/process/storage cap or invalid numerics/IPC errors. Do not stop because early SR=0. Retain all quality/checkpoints/negative results. No automatic policy recipe changes.",
+  "evaluation_excluded_from_dataset": true,
+  "cache_capacity_per_worker": 2,
+  "target_revision_before_formal_start": "Measured four-worker shared rollout1024controls40.47seconds plus evaluation;1,048,576target,44GPU-hour cap, stop earlier only when all three quality bands actually recorded. Previous2,097,152was an unlaunched configuration draft.",
+  "success_or_budget_stop": "All three first-entry quality checkpoints, or1048576controls, or44GPUprocesshours; missing quality bands explicitly incomplete."
+}

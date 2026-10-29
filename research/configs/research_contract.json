@@ -1,0 +1,136 @@
+{
+  "schema_version": 1,
+  "stage": "single_seed_structure_and_gradient",
+  "approved_gpu_uuid": "GPU-810d1bb5-dcdc-3d20-c3c5-22bffb1fcf9d",
+  "protected_gpu_uuid": "GPU-6459eeb4-431f-1c9f-fbce-8960a2f594b7",
+  "hardware": {
+    "model": "RTX A5000",
+    "memory_gib": 24
+  },
+  "physics_dt_seconds": 0.002,
+  "control_dt_seconds": 0.02,
+  "target_model_rollout_steps": 8,
+  "target_policy_rollout_steps": 32,
+  "preflight": {
+    "objects": "one synthetic 50 g cube",
+    "hand": "pinned Wuji right URDF with a fixed test mount",
+    "world_counts": [
+      64,
+      256,
+      1024
+    ],
+    "measured_control_steps_per_world": 200,
+    "repeats": 1,
+    "not_a_scaling_law": true,
+    "no_training": true
+  },
+  "full_D0": {
+    "status": "not_run",
+    "needs": [
+      "4096 environments with 140 heterogeneous objects",
+      "deployable wrist and actuator model",
+      "learning/collection contention measurement",
+      "contact fidelity checks",
+      "hardware-specific budget recalibration"
+    ],
+    "original_H100_target_control_steps_per_second": 40000,
+    "apply_H100_threshold_to_A5000": false
+  },
+  "G1_G2_G3": {
+    "status": "not_run",
+    "requires": "frozen Probe-40 dataset and learning implementations"
+  },
+  "method_implementation_rules": [
+    "Freeze model parameters during actor updates, retain state/action Jacobians.",
+    "Differentiate the same scalar SDF used in forward evaluation; verify extensions and boundaries separately.",
+    "Do not treat synthetic tests as learned model accuracy or policy gradient efficacy evidence.",
+    "Do not treat web replay trajectories as released policy checkpoints.",
+    "Keep full-data training checkpoints separate from L2/L3 generalization checkpoints.",
+    "Record assumptions and tune batch sizes to the actual 24 GiB device."
+  ],
+  "real_trajectory_pilot": {
+    "source": "HOT3D clip 000000 / object 4",
+    "source_frames": [
+      118,
+      149
+    ],
+    "resampled_frames": 52,
+    "qualified_worlds": 1,
+    "training_updates": 160,
+    "environment_steps": 20480,
+    "rollout_batch": 128,
+    "research_policy_horizon_32_unchanged": true,
+    "multiworld_consistency": "unresolved",
+    "D0_ready": false,
+    "G1_ready": false
+  },
+  "grasp_repair": {
+    "baseline_commit": "0667e7d39dbdc07b47c90a92f7031ba04f284443",
+    "report": "runs/grasp_repair_20261026/report.html",
+    "training_gate": "configs/grasp_repair_gate.json",
+    "stable_grasp_verified": false,
+    "parallel_state_isolation_checked": [
+      1,
+      2,
+      8
+    ],
+    "parallel_numerical_fidelity_qualified": false,
+    "new_PPO_updates": 0
+  },
+  "exploration": {
+    "budget": "configs/exploration_budget.json",
+    "physics_success_prerequisite": false,
+    "formal_G1": false,
+    "known_failure_evidence": "runs/grasp_repair_20261026",
+    "report": "runs/explore_20261026/report.html",
+    "additional_PPO_steps_per_arm": 40960,
+    "PPO_arms": [
+      "uniform_rsi",
+      "start50"
+    ],
+    "world_model_paired_updates": 590,
+    "gpu_process_seconds_charged": 1508.6146770480118,
+    "gpu_process_seconds_cap": 3600,
+    "strict_successes_per_final_arm": "0/8",
+    "parallel_worlds": 1,
+    "next_scope": "Single-world bounded hypothesis testing remains authorized; no formal gate claim or parallel expansion."
+  },
+  "learning_trend": {
+    "source_commit": "b93903fade5e75efcc9c021d9ae1d3eed99736fd",
+    "budget": "configs/learning_trend_budget.json",
+    "report": "runs/learning_trend_20261027/report.html",
+    "additional_PPO_steps_per_arm": 81920,
+    "cumulative_PPO_steps_per_arm": 143360,
+    "world_model_paired_updates": 2000,
+    "world_model_dataset_unchanged": true,
+    "strict_successes_per_final_arm": "0/8",
+    "parallel_worlds": 1,
+    "gpu_process_seconds_charged": 2633.393567689025,
+    "gpu_process_seconds_cap": 3600,
+    "physics_success_prerequisite": false,
+    "D0_ready": false,
+    "G1_ready": false,
+    "stopped": true,
+    "next_experiment_automatically_authorized": false
+  },
+  "structure_gradient": {
+    "source_commit": "52b4fb1f8a61248be1b8dccb4ed5222817aad44a",
+    "report": "runs/structure_gradient_20261027/report.html",
+    "budget": "configs/structure_gradient_budget.json",
+    "seed": 23,
+    "A_reused_exactly": true,
+    "B_updates": 2000,
+    "gradient_predeclared_cases": 32,
+    "physical_replays": 544,
+    "model_and_policy_frozen": true,
+    "physics_worlds": 1,
+    "gpu_process_seconds": 978.5538917469967,
+    "no_new_data_in_WM": true,
+    "no_second_seed": true,
+    "no_policy_training": true,
+    "formal_G1": false,
+    "formal_G2": false,
+    "stopped": true,
+    "automatic_extra_experiments": false
+  }
+}

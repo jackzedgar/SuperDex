@@ -1,0 +1,70 @@
+{
+  "status": "AUTHORIZED_PREPARATION",
+  "authorized_at_utc": "2026-10-28T03:54:01Z",
+  "authorization": "User explicitly approved NEW 330 GPU process hours; full A1 proposal",
+  "new_gpu_seconds_cap": 1188000,
+  "initial_comparison_gpu_seconds_cap": 864000,
+  "revision_gpu_seconds_cap": 324000,
+  "old_remaining_not_added": true,
+  "source_head": "ff0d270b641040cc9bff1c907f4577d49b9fb386",
+  "host": "Lambda",
+  "user": "youran",
+  "gpu_count": 4,
+  "free_bytes_at_start": 92791435264,
+  "filesystem_free_floor_bytes": 5000000000,
+  "new_outputs_cap_bytes": 60000000000,
+  "proposal": "configs/a1_full_budget_20261028.json",
+  "plan": {
+    "Probe40": {
+      "strata": {
+        "stable_grasp_transport": 10,
+        "in_hand_reorientation_or_regrasp": 10,
+        "bimanual_handover": 10,
+        "light_object_tool_use_below100g": 10
+      },
+      "selection": "Source/reference quality and prespecified semantic categories before model outcomes; frozen manifest and exclusion list. Existing spoon/DVD are candidates only, not already qualifiedProbe40."
+    },
+    "collection": "Actual MuJoCoWarp physics, object state only at reset. PPO-Sim20/50/80 percent are development-quality targets; use first checkpoint entering preregistered bands, report actual per-task success. If a band is not reached within budget, do not relabel it or claim full originalG1.",
+    "models": "Shared single/bimanual state with presence masks;3x2048SiLU, objectBPS1024/PCA128 fitted without test targets, physical context, current-frame yaw transform with correct world-frame increments. W0 andW1 differ only by hand-object SDF queries. Same seeds, common initial weights, batch IDs, losses, normalization and update budgets. No unseen-objectA3 claim.",
+    "state_integrity": "Log qpos/qvel, actual controls, causal servo/delay state, per-episode physical context and solver warmstart diagnostic. Reconstruct3control histories without future data. Log contact pairs/forces and relative tangent velocity for phase labels; labels are evaluation/sampling metadata, never future model inputs.",
+    "data_split": "Freeze complete-episode/group70/15/15train/development/test before windows; keep initial-condition/replay families together and hash-deduplicate. No fixed policy-evaluation episodes in fitting. Separate semantic task strata and physical contact-phase strata.",
+    "evaluation": "Open-loop autoregressive rollouts from true start using known executed control sequence; no teacher forcing after start. Endpoint8/32-step errors are primary; path average and worst-over-horizon supplemental. Persistence, constant velocity and gravity baselines use identical windows. Report natural frequencies and task-balanced summaries, each seed, each object, hand involvement and support-only subsets; absent regimes remain absent.",
+    "contact_phases": "Free approach, onset, sustained contact, break, slip; define thresholds before fitting from actual GPU contacts and relative tangent velocity. Multi-label windows and exclusive precedence both documented. No phase label fabricated to fill quotas.",
+    "original_G1_thresholds": {
+      "8step_position_median_mm_max": 3,
+      "8step_orientation_median_deg_max": 3,
+      "switch_8step_position_p90_mm_max": 8,
+      "switch_8step_orientation_p90_deg_max": 8,
+      "32step_fraction_with_position_error_le15mm_min": 0.8
+    },
+    "strong_positive_evidence": "All three seeds satisfy original thresholds on locked evaluation, with per-stratum/object results and episode-cluster uncertainty. Prefer CI bounds within thresholds. Separate evidence thatW1 improvesW0 from absolute predictability; W0 andW1 both passing supportsA1 but does not by itself proveSDF benefit. No policy-control/A2 inference.",
+    "revision_and_stopping": "Initial6 runs retained. At most2 one-factor development revisions under90h. Choose revision using development only; final locked test opened after all configuration selection. Numerical/resource/budget invalidity stops affected jobs; finite poor performance is reported. No threshold relaxation, task cherry-picking, extra seeds or unbounded training to force a positive."
+  },
+  "seeds": [
+    23,
+    47,
+    89
+  ],
+  "old_PS_status": "remain paused",
+  "no_positive_result_guaranteed": true,
+  "requirements_status": "SPECIFIED_NOT_YET_IMPLEMENTED_OR_PASSED",
+  "original_documents": {
+    "research_plan": {
+      "path": "references/original_plan/research_plan.pdf",
+      "sha256": "1706266dbdbb241e2e6a2c0faddddbcb73c0dbd996d54d89785a87c2dd93ac70"
+    },
+    "algorithm_details": {
+      "path": "references/original_plan/algorithm_details.pdf",
+      "sha256": "3c6e0ba53ebb7ae3832611c1a5e3e9c40d770a5b84f678f9345e1516f40357b2"
+    }
+  },
+  "completion_rule": "Only label full original A1 complete after all data, policy-quality, architecture, three-seed, full-episode split, physics-context and fixed-evaluation requirements have evidence. If any missing, report incomplete; mini runs never substitute.",
+  "microbatch_semantics": "20480 distinct windows per Adam step via40x512; pending verification against any official SuperMimic source. Do not call authors code verified.",
+  "explicit_implementation_questions": [
+    "SDF distance derivative must match stated scalar extension and clamp; the document assertion of everywhere-continuous gradients is mathematically too strong for trilinear interpolation. Record exact correction and finite-difference evidence.",
+    "No measured actuator delay/mass currently supplied. Distinguish simulated parameter assumptions from identification; no D0 or robot claims.",
+    "PCA128 requires enough independent geometry observations; no silently padding a33object PCA and claiming128 components.",
+    "Full wrist lag state, physical-context randomization and bimanual state are required additions; old mini code does not supply them.",
+    "Reference feasibility filtering is source quality/physics filtering before outcomes, not static hold success as a PPO gate."
+  ]
+}

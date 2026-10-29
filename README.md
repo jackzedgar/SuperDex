@@ -79,3 +79,12 @@ SuperDex draws methodological inspiration from **SuperMimic: Scaling Humanoid Wh
 [SuperMimic Project Page](https://supermimic.github.io/)
 
 SuperDex is an independent exploration of these ideas for dexterous manipulation and is not affiliated with the SuperMimic authors. The hand-object architecture and task formulations described here are SuperDex design choices.
+
+## Research implementation
+
+The active workstation's code snapshot is in [`research/`](research/README.md).
+It includes the A1 pipeline, collectors, world models, configurations, and
+dependency locks. Source revision: `82e34d18c39ac0344432ddb5499d3e811550b5d1`
+(2026-10-29). Datasets, checkpoints, private assets, and credentials are excluded.
+The experiment remains in progress; this snapshot does not establish completed
+A1 results.

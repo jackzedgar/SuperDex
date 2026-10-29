@@ -1,0 +1,59 @@
+{
+  "seed": 280043,
+  "task_manifest": "configs/a1_probe40_v1.json",
+  "formal_target_real_controls": 655360,
+  "maximum_collector_gpu_hours": 29.6,
+  "development_eval_seeds": [
+    280046,
+    280047,
+    280048,
+    280049
+  ],
+  "quality_bands": {
+    "20": [
+      0.15,
+      0.3
+    ],
+    "50": [
+      0.4,
+      0.6
+    ],
+    "80": [
+      0.7,
+      0.9
+    ]
+  },
+  "quality_selection": "First complete 160-condition development evaluation entering the band; actual per-task rates reported. Missing bands remain missing, no relabeling.",
+  "network": "Encoder/decoder 2048,1024,512,256; latent32; critic256,128",
+  "ppo": {
+    "gamma": 0.99,
+    "lambda": 0.95,
+    "epochs": 5,
+    "minibatches": 4,
+    "clip": 0.2,
+    "entropy": 0.001,
+    "adam_lr": 0.0002,
+    "betas": [
+      0.9,
+      0.95
+    ],
+    "global_grad_clip": 1,
+    "component_grad_clip": 0.1,
+    "schedule": "cosine to0.03floor at80percent"
+  },
+  "sampler": "Original research plan B1 PPO-Sim: uniform reference-state initialization. No adaptive return/anchor/replay weighting.",
+  "cold_start_clarification": "Not applicable: reference initialization is the baseline definition; no anchor prerequisite.",
+  "workers": "Four independent processes; one active nworld=1 per process, inactive per-task scenes cached; shared actor/critic and one optimizer on rank0. No DDP and no coupled contact worlds.",
+  "perception": "Ideal simulation observations for A1 collector; no claim of calibrated real sensor channel.",
+  "success": "Whole trajectory, time-average DexMimic regular 3cm30deg/hand8cm/tip6cm; strict1.5cm15deg withsamehandlimits. Historical spoon criterion unchanged.",
+  "stopping": "Stop on prescribed interaction/process/storage cap or invalid numerics/IPC errors. Do not stop because early SR=0. Retain all quality/checkpoints/negative results. No automatic policy recipe changes.",
+  "evaluation_excluded_from_dataset": true,
+  "cache_capacity_per_worker": 2,
+  "target_revision_before_formal_start": "After correcting B1 reset mismatch, remaining collectors phase29.8977629h. Uniform-reference four-worker smoke:1024trainingcontrols, slowest worker35.016s, full160conditionevaluation~101s. Register655360trainingcontrols and4x26640s caps=29.6GPUh; no quality/success-based target selection. The fresh formal run uses rollout512/worker.",
+  "success_or_budget_stop": "All three actual quality passports, or655360controls, or29.6GPU-processhours. Missing quality levels remain incomplete.",
+  "reset_mode": "uniform_reference",
+  "task_sampling": "Uniform over40frozen tasks; conditional uniform over all nonterminal reference frames0..T-1.",
+  "protocol_correction": "v1 incorrectly applied SuperDex adaptive reset to PPO-Sim. Retain old run as adaptive-reset branch; fresh identical seeded policy, same physics/reward/architecture/optimizer/evaluation.",
+  "initialization": "Fresh seed280043 identical to v1 checkpoint_initial policy; no resume from old trained policy.",
+  "interpretation": "The plan says uniform reference-state initialization but does not specify task-vs-frame weighting. Explicit implementation chooses task-uniform then within-task frame-uniform; no claim of verified official author code."
+}

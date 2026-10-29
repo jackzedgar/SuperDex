@@ -1,0 +1,34 @@
+{
+  "status": "REGISTERED_BEFORE_FORMAL_COLLECTOR",
+  "cap_gpu_hours": 330,
+  "initial_cap_gpu_hours": 240,
+  "limits_hours": {
+    "implementation": 7,
+    "collectors": 45,
+    "collection": 150,
+    "models_initial": 30,
+    "evaluation": 8,
+    "revision1": 45,
+    "revision2": 45
+  },
+  "basis": {
+    "collector_smoke_global_steps": 1024,
+    "collector_smoke_update_wall_seconds": 40.4718,
+    "collector_workers": 4,
+    "collector_development_evaluation_conditions": 160,
+    "noisy_collection_steps_per_second": {
+      "single_hand_prior": 22.5645,
+      "bimanual_new_logger": 21.5173,
+      "tool_new_logger": 24.3505
+    },
+    "model_compiled_microbatch_forward_backward_seconds": {
+      "W0": 0.1155,
+      "W1_range": [
+        0.208,
+        0.28
+      ]
+    }
+  },
+  "limits": "Conservative whole-process wall time includes waits, compilation, failures, inline evaluations and warmups. Reserve>=1GPUhour for evaluation; no additional authorization inferred.",
+  "uncertainty": "12m collection estimate depends on task/failure distribution; monitor measured rate and storage. Stop at hard aggregate cap, do not reduce data target silently."
+}

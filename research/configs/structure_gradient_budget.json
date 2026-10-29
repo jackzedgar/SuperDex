@@ -1,0 +1,21 @@
+{
+  "stage": "single_seed_structure_and_gradient_20261027",
+  "source_commit": "52b4fb1f8a61248be1b8dccb4ed5222817aad44a",
+  "source_run": "runs/learning_trend_20261027",
+  "allocation_seconds": {"structure": 2400, "gradient": 600, "evaluation_and_anomalies": 600},
+  "total_gpu_process_seconds_cap": 3600,
+  "gpu_uuid": "GPU-810d1bb5-dcdc-3d20-c3c5-22bffb1fcf9d",
+  "worlds": 1,
+  "wm": {"seed": 23, "updates": 2000, "batch": 64, "learning_rate": 0.0002, "validation_updates": [0, 250, 500, 590, 750, 1000, 1250, 1500, 1750, 2000], "horizons": [8,32], "reuse_exact_A": true, "frozen_data": true},
+  "gradient": {
+    "policy": "runs/learning_trend_20261027/uniform_rsi/checkpoint_final.pt",
+    "prefix_source": "runs/learning_trend_20261027/canonical_eval/uniform_rsi/eval_122880",
+    "initial_ids": [0,2,6,7], "prefix_controls": [0,5,7,10], "horizons": [1,4],
+    "nominal": "Frozen policy at replayed anchor; hold its clipped action for the entire short horizon. Never use future real states/actions for optimization.",
+    "perturbation_linf": 0.05, "direction": "Gradient of undiscounted original reward sum, normalized by maximum absolute component; one proposal only, projected to original action limits.",
+    "baseline_repeats": 5, "direction_repeats": 3, "replay_order_seed": 37,
+    "noise_rule": "Inconclusive if absolute mean true change <= max(1e-6, baseline full return range, baseline half-range + direction half-range). No removal of inconclusive or adverse cases.",
+    "termination": "Run fixed 1/4 steps unless nonfinite; retain original termination flags and report them. These are short-horizon reward probes, not task successes."
+  },
+  "second_seed": false, "policy_training": false, "formal_G1_G2_claim": false, "automatic_extra_experiments": false
+}

@@ -1,0 +1,72 @@
+{
+  "seed": 280043,
+  "task_manifest": "configs/a1_probe40_v1.json",
+  "formal_target_real_controls": 1227947,
+  "maximum_collector_gpu_hours": 32,
+  "development_eval_seeds": [
+    280046,
+    280047,
+    280048,
+    280049
+  ],
+  "quality_bands": {
+    "20": [
+      0.15,
+      0.3
+    ],
+    "50": [
+      0.4,
+      0.6
+    ],
+    "80": [
+      0.7,
+      0.9
+    ]
+  },
+  "quality_selection": "First complete 160-condition development evaluation entering the band; actual per-task rates reported. Missing bands remain missing, no relabeling.",
+  "network": "Encoder/decoder 2048,1024,512,256; latent32; critic256,128",
+  "ppo": {
+    "gamma": 0.99,
+    "lambda": 0.95,
+    "epochs": 5,
+    "minibatches": 4,
+    "clip": 0.2,
+    "entropy": 0.001,
+    "adam_lr": 0.0002,
+    "betas": [
+      0.9,
+      0.95
+    ],
+    "global_grad_clip": 1,
+    "component_grad_clip": 0.1,
+    "schedule": "cosine to0.03floor at80percent"
+  },
+  "sampler": "Original research plan B1 PPO-Sim: uniform reference-state initialization. No adaptive return/anchor/replay weighting.",
+  "cold_start_clarification": "Not applicable: reference initialization is the baseline definition; no anchor prerequisite.",
+  "workers": "Four independent processes; one active nworld=1 per process, inactive per-task scenes cached; shared actor/critic and one optimizer on rank0. No DDP and no coupled contact worlds.",
+  "perception": "Ideal simulation observations for A1 collector; no claim of calibrated real sensor channel.",
+  "success": "Whole trajectory, time-average DexMimic regular 3cm30deg/hand8cm/tip6cm; strict1.5cm15deg withsamehandlimits. Historical spoon criterion unchanged.",
+  "stopping": "Additional589824controls OR32GPU-processhours ORallthreeactualqualitybands. Also stop after3consecutive development evaluations jointly losing>=4regular successes, mean episode length<=80percent of stage baseline, no later median first strict failure, and both paired common-prefix object errors>=120percent. Never stop merely for early zero success.",
+  "evaluation_excluded_from_dataset": true,
+  "cache_capacity_per_worker": 2,
+  "target_revision_before_formal_start": "Frozen before resumed run, based on measured~24globalcontrols/s,589824newcontrols~27.3GPUh plus fixed-evaluation/startup margin within32h.",
+  "success_or_budget_stop": "Registered controls/time/regression rule; actual20/50/80qualitybands unchanged.",
+  "reset_mode": "uniform_reference",
+  "task_sampling": "Uniform over40frozen tasks; conditional uniform over all nonterminal reference frames0..T-1.",
+  "protocol_correction": "v1 incorrectly applied SuperDex adaptive reset to PPO-Sim. Retain old run as adaptive-reset branch; fresh identical seeded policy, same physics/reward/architecture/optimizer/evaluation.",
+  "initialization": "Resume parent638123control policy and Adam step6240, preserve PPO permutation RNG and saved worker RNG; fresh valid reference reset, not bitwise solver-state continuation.",
+  "interpretation": "The plan says uniform reference-state initialization but does not specify task-vs-frame weighting. Explicit implementation chooses task-uniform then within-task frame-uniform; no claim of verified official author code.",
+  "learning_rate_mode": "constant_continuation",
+  "continuation_learning_rate": 3e-05,
+  "regression_stop_enabled": true,
+  "parent_checkpoint": "runs/a1_full_20261028/collector_full_v2_uniform_001/checkpoint_final.pt",
+  "parent_controls": 638123,
+  "additional_controls_cap": 589824,
+  "budget_phase": "revision1",
+  "revision_factor": "Learning-rate schedule only: prior late-stage6e-6 floor to fixed3e-5; optimizer moments restored.",
+  "evidence": "Regular success6/160initial ->13/160latest, max14/160; episode length26.31 ->38.36. Late-stageKL~.002 and learning-rate floor6e-6. These observations motivate testing more update amplitude, not a proven causal limitation.",
+  "revision_accounting": "Uses first of at mosttwo45h evidence-driven revision rounds; smoke/startup/failed attempts and this32h run all charged to revision1. Only revision2 remains available as a distinct second correction. No increase to330h or initial240h.",
+  "prelaunch_choice": "Initial6e-5 resume smoke showedKL.08716/clip.47695 on512controls (smaller than formal2048batch, not matched causal comparison). Parent historical2e-5..4e-5 region medianKL.01125 vs5e-5..7e-5 median.02274. Choose3e-5 before formal launch as conservative update-amplitude hypothesis; no smoke-trained policy reused.",
+  "storage_estimate_new_gib": 5,
+  "filesystem_floor_bytes": 5000000000
+}

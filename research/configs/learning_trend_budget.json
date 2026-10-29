@@ -1,0 +1,15 @@
+{
+  "stage": "bounded_learning_trend_20261027",
+  "baseline_commit": "b93903fade5e75efcc9c021d9ae1d3eed99736fd",
+  "source_run": "runs/explore_20261026",
+  "total_gpu_process_seconds_cap": 3600,
+  "allocation_seconds": {"ppo": 2100, "world_models": 900, "evaluation_and_anomalies": 600},
+  "gpu_uuid": "GPU-810d1bb5-dcdc-3d20-c3c5-22bffb1fcf9d",
+  "ppo": {"steps_per_arm": 81920, "hard_process_seconds_per_arm": 1050, "soft_process_seconds_per_arm": 1025, "checkpoint_interval_steps": 20480, "seed": 17, "arms": {"uniform_rsi": 0.0, "start50": 0.5}, "resume": "Each arm restores its own prior final policy, Adam optimizer and CUDA RNG; simulation resumes from a fresh reset."},
+  "wm": {"paired_update_cap": 2000, "hard_process_seconds": 900, "soft_process_seconds": 875, "seed": 23, "learning_rate": 0.0002, "validation_updates": [0, 250, 500, 590, 750, 1000, 1250, 1500, 1750, 2000], "training_horizon": 8, "validation_horizons": [8, 32], "resume": false, "initialization": "Same seed23 and common-weight/zero-extra-column initialization as b93903f; same minibatch sequence from frozen data.", "frozen_data": true, "mix_new_PPO_data": false},
+  "physics_worlds": 1,
+  "success_rule_unchanged": true,
+  "static_or_reference_grasp_success_prerequisite": false,
+  "automatic_extra_experiments": false,
+  "formal_G1_claim": false
+}

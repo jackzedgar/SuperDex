@@ -1,0 +1,14 @@
+{
+  "stage": "budgeted_exploratory_learning",
+  "baseline_commit": "39ee056e7140dc878cf6f130d09ea129e09f05eb",
+  "gpu_uuid": "GPU-810d1bb5-dcdc-3d20-c3c5-22bffb1fcf9d",
+  "total_gpu_process_seconds_cap": 3600,
+  "allocation_seconds": {"ppo": 2400, "additional_collection": 300, "world_models": 600, "evaluation_and_verification": 300},
+  "historical_speed": {"steps": 20480, "seconds": 531.119355183997, "note": "Shared-device historical measurement, not a dedicated throughput claim."},
+  "ppo": {"additional_steps_per_arm": 40960, "max_process_seconds_per_arm": 1200, "checkpoint_interval_steps": 10240, "seed": 17, "arms": {"uniform_rsi": 0.0, "start50": 0.5}, "changed_factor": "Probability of choosing reference phase zero at reset; all other training and physical parameters unchanged."},
+  "wm": {"variants": ["W0-mini", "W1-mini"], "hidden_layers": [256, 256, 256], "autoregressive_training_steps": 8, "evaluation_horizons": [1, 8, 32], "object_component_weight": 4, "paired_update_cap": 1000, "seed": 23, "learning_rate": 0.0002},
+  "success_rule_unchanged": true,
+  "static_hold_is_training_prerequisite": false,
+  "reference_control_success_is_training_prerequisite": false,
+  "formal_G1_claim": false
+}
