@@ -1,9 +1,10 @@
 # SuperDex research code
 
-This is a code-only snapshot of the active Lambda workstation project at source
-revision `82e34d18c39ac0344432ddb5499d3e811550b5d1`, synchronized on 2026-10-29
-(Asia/Shanghai). Four GPU experiment processes were running when inspected.
-Synchronization did not modify the workstation checkout or restart its jobs.
+This is a code-only snapshot of the Lambda workstation project at source
+revision `874e4b0848f47a77d95cafbb9d796ccbf73e4400`, synchronized on
+2026-10-29 16:03:40 (Asia/Shanghai). Synchronization reads a fixed committed
+snapshot and does not modify the workstation checkout or its experiment jobs.
+Experiment status was not assessed during this synchronization.
 
 The current source includes the A1 predictability experiment pipeline, shared
 PPO-Sim collection, W0/W1 world models, evaluation, and bounded reset-memory
@@ -18,6 +19,8 @@ by this source snapshot.
 - `scripts/a1_world_model.py`: world-model definitions.
 - `scripts/a1_prediction_eval.py`: prediction evaluation.
 - `scripts/diagnose_a1_reset_memory.py`: bounded reset-memory diagnostics.
+- `scripts/audit_a1_repro_paths.py` and `scripts/audit_a1_determinism.py`: reproducibility diagnostics.
+- `scripts/benchmark_a1_cache.py`: cache benchmark helper.
 - `configs/`: versioned experiment settings and budgets.
 - `requirements-*.lock.txt`: recorded environment dependencies.
 - `activate_mjw.sh`: workstation environment selection.

@@ -14,7 +14,7 @@ def near_euler(r,reference):
  return torch.where(((a-reference).square().sum(-1)<(b-reference).square().sum(-1))[...,None],a,b)
 
 class A1Env:
- def __init__(self,task_path,capture=True):
+ def __init__(self,task_path,capture=True,determinism='constraint'):
   assert os.environ.get('CUDA_VISIBLE_DEVICES')==GPU and torch.cuda.device_count()==1
   assert str(torch.cuda.get_device_properties(0).uuid)==GPU[4:]
   self.device='cuda:0';self.n=1;self.physical_controls=0
@@ -24,7 +24,9 @@ class A1Env:
   self.nominal={name:getattr(m,name).copy() for name in ['body_mass','body_inertia','body_ipos','body_iquat','geom_friction','actuator_gainprm','actuator_biasprm']}
   self.object_body=m.body('object').id;self.hand_geom=np.flatnonzero(m.geom_contype==1);self.floor_geom=m.geom('floor').id
   d=mujoco.MjData(m);d.qpos[:]=t.raw['qpos'][0];d.qvel[:]=t.raw['qvel'][0];mujoco.mj_forward(m,d)
-  self.wm=mjw.put_model(m);self.wm.opt.graph_conditional=False;self.wm.opt.deterministic=mjw.DeterminismType.CONSTRAINT
+  assert determinism in {'constraint','all'}
+  self.wm=mjw.put_model(m);self.wm.opt.graph_conditional=False;self.wm.opt.deterministic=mjw.DeterminismType[determinism.upper()]
+  self.determinism=determinism
   self.wd=mjw.put_data(m,d,nworld=1,nconmax=512,njmax=1536)
   self.qpos=wp.to_torch(self.wd.qpos);self.qvel=wp.to_torch(self.wd.qvel);self.ctrl=wp.to_torch(self.wd.ctrl)
   self.context=torch.zeros(1,CONTEXT,device=self.device)

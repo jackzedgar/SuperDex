@@ -1,0 +1,74 @@
+{
+  "seed": 280043,
+  "task_manifest": "configs/a1_probe40_v1.json",
+  "formal_target_real_controls": 1817771,
+  "maximum_collector_gpu_hours": 17.8,
+  "development_eval_seeds": [
+    280046,
+    280047,
+    280048,
+    280049
+  ],
+  "quality_bands": {
+    "20": [
+      0.15,
+      0.3
+    ],
+    "50": [
+      0.4,
+      0.6
+    ],
+    "80": [
+      0.7,
+      0.9
+    ]
+  },
+  "quality_selection": "First complete 160-condition development evaluation entering the band; actual per-task rates reported. Missing bands remain missing, no relabeling.",
+  "network": "Encoder/decoder 2048,1024,512,256; latent32; critic256,128",
+  "ppo": {
+    "gamma": 0.99,
+    "lambda": 0.95,
+    "epochs": 5,
+    "minibatches": 4,
+    "clip": 0.2,
+    "entropy": 0.001,
+    "adam_lr": 0.0002,
+    "betas": [
+      0.9,
+      0.95
+    ],
+    "global_grad_clip": 1,
+    "component_grad_clip": 0.1,
+    "schedule": "cosine to0.03floor at80percent"
+  },
+  "sampler": "Original research plan B1 PPO-Sim: uniform reference-state initialization. No adaptive return/anchor/replay weighting.",
+  "cold_start_clarification": "Not applicable: reference initialization is the baseline definition; no anchor prerequisite.",
+  "workers": "Four independent processes; one active nworld=1 per process, inactive per-task scenes cached; shared actor/critic and one optimizer on rank0. No DDP and no coupled contact worlds.",
+  "perception": "Ideal simulation observations for A1 collector; no claim of calibrated real sensor channel.",
+  "success": "Whole trajectory, time-average DexMimic regular 3cm30deg/hand8cm/tip6cm; strict1.5cm15deg withsamehandlimits. Historical spoon criterion unchanged.",
+  "stopping": "Additional589824controls OR17.8 aggregate GPU-processhours ORallthreeactualqualitybands OR existing three-consecutive joint-regression rule. Four independently supervised workers,16020seconds each.",
+  "evaluation_excluded_from_dataset": true,
+  "cache_capacity_per_worker": 8,
+  "target_revision_before_formal_start": "User explicitly requested investigation, corrections and continued full A1 execution. Prior v3 stopped at a registered step cap, not phase-budget exhaustion. This continuation remains inside the existing revision1 phase cap.",
+  "success_or_budget_stop": "Registered controls/time/regression rule; actual20/50/80qualitybands unchanged.",
+  "reset_mode": "uniform_reference",
+  "task_sampling": "Uniform over40frozen tasks; conditional uniform over all nonterminal reference frames0..T-1.",
+  "protocol_correction": "v1 incorrectly applied SuperDex adaptive reset to PPO-Sim. Retain old run as adaptive-reset branch; fresh identical seeded policy, same physics/reward/architecture/optimizer/evaluation.",
+  "initialization": "Resume v3 final policy, Adam moments and saved worker RNG; fresh reference-state reset after initial development evaluation. Smoke-trained weights are never reused.",
+  "interpretation": "The plan says uniform reference-state initialization but does not specify task-vs-frame weighting. Explicit implementation chooses task-uniform then within-task frame-uniform; no claim of verified official author code.",
+  "learning_rate_mode": "constant_continuation",
+  "continuation_learning_rate": 3e-05,
+  "regression_stop_enabled": true,
+  "parent_checkpoint": "runs/a1_full_20261028/collector_full_v3_lr_001/checkpoint_final.pt",
+  "parent_controls": 1227947,
+  "additional_controls_cap": 589824,
+  "budget_phase": "revision1",
+  "revision_factor": "Continuation of the already selected revision1 learning-rate correction, fixed3e-5. No new scientific factor; cache capacity is an execution parameter.",
+  "evidence": "Cache2 vs cache8 frozen-policy2048-control probes both passed. Wall212.32s vs164.79s, sampled tasks differ due constructor RNG consumption, so this is not a causal speedup estimate. Cache8 peak7712MiB; full four-worker PPO batch smoke required before formal launch. Complete-determinism audit did not establish repeatability and failed on bimanual allocation; retain registeredCONSTRAINT setting.",
+  "revision_accounting": "No new revision round. All formal continuation GPU time charged to remaining revision1; original330h and each phase cap unchanged. Revision2 remains the only remaining distinct scientific correction.",
+  "prelaunch_choice": "Use cache8 only after full2048batch two-update four-worker smoke exits successfully on every rank. Resume formal training from original v3 final, not smoke output.",
+  "storage_estimate_new_gib": 5,
+  "filesystem_floor_bytes": 5000000000,
+  "simulation_determinism": "constraint",
+  "reproducibility_limit": "A frozen checkpoint can vary by1-2/160 successes under current GPU simulator path. Exact same initial first-step errors can diverge later. Preserve all repeated trials; do not select a favorable rerun or treat small differences as resolved causal gains."
+}

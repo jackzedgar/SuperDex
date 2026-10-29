@@ -65,7 +65,7 @@ def main():
   else:wait(ipc/f'evaluated_{controls:08d}.json',out)
   result=json.loads((ipc/f'evaluated_{controls:08d}.json').read_text());quality_complete=result['quality_complete'];development_stop=result.get('development_stop',False);last_evaluated=controls
  try:
-  runner=MultiRunner(manifest,policy,seed+10000*a.rank,reset_mode=config.get('reset_mode','adaptive_anchor'))
+  runner=MultiRunner(manifest,policy,seed+10000*a.rank,cache_limit=config.get('cache_capacity_per_worker',2),reset_mode=config.get('reset_mode','adaptive_anchor'),determinism=config.get('simulation_determinism','constraint'))
   if initial:runner.load_stats(initial['global_sampler'])
   if a.rank==0:
    stats=runner.stats();bands=initial.get('bands',{}) if initial else {}

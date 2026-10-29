@@ -1,5 +1,5 @@
 """Shared-policy serial-world runner. No batched contact worlds or specialist actors."""
-import json,math,gc,copy
+import json,math,gc,copy,time
 from types import SimpleNamespace
 import numpy as np,torch,warp as wp
 from a1_data_sources import ROOT
@@ -7,9 +7,11 @@ from a1_env import A1Env
 from a1_reset import ResetSampler,uniform_reference_state
 from train_a1_collector import Runner,evaluate
 class MultiRunner:
- def __init__(self,manifest,policy,seed,cache_limit=2,reset_mode='adaptive_anchor'):
+ def __init__(self,manifest,policy,seed,cache_limit=2,reset_mode='adaptive_anchor',determinism='constraint'):
   assert reset_mode in {'adaptive_anchor','uniform_reference'}
   self.reset_mode=reset_mode
+  assert isinstance(cache_limit,int) and 1<=cache_limit<=len(manifest['tasks'])
+  self.determinism=determinism;self.cache_creations=0;self.cache_creation_seconds=0.
   self.rows=manifest['tasks'];self.policy=policy;self.rng=np.random.default_rng(seed);self.samplers={};self.cache={};self.cache_limit=cache_limit;self.cache_order=[]
   for i,row in enumerate(self.rows):
    path=ROOT/row['task_path']
@@ -24,7 +26,9 @@ class MultiRunner:
     if self.active is old:self.active=None
     old.env.contacts.e=None;del old;gc.collect();torch.cuda.empty_cache()
    row=next(r for r in self.rows if r['task_id']==tid)
-   env=A1Env(ROOT/row['task_path']);self.warmup_controls+=env.physical_controls;r=Runner(env,self.policy,int(self.rng.integers(2**31)),reset_mode=self.reset_mode);r.sampler=self.samplers[tid];self.cache[tid]=r
+   start=time.monotonic()
+   env=A1Env(ROOT/row['task_path'],determinism=self.determinism);self.warmup_controls+=env.physical_controls;r=Runner(env,self.policy,int(self.rng.integers(2**31)),reset_mode=self.reset_mode);r.sampler=self.samplers[tid];self.cache[tid]=r
+   self.cache_creations+=1;self.cache_creation_seconds+=time.monotonic()-start
   if tid in self.cache_order:self.cache_order.remove(tid)
   self.cache_order.append(tid);r=self.cache[tid]
   if getattr(self,'stream_task',None)!=tid:
