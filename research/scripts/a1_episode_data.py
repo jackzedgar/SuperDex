@@ -3,6 +3,7 @@ import hashlib,json,os
 from pathlib import Path
 import numpy as np,torch
 from a1_state import H,STATE,empty_state
+from a1_episode_contract import is_complete_episode
 
 def pack_state(state):
  hs=state[...,:274].reshape(*state.shape[:-1],2,H)
@@ -53,6 +54,7 @@ class EpisodeWriter:
   assert all(len(arrays[k])==length+1 for k in ['state','generalized','contact','phase','contact_ranges'])
   assert all(len(arrays[k])==length for k in ['action','applied','reward_terms','terminated'])
   assert len(arrays['context'])==len(arrays['initial_history'])==1
+  assert bool(np.asarray(arrays['terminated'])[-1])==is_complete_episode(dict(controls=length,termination=termination)),'Termination label and physical terminal flag disagree'
   digest=hashlib.sha256();converted={}
   for k,spec in self.spec.items():
    arr=np.asarray(arrays[k],dtype=spec['dtype']).reshape(-1,spec['width'])
@@ -85,6 +87,7 @@ class EpisodeShard:
    file=self.path/(k+'.bin');self.arrays[k]=np.memmap(file,dtype=spec['dtype'],mode='r').reshape(-1,spec['width'])
  def window(self,episode_ids,times,horizon):
   ids=np.asarray(episode_ids);times=np.asarray(times);es=[self.episodes[int(i)] for i in ids]
+  assert all(is_complete_episode(e) for e in es),'Incomplete physical episodes are ineligible for formal windows'
   assert all(0<=t and t+horizon<=e['controls'] for e,t in zip(es,times))
   sstart=np.array([e['offsets']['state'] for e in es]);ustart=np.array([e['offsets']['request'] for e in es])
   phys=np.asarray(self.arrays['state'][sstart[:,None]+times[:,None]+np.arange(horizon+1)],dtype=np.float32)

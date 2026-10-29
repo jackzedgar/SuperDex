@@ -1,8 +1,8 @@
 # SuperDex research code
 
 This is a code-only snapshot of the Lambda workstation project at source
-revision `fdc4ce39ef317653e17d225fea9082098940ed13`, synchronized on
-2026-10-29 22:40:07 (Asia/Shanghai). Synchronization reads a fixed committed
+revision `74500f19da121e0ff1e8d41865979c3079880192`, synchronized on
+2026-10-30 07:48:06 (Asia/Shanghai). Synchronization reads a fixed committed
 snapshot and does not modify the workstation checkout or its experiment jobs.
 Experiment status was not assessed during this synchronization.
 
@@ -23,6 +23,8 @@ by this source snapshot.
 - `scripts/benchmark_a1_cache.py`: cache benchmark helper.
 - `scripts/a1_reset_memory.py`: training reset actuator-memory helpers.
 - `scripts/diagnose_a1_training_reset_phases.py` and `scripts/queue_a1_training_reset_phase_audit.py`: training reset diagnostics.
+- `scripts/a1_episode_contract.py` and `scripts/a1_g1_coverage.py`: episode integrity and G1 coverage checks.
+- `scripts/diagnose_a1_reference_control.py`: reference-control diagnostics.
 - `configs/`: versioned experiment settings and budgets.
 - `requirements-*.lock.txt`: recorded environment dependencies.
 - `activate_mjw.sh`: workstation environment selection.

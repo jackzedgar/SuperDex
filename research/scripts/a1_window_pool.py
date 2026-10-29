@@ -5,6 +5,7 @@ import json,hashlib,fcntl,resource
 from pathlib import Path
 import numpy as np,torch
 from a1_episode_data import EpisodeShard
+from a1_episode_contract import is_complete_episode
 from a1_geometry import A1Geometry
 from a1_data_sources import ROOT
 class WindowPool:
@@ -18,6 +19,7 @@ class WindowPool:
   self.groups={};self.task_groups={}
   for sid,shard in enumerate(self.shards):
    for eid,e in enumerate(shard.episodes):
+    if not is_complete_episode(e):continue
     n=e['controls']-horizon+1
     if e['split']!=split or n<=0:continue
     key=shard.meta['object_key'];row=(sid,eid,n)
@@ -25,6 +27,8 @@ class WindowPool:
   self.cdf={key:np.cumsum([r[2] for r in rows]) for key,rows in self.groups.items()}
   self.keys=sorted(self.groups);assert self.keys
  def sample_ids(self,n,rng,seen=None):
+  available=sum(int(cdf[-1]) for cdf in self.cdf.values())
+  if seen is not None and n>available-len(seen):raise ValueError(f'Requested {n} distinct windows, only {available-len(seen)} remain')
   result=[]
   while len(result)<n:
    key=self.keys[int(rng.integers(len(self.keys)))];cdf=self.cdf[key];i=int(rng.integers(cdf[-1]));j=int(np.searchsorted(cdf,i,side='right'));sid,eid,_=self.groups[key][j];t=i-(int(cdf[j-1]) if j else 0);identity=(sid,eid,t)
@@ -58,8 +62,12 @@ class WindowPool:
    return self._fixed_windows(path,seed,per_task,natural)
  def _fixed_windows(self,path,seed=280050,per_task=64,natural=4096):
   path=Path(path)
+  manifest_sha=hashlib.sha256(self.path.read_bytes()).hexdigest()
   if path.exists():
-   d=np.load(path);return {k:d[k] for k in d.files}
+   d=np.load(path)
+   assert 'manifest_sha256' in d.files and str(d['manifest_sha256'])==manifest_sha,'Fixed windows belong to a different or unverified manifest'
+   assert str(d['split'])==self.split and int(d['horizon'])==self.horizon,'Fixed window split/horizon mismatch'
+   return {k:d[k] for k in d.files}
   rng=np.random.default_rng(seed);balanced=[]
   for task,rows in sorted(self.task_groups.items()):
    cdf=np.cumsum([r[2] for r in rows]);n=min(per_task,int(cdf[-1]));picked=rng.choice(cdf[-1],size=n,replace=False)
@@ -68,7 +76,7 @@ class WindowPool:
   allrows=[r for rows in self.groups.values() for r in rows];cdf=np.cumsum([r[2] for r in allrows]);nat=[]
   for i in rng.choice(cdf[-1],size=min(natural,int(cdf[-1])),replace=False):
    j=int(np.searchsorted(cdf,i,side='right'));sid,eid,_=allrows[j];nat.append((sid,eid,int(i)-(int(cdf[j-1]) if j else 0)))
-  values=dict(balanced=np.asarray(balanced,dtype=np.int64),natural=np.asarray(nat,dtype=np.int64),seed=np.array(seed),horizon=np.array(self.horizon))
+  values=dict(balanced=np.asarray(balanced,dtype=np.int64),natural=np.asarray(nat,dtype=np.int64),seed=np.array(seed),horizon=np.array(self.horizon),split=np.array(self.split),manifest_sha256=np.array(manifest_sha))
   np.savez_compressed(path,**values);return values
 def save_model(model,path,**extra):
  # Geometry is immutable/shared and can be hundreds of MB. Never duplicate it

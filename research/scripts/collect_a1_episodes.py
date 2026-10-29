@@ -7,6 +7,7 @@ from a1_env import A1Env
 from a1_policy import CollectorPolicy
 from train_a1_collector import Runner
 from a1_episode_data import EpisodeWriter,pack_state
+from a1_episode_contract import is_complete_episode,complete_controls
 stop=False
 def onstop(*_):
  global stop;stop=True
@@ -39,7 +40,7 @@ def main():
   definitions=json.loads((ROOT/'data/raw/hot3d/clip_definitions.json').read_text());family=definitions[str(int(row['clip'].split('-')[1]))]['sequence_id']
  else:family=row['sequence']
  writer=EpisodeWriter(a.output,env.task,a.quality,dict(path=str(a.checkpoint.resolve().relative_to(ROOT)),sha256=checkpoint_sha),family)
- total=sum(x['controls'] for x in writer.entries);initial_total=total;start=time.monotonic();episode=len(writer.entries)
+ total=complete_controls(writer.entries);initial_total=total;initial_stored=sum(x['controls'] for x in writer.entries);start=time.monotonic();episode=len(writer.entries)
  # Resume uses a fresh disjoint RNG suffix; no duplicate noise replay.
  runner.rng=np.random.default_rng(a.seed+episode*1000003);runner.sampler.rng=np.random.default_rng(a.seed+1+episode*1000003);torch.manual_seed(a.seed+episode*1000003)
  while total<a.controls and not stop:
@@ -55,7 +56,7 @@ def main():
   arrays['state'].append(pack_state(env.current_state).cpu().numpy()[0].copy());arrays['generalized'].append(torch.cat([env.qpos,env.qvel],-1).cpu().numpy()[0].copy());arrays['contact'].append(initial_contact);arrays['phase'].append(start_phase)
   details(initial_contact,env.contacts.details.cpu().numpy())
   while True:
-   runner.graph.replay();s,r,done,info=env.step(runner.action);total+=1
+   runner.graph.replay();s,r,done,info=env.step(runner.action)
    # One state/action/status transfer instead of many synchronizing reads.
    fields=[pack_state(s),torch.cat([env.qpos,env.qvel],-1),env.requested,env.actions,env.applied,info['terms'],env.contact_summary[None],env.phase.float()[:,None],done.float()[:,None],info['finite'].float()[:,None]]
    lengths=[x.shape[-1] for x in fields];host=torch.cat(fields,-1).cpu().numpy()[0];parts=np.split(host,np.cumsum(lengths)[:-1])
@@ -68,10 +69,11 @@ def main():
   if bool(info['failure']):reason='physics_failure_'+str(int(info['reason']))
   elif bool(env.timeout):reason='reference_end'
   else:reason='budget_truncation'
-  writer.append({k:np.asarray(v) for k,v in arrays.items()},seed,start_phase,reason,metadata=dict(formal=not a.smoke,reset_mode=reset_mode,initial_solver_warmstart=initial_warm.tolist(),context=env.context_record,policy_noise_sigma=.1,full_reference_start=start_phase==0,regular_success=bool(info['regular_success']),strict_success=bool(info['strict_success']),bootstrap=runner.bootstrap))
+  entry=writer.append({k:np.asarray(v) for k,v in arrays.items()},seed,start_phase,reason,metadata=dict(formal=not a.smoke,reset_mode=reset_mode,initial_solver_warmstart=initial_warm.tolist(),context=env.context_record,policy_noise_sigma=.1,full_reference_start=start_phase==0,regular_success=bool(info['regular_success']),strict_success=bool(info['strict_success']),bootstrap=runner.bootstrap))
+  if is_complete_episode(entry):total+=entry['controls']
   episode+=1
   if episode%10==0:
    write(a.output/'progress.json',dict(controls=total,episodes=episode,seconds=time.monotonic()-start,formal=not a.smoke));print('COLLECT',total,episode,time.monotonic()-start,flush=True)
- summary=dict(status='budget_stop' if stop else 'quota_complete',real_dataset_controls=total,episodes=episode,seconds=time.monotonic()-start,new_controls_this_process=total-initial_total,controls_per_second=(total-initial_total)/(time.monotonic()-start),all_physical_controls_this_process=env.physical_controls,formal=not a.smoke,quality=a.quality,policy_checkpoint_sha256=checkpoint_sha,split_counts={split:sum(e['controls'] for e in writer.entries if e['split']==split) for split in ['train','development','test']})
+ summary=dict(status='budget_stop' if stop else 'quota_complete',real_dataset_controls=total,episodes=sum(is_complete_episode(e) for e in writer.entries),stored_episodes=episode,stored_controls=sum(e['controls'] for e in writer.entries),excluded_incomplete_controls=sum(e['controls'] for e in writer.entries if not is_complete_episode(e)),seconds=time.monotonic()-start,new_controls_this_process=total-initial_total,new_stored_controls_this_process=sum(e['controls'] for e in writer.entries)-initial_stored,controls_per_second=(total-initial_total)/(time.monotonic()-start),all_physical_controls_this_process=env.physical_controls,formal=not a.smoke,quality=a.quality,policy_checkpoint_sha256=checkpoint_sha,split_counts={split:sum(e['controls'] for e in writer.entries if e['split']==split and is_complete_episode(e)) for split in ['train','development','test']})
  write(a.output/'summary.json',summary);print(json.dumps(summary,indent=2),flush=True)
 if __name__=='__main__':main()

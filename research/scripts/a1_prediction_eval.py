@@ -4,6 +4,7 @@ from pathlib import Path
 import numpy as np,torch
 from a1_window_pool import WindowPool
 from a1_data_sources import write
+from a1_g1_coverage import g1_criteria,REQUIRED_PHASES
 from world_model_mini import qmul,qconj,qlog,qexp
 def errors(pred,target):
  pos=torch.linalg.vector_norm(pred[...,274:277]-target[...,274:277],dim=-1)*1000
@@ -25,7 +26,7 @@ def run_evaluation(model,manifest,fixed_dir,out,split='development',per_task=64,
  for horizon in [8,32]:
   pool=WindowPool(manifest,split,horizon);windows=pool.fixed_windows(fixed_dir/f'{split}_H{horizon}.npz',280050+(split=='test')+horizon,per_task,natural)
   expected_tasks=sorted({r['task_id'] for r in pool.meta['shards']});missing=sorted(set(expected_tasks)-set(pool.task_groups))
-  coverage[horizon]=dict(expected_task_count=len(expected_tasks),eligible_task_count=len(pool.task_groups),missing_task_ids=missing,windows_per_task={k:int(sum(r[2] for r in v)) for k,v in pool.task_groups.items()})
+  coverage[horizon]=dict(expected_task_count=len(expected_tasks),expected_task_ids=expected_tasks,expected_object_keys=pool.object_keys,eligible_task_count=len(pool.task_groups),missing_task_ids=missing,required_phases=list(REQUIRED_PHASES),windows_per_task={k:int(sum(r[2] for r in v)) for k,v in pool.task_groups.items()})
   for sampling in ['balanced','natural']:
    ids=windows[sampling];allpos=[];allrot=[];pathmean=[];pathmax=[];baseline={k:[[],[]] for k in ['persistence','constant_velocity','gravity']}
    for start in range(0,len(ids),512):
@@ -47,9 +48,6 @@ def run_evaluation(model,manifest,fixed_dir,out,split='development',per_task=64,
    file=f'H{horizon}_{sampling}';write(out/(file+'.json'),summary)
    np.savez_compressed(out/(file+'.npz'),ids=ids,position_mm=pp,orientation_deg=rr,path_position_mean_mm=np.asarray(pathmean),path_position_max_mm=np.asarray(pathmax),tasks=tasks,objects=objects,strata=strata,**{f'phase_{k}':v for k,v in labels.items()},**{f'baseline_{key}_{which}':np.asarray(value[i]) for key,value in baseline.items() for i,which in enumerate(['position_mm','orientation_deg'])})
    summaries[file]=summary
- verdict={}
- for sampling in ['balanced','natural']:
-  a=summaries[f'H8_{sampling}'];b=summaries[f'H32_{sampling}'];switch=a['phases']['switch']
-  verdict[sampling]=dict(all_tasks_have8and32windows=not coverage[8]['missing_task_ids'] and not coverage[32]['missing_task_ids'],position8=a['overall']['position_median_mm']<=3,orientation8=a['overall']['orientation_median_deg']<=3,switch_position8=switch['position_p90_mm']<=8 if switch['n'] else None,switch_orientation8=switch['orientation_p90_deg']<=8 if switch['n'] else None,position32=b['overall']['position_le15mm_fraction']>=.8)
+ verdict=g1_criteria(summaries,coverage)
  result=dict(split=split,coverage=coverage,criteria=verdict,all_present_criteria_pass={k:all(v is True for v in row.values()) for k,row in verdict.items()},formal_G1_claim=False,reason='A single checkpoint evaluation is not the complete three-seed A1 decision.')
  write(out/'criteria.json',result);return summaries,result

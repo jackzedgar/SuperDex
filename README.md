@@ -84,7 +84,7 @@ SuperDex is an independent exploration of these ideas for dexterous manipulation
 
 The active workstation's code snapshot is in [`research/`](research/README.md).
 It includes the A1 pipeline, collectors, world models, configurations, and
-dependency locks. Source revision: `fdc4ce39ef317653e17d225fea9082098940ed13`
-(2026-10-29). Datasets, checkpoints, private assets, and credentials are excluded.
+dependency locks. Source revision: `74500f19da121e0ff1e8d41865979c3079880192`
+(2026-10-30). Datasets, checkpoints, private assets, and credentials are excluded.
 The experiment remains in progress; this snapshot does not establish completed
 A1 results.
