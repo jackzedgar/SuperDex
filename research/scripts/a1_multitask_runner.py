@@ -4,11 +4,15 @@ from types import SimpleNamespace
 import numpy as np,torch,warp as wp
 from a1_data_sources import ROOT
 from a1_env import A1Env
+from a1_reset_memory import apply_velocity_reset_memory
 from a1_reset import ResetSampler,uniform_reference_state
 from train_a1_collector import Runner,evaluate
 class MultiRunner:
- def __init__(self,manifest,policy,seed,cache_limit=2,reset_mode='adaptive_anchor',determinism='constraint'):
+ def __init__(self,manifest,policy,seed,cache_limit=2,reset_mode='adaptive_anchor',determinism='constraint',reset_memory_mode='original'):
   assert reset_mode in {'adaptive_anchor','uniform_reference'}
+  assert reset_memory_mode in {'original','velocity_consistent'}
+  assert reset_memory_mode=='original' or reset_mode=='uniform_reference'
+  self.reset_memory_mode=reset_memory_mode
   self.reset_mode=reset_mode
   assert isinstance(cache_limit,int) and 1<=cache_limit<=len(manifest['tasks'])
   self.determinism=determinism;self.cache_creations=0;self.cache_creation_seconds=0.
@@ -70,6 +74,9 @@ class MultiRunner:
  def reset(self):
   tid,b,phase,snap,cold=self.choose();r=self.get(tid);self.active=r;self.tid=tid;self.bin=b;self.bootstrap=cold
   e=r.env;e.reset(phase,seed=int(self.rng.integers(2**31)),randomize=True,snapshot=snap)
+  if self.reset_memory_mode=='velocity_consistent':
+   assert snap is None
+   apply_velocity_reset_memory(e)
   r.state_history.copy_(e.state()[:,None].expand(-1,3,-1));r.action_history.zero_();self.rewards=[];self.narrow=[];self.pending=[(0,e.snapshot())] if self.reset_mode=='adaptive_anchor' else []
  @torch.no_grad()
  def rollout(self,n,should_stop=lambda:False):

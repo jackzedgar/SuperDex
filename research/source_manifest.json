@@ -1,5 +1,5 @@
 {
-  "source_revision": "874e4b0848f47a77d95cafbb9d796ccbf73e4400",
+  "source_revision": "fdc4ce39ef317653e17d225fea9082098940ed13",
   "source_date": "2026-10-29",
   "files": {
     ".gitignore": "6034729d0fe360ac569332afaaab08b2f78b975c5a83fc6893ddb7d3cf3bcd7b",
@@ -8,11 +8,13 @@
     "configs/a1_collector_full_v2_uniform_reference.json": "92fce69c2a5760d6b8e057c817d394bbfa945b89744093ce3aa8a286ef531bde",
     "configs/a1_collector_revision1_continue_20261029.json": "491180cdedbcd07bee926192af961994aa73e54095d4f558352633dd4614f0a0",
     "configs/a1_collector_revision1_lr_20261029.json": "891671d0b5052f36140b2a5f5125c8aa89244b882e3a0a4853fd52c3665f15b9",
+    "configs/a1_collector_revision2_velocity_20261029.json": "00ff820d69528bb8a71fc6d8fdb30c404c4ecf8857df5f409ca3655ed4fe4e0d",
     "configs/a1_collector_uniform_launch_20261028.json": "ff10b1fb1e0dd91bfba65e8c3bc060b44d9c252a5c19204da97e84c417ba3eea",
     "configs/a1_execution_allocation_v2.json": "1e32d796cb6d40da443960a2cf04760903376a272a0d564dfa24011c5cb1a2ef",
     "configs/a1_full_budget_20261028.json": "de0c6c404ad4e7147e7a9a94164c546b4bac04618be6bcc50302f3490e36cfff",
     "configs/a1_full_execution_20261028.json": "ee1a1b3787f4fa0a068d7fcb662ca58fb2dcf351f84ea7e73ccc51dec1223e5e",
     "configs/a1_probe40_v1.json": "1d6cb26437721c9e89ec9add956e278bef495c5a2d4f8ba7647eb8ad7adde982",
+    "configs/a1_training_reset_phase_audit_20261029.json": "3bda652cc951ea4860479bd28f5a806bfed0f2e0aace687747c5525d4b3c0d5e",
     "configs/core_iteration_budget.json": "8445c6f3daaa50f907742baedf3b28bc934396573dd4536ffa9fc22bbd6f42a6",
     "configs/exploration_budget.json": "253ccf0613b9b571039a820356a46edb114270c9ed9bfae4fce77e23f34e9926",
     "configs/grasp_repair_gate.json": "121c75ca4582697e7617e1936b96ab91e007265df2e48a651cf0e0bbd8100095",
@@ -43,12 +45,13 @@
     "scripts/a1_hot3d_catalog.py": "436fd54630762e76136ce7f7ff9ebe9c3e9f75801250019e9cb06cc73fab6984",
     "scripts/a1_mano.py": "87a49ae1c8808e1caf854d99ec0346f6581e1d6a033d7cad323754b560aeef53",
     "scripts/a1_mesh_distance.py": "0fa30eb507576d8d6c5e26c552924f8403fccf7a67cc097190265b95d585ad2e",
-    "scripts/a1_multitask_runner.py": "646261544b5b0cb20b76f2ad806af41f92540730106a4086139d0a983ab67022",
+    "scripts/a1_multitask_runner.py": "bf5cf78190109b8b11d8c66117405017652e7b8f3b8ecf86c9cf642199455901",
     "scripts/a1_policy.py": "449bc8c2db39ed9cfc4744d6161660e107918e1db8a2d398392af03efed8ebbf",
     "scripts/a1_prediction_eval.py": "ad5fb696efd4e8bc4fc8f1b315d6e9b4e8f86475e92ad5ac676b5481fdc1c41a",
     "scripts/a1_prepare_geometry.py": "8105fc2fb74df32d187fc2f4d8e3bff714a7a9b7872e42d286b2aa416348ba2c",
     "scripts/a1_prepare_task.py": "d6ae174c4c562137ca2c99f862914bffba8b589bb0a7f72ef4dfe60a8a2d556d",
     "scripts/a1_reset.py": "61e69d8e5f552cbef6f55c9bc5732e1044147fd4e6acd7f1ee2472399a0df106",
+    "scripts/a1_reset_memory.py": "b14a9abbaefab2c9af08dde692a41c1a729ebf53887e3693db382460cacbc276",
     "scripts/a1_retarget_pool.py": "666cdf2ebb342ac129dd53214259eee5be6bb46c21a92761b4d96cd1d3a980b4",
     "scripts/a1_screen_hot3d.py": "8173992d10d3c35d7b718da02db238fc04ffeae91f69e5ddcdc0251cc085c277",
     "scripts/a1_select_probe.py": "e1d0a04b462f7993df231da5681c29c3a387ac27a54b58b942f171f6ec7a964a",
@@ -102,6 +105,7 @@
     "scripts/core_policy_common.py": "5b187707ebf4e9b26294934cce62548d4fd3c43e5c4f144e992bf7794f52b358",
     "scripts/decompose_bptt_gradient_cpu.py": "a19d64b3449b1eecf2e3c6705819cc5f5b5743721333919eca11b5fa31819a60",
     "scripts/diagnose_a1_reset_memory.py": "7b3752d36ffec3fffabb30f27cb6f9741ae575e73a169b5a636e20a1e8f8240e",
+    "scripts/diagnose_a1_training_reset_phases.py": "eb9f1daec4a5286b15758454e93b4278bbd832529c914a671ae8153b3d04b631",
     "scripts/diagnose_grasp.py": "31df9888a074f646873ec5bda86bc15050966d1d5fb370f6185d8c6af4d7f50a",
     "scripts/evaluate_a1_final.py": "12dbcad0db21565fb84bd23a33bb79a3c75d3c663200807c9c96f19a2abba50a",
     "scripts/evaluate_bptt.py": "085b797b4a7aa19879ce4dac532433ed722dcfc60e249c1ec0edcb1c3d1569d1",
@@ -151,6 +155,7 @@
     "scripts/probe_model_gradient.py": "66b6d1f9a2b5b6976698261f43cb08c729dd388f1337d4a4ec8f2829367d657f",
     "scripts/qualify_real.py": "0b3f859b53146a1db8f87d6e629f426c85358e703f6967976035e56d6dafe95c",
     "scripts/queue_a1_reset_memory_diagnostic.py": "3d6f3657356c00ac1092d86d65a41a5a72acd8ac535e124998fca1a43af4aee5",
+    "scripts/queue_a1_training_reset_phase_audit.py": "1565212a8e976b383951038d25eafbec20650881ebb25183411afbfa3e8dc4e6",
     "scripts/queue_bptt.py": "d28240dbf2e5b7fbef77dc48884f60e4b617eafc9adee1ced0ebcd003cb70eed",
     "scripts/real_env.py": "2493cff14237eb3435bc8ebdb45892b05658a7c1413ab151bea9f420306c7ecf",
     "scripts/render_a1_budget_report.py": "7b7ae05084bd430619d3071ec239a66d6b6d1229065063dad20a77454795cd8a",
@@ -173,7 +178,7 @@
     "scripts/screen_backup_clip.py": "ea0aee6013875a54afc9fdd78d4334184c9cdae65dbd6c84a11725519232b197",
     "scripts/summarize_core_findings.py": "c1b1ea06c2183978243543de3a27f9fc40b5b46c356c5baa2d4e74815f8c0263",
     "scripts/train_a1_collector.py": "9d1fc7f15a9dca6e04aba58bbc2368bd9bd4cbb949b3193f720c4a41fd037fcd",
-    "scripts/train_a1_shared_collector.py": "524e3c90dc9ffc163fbe28638005105dad719e38abf1d9eb38be82b185ea0343",
+    "scripts/train_a1_shared_collector.py": "9e7cc6b83d41c085a3503826af4dcb18bca578eea9fe8784b3091a37c3b6b7e6",
     "scripts/train_a1_world_model.py": "ff8cd5956ec443839826c44e8ecb08bbaf10f1e944e040314cfbad9183a991ec",
     "scripts/train_bptt.py": "225aebdd5f15521bf98f7002a30e0818d9a98834037f1cde0a51ae4bb62cd497",
     "scripts/train_bptt_multitask.py": "191f9ab9663b4495bac95b791f9fef65420b56c66929c9d194858c8d88c6bcb4",
@@ -206,5 +211,5 @@
     "README.md",
     "source_manifest.json"
   ],
-  "synced_at": "2026-10-29T16:03:40.294042+08:00"
+  "synced_at": "2026-10-29T22:40:07.144509+08:00"
 }

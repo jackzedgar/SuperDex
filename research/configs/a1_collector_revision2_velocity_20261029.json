@@ -1,0 +1,77 @@
+{
+  "seed": 280043,
+  "task_manifest": "configs/a1_probe40_v1.json",
+  "formal_target_real_controls": 2710699,
+  "maximum_collector_gpu_hours": 44.5,
+  "development_eval_seeds": [
+    280046,
+    280047,
+    280048,
+    280049
+  ],
+  "quality_bands": {
+    "20": [
+      0.15,
+      0.3
+    ],
+    "50": [
+      0.4,
+      0.6
+    ],
+    "80": [
+      0.7,
+      0.9
+    ]
+  },
+  "quality_selection": "First complete 160-condition development evaluation entering the band; actual per-task rates reported. Missing bands remain missing, no relabeling.",
+  "network": "Encoder/decoder 2048,1024,512,256; latent32; critic256,128",
+  "ppo": {
+    "gamma": 0.99,
+    "lambda": 0.95,
+    "epochs": 5,
+    "minibatches": 4,
+    "clip": 0.2,
+    "entropy": 0.001,
+    "adam_lr": 3e-05,
+    "betas": [
+      0.9,
+      0.95
+    ],
+    "global_grad_clip": 1,
+    "component_grad_clip": 0.1,
+    "schedule": "constant_continuation"
+  },
+  "sampler": "Original research plan B1 PPO-Sim: uniform reference-state initialization. No adaptive return/anchor/replay weighting.",
+  "cold_start_clarification": "Not applicable: reference initialization is the baseline definition; no anchor prerequisite.",
+  "workers": "Four independent processes; one active nworld=1 per process, inactive per-task scenes cached; shared actor/critic and one optimizer on rank0. No DDP and no coupled contact worlds.",
+  "perception": "Ideal simulation observations for A1 collector; no claim of calibrated real sensor channel.",
+  "success": "Whole trajectory, time-average DexMimic regular 3cm30deg/hand8cm/tip6cm; strict1.5cm15deg withsamehandlimits. Historical spoon criterion unchanged.",
+  "stopping": "Additional1048576controls OR44.5aggregate GPU-processhours ORallthreeactualqualitybands ORexisting3-consecutivejoint-regression rule;40050seconds perworker.",
+  "evaluation_excluded_from_dataset": true,
+  "cache_capacity_per_worker": 8,
+  "target_revision_before_formal_start": "Registered second and final scientific revision, training-only actuator reset memory, supported by completed640-condition paired diagnostic.",
+  "success_or_budget_stop": "Registered controls/time/regression rule; actual20/50/80qualitybands unchanged.",
+  "reset_mode": "uniform_reference",
+  "task_sampling": "Uniform over40frozen tasks; conditional uniform over all nonterminal reference frames0..T-1.",
+  "protocol_correction": "v1 incorrectly applied SuperDex adaptive reset to PPO-Sim. Retain old run as adaptive-reset branch; fresh identical seeded policy, same physics/reward/architecture/optimizer/evaluation.",
+  "initialization": "Restore v4 committed policy/Adam/PPO generator and retained post-interruption worker RNG. The worker RNG files advanced through882 uncommitted rollout controls; they are explicitly preserved rather than falsely labeled as common-checkpoint RNG. Physical trajectories restart from fresh reference states; not bitwise physical continuation.",
+  "interpretation": "The plan says uniform reference-state initialization but does not specify task-vs-frame weighting. Explicit implementation chooses task-uniform then within-task frame-uniform; no claim of verified official author code.",
+  "learning_rate_mode": "constant_continuation",
+  "continuation_learning_rate": 3e-05,
+  "regression_stop_enabled": true,
+  "parent_checkpoint": "runs/a1_full_20261028/collector_full_v4_continue_001/checkpoint_final.pt",
+  "parent_controls": 1662123,
+  "additional_controls_cap": 1048576,
+  "budget_phase": "revision2",
+  "revision_factor": "Training reference-reset actuator command/history/servo initialization only: q + (kv/kp)*qvel, clamped to original actuator limits. Original phase0 complete development evaluation is unchanged.",
+  "evidence": "Preregistered 640-condition audit showed reductions in common-prefix position and orientation across all four strata, larger than repeat variation; task-cluster intervals exclude zero for both means. This supports testing learning under a more consistent initial actuator state, not a demonstrated survival or A1 improvement. Overall survived prefixes110/320 vs110/320; full32 survival82/256 vs82/256; bimanual full32 remains0/52; tool survival worsens30/76 to28/76. No claim of solving bottleneck.",
+  "revision_accounting": "Only remaining scientific revision2;45hphase cap and330htotal unchanged. Formal cap44.5h. No third revision or borrowing from data/model/evaluation phases.",
+  "prelaunch_choice": "Four workers,512 controls each,2 full2048 PPO updates,full160 original phase0 dev evaluation,all supervisor exits0,finite losses and no fatal files. Smoke weights not reused.",
+  "storage_estimate_new_gib": 5,
+  "filesystem_floor_bytes": 5000000000,
+  "simulation_determinism": "constraint",
+  "reproducibility_limit": "A frozen checkpoint can vary by1-2/160 successes under current GPU simulator path. Exact same initial first-step errors can diverge later. Preserve all repeated trials; do not select a favorable rerun or treat small differences as resolved causal gains.",
+  "training_reset_memory_mode": "velocity_consistent",
+  "development_reset_memory_mode": "original",
+  "revision_registration": "reports/a1_revision2_registration_20261029.json"
+}

@@ -1,7 +1,7 @@
 """Four independent single-world workers, one synchronous shared PPO policy.
 File IPC lives in this run only; consumed rollout temporaries are removed.
 """
-import argparse,json,time,signal,math,hashlib,os
+import argparse,json,time,signal,math,hashlib,os,shutil
 from pathlib import Path
 import numpy as np,torch
 from a1_data_sources import ROOT,RUN,write
@@ -20,6 +20,23 @@ def wait(path,out,timeout=1800):
   time.sleep(.2)
  return path
 def load(path):return torch.load(path,map_location='cpu',weights_only=False)
+def expected_signal_interruption(error,out):
+ if not isinstance(error,InterruptedError) or str(error)!='Stopped or peer failed; preserve last common checkpoint' or not stop:return False
+ return all(json.loads(p.read_text()).get('error','').startswith("InterruptedError('Stopped or peer failed;") for p in out.glob('fatal_rank*.json'))
+def commit_bounded_stop(out,elapsed_seconds):
+ # IPC interruption may precede a common update. Finalize only an already
+ # committed checkpoint, preserving the interrupted snapshot and pending IPC.
+ source=out/'checkpoint_latest.pt'
+ if not source.exists():source=out/'checkpoint_initial.pt'
+ value=load(source)
+ if source.name=='checkpoint_latest.pt':
+  marker=out/'ipc'/f"updated_{value['iteration']-1:07d}.json"
+  assert json.loads(marker.read_text())['controls']==value['controls'],'Missing common update marker'
+ digest=hashlib.sha256(source.read_bytes()).hexdigest()
+ target=out/'checkpoint_final.pt';temporary=out/'checkpoint_final.pt.bounded_tmp'
+ shutil.copyfile(source,temporary);assert hashlib.sha256(temporary.read_bytes()).hexdigest()==digest;temporary.replace(target)
+ write(out/'bounded_stop_commit.json',dict(source_checkpoint=source.name,source_sha256=digest,committed_controls=value['controls'],committed_iteration=value['iteration'],pending_rollouts_preserved=True,reason='Signal interrupted IPC wait; finalized last committed update, not pending rollouts.'))
+ write(out/'summary.json',dict(status='bounded_stop',real_controls=value['controls'],iterations=value['iteration'],seconds=elapsed_seconds,bands=value['bands'],formal=value['formal'],final_checkpoint_sha256=digest,interrupted_wait=True,commit_record='bounded_stop_commit.json'))
 def main():
  p=argparse.ArgumentParser();p.add_argument('--rank',type=int,required=True);p.add_argument('--workers',type=int,default=4);p.add_argument('--run',required=True);p.add_argument('--manifest',default='configs/a1_probe40_v1.json');p.add_argument('--steps',type=int,default=2097152);p.add_argument('--rollout',type=int,default=512);p.add_argument('--eval-every',type=int,default=32768);p.add_argument('--smoke',action='store_true');p.add_argument('--resume',type=Path);p.add_argument('--config',default='configs/a1_collector_full_v1.json');a=p.parse_args()
  signal.signal(signal.SIGTERM,halt);signal.signal(signal.SIGINT,halt);torch.set_num_threads(2)
@@ -65,7 +82,7 @@ def main():
   else:wait(ipc/f'evaluated_{controls:08d}.json',out)
   result=json.loads((ipc/f'evaluated_{controls:08d}.json').read_text());quality_complete=result['quality_complete'];development_stop=result.get('development_stop',False);last_evaluated=controls
  try:
-  runner=MultiRunner(manifest,policy,seed+10000*a.rank,cache_limit=config.get('cache_capacity_per_worker',2),reset_mode=config.get('reset_mode','adaptive_anchor'),determinism=config.get('simulation_determinism','constraint'))
+  runner=MultiRunner(manifest,policy,seed+10000*a.rank,cache_limit=config.get('cache_capacity_per_worker',2),reset_mode=config.get('reset_mode','adaptive_anchor'),determinism=config.get('simulation_determinism','constraint'),reset_memory_mode=config.get('training_reset_memory_mode','original'))
   if initial:runner.load_stats(initial['global_sampler'])
   if a.rank==0:
    stats=runner.stats();bands=initial.get('bands',{}) if initial else {}
@@ -120,6 +137,11 @@ def main():
    if a.smoke and controls>=a.steps:evaluation()
   if a.rank==0:checkpoint('checkpoint_final.pt');write(out/'summary.json',dict(status='bounded_stop' if stop else 'development_regression_stop' if development_stop else 'quality_complete' if quality_complete else 'steps_complete',real_controls=controls,iterations=iteration,seconds=time.monotonic()-start,bands=bands,formal=not a.smoke))
  except BaseException as error:
+  if expected_signal_interruption(error,out):
+   write(out/f'interrupted_rank{a.rank}.json',dict(error=repr(error),controls=controls,iteration=iteration,stop_signal_received=True))
+   if a.rank==0 and runner is not None:
+    checkpoint('checkpoint_interrupted.pt');commit_bounded_stop(out,time.monotonic()-start)
+   return
   write(out/f'fatal_rank{a.rank}.json',dict(error=repr(error),controls=controls,iteration=iteration))
   if a.rank==0 and runner is not None:checkpoint('checkpoint_interrupted.pt')
   raise

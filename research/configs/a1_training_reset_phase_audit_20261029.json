@@ -1,0 +1,25 @@
+{
+  "name": "training_reset_phase_audit_20261029_001",
+  "parent_run": "collector_full_v4_continue_001",
+  "phase_seed": 290043,
+  "dr_seeds": [
+    280046,
+    280047
+  ],
+  "phase_selection": "Two distinct uniformly sampled nonzero nonterminal reference phases per task, frozen before any trajectory. Diagnostic only; training sampler is unchanged.",
+  "task_manifest": "configs/a1_probe40_v1.json",
+  "maximum_controls_per_trajectory": 32,
+  "conditions": 640,
+  "repeat_order": "ABBA or BAAB alternates by task_index+phase_index+seed_index; two repeats per memory mode.",
+  "memory_modes": [
+    "original",
+    "velocity_consistent"
+  ],
+  "factor": "Only actuator requested-command history and servo reset memory; identical qpos,qvel,DR context and frozen policy. Reuse existing DiagnosticEnv implementation, not a new candidate.",
+  "budget_phase": "implementation",
+  "maximum_gpu_seconds": 1800,
+  "requires": "All four v4 collector supervisors finished and real parent GPU processes gone; final checkpoint committed; three quality passports still missing; idle GPU; unchanged source hashes; original total and phase budget supervisor approves.",
+  "purpose": "The completed phase0 diagnostic did not test the random reference phases used by PPO training and lacked repeated trials. This distinct short-prefix audit separates mode effects from repeat variability across all40tasks. It does not rerun the old phase0 queue.",
+  "analysis": "Compare same-task/phase/DR conditions on common prefixes; report both repeats, original-vs-original variation, paired position/orientation means, finite state, failure causes, and32-control survival by stratum. Never treat a partial prefix as whole-trajectory policy success. Review effect magnitude versus repeat variation before the single remaining scientific revision; no automatic training or success claim.",
+  "scope": "No fitting, no final-test access, no task removal, no threshold change, no extra budget; skip if formal quality pipeline can advance."
+}
