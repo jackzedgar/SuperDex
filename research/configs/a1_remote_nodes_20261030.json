@@ -1,0 +1,61 @@
+{
+  "global_cap_seconds": 1188000,
+  "maximum_single_validation_seconds": 2700,
+  "authorization_files": [
+    "reports/a1_multinode_authorization_20261030.json"
+  ],
+  "allowed_scripts": [
+    "scripts/a1_model_hardware_validation.py",
+    "scripts/a1_collection_hardware_validation.py"
+  ],
+  "nodes": {
+    "source": {
+      "hostname": "ThinkStation-P920-06",
+      "account": "root",
+      "gpus": {
+        "0": "GPU-810d1bb5-dcdc-3d20-c3c5-22bffb1fcf9d"
+      },
+      "working_directory": "/lost+found/nvme/dexmimic/superdex/runs/a1_remote_20261030/workspace",
+      "python": "/lost+found/nvme/dexmimic/superdex/.venv-mjw/bin/python",
+      "allow_shared_gpu": false,
+      "max_process_gpu_mib": 4096,
+      "free_gpu_floor_mib": 8192
+    },
+    "1202a": {
+      "hostname": "mathhpavw1202a.math.umd.edu",
+      "account": "sun1245",
+      "gpus": {
+        "0": "GPU-7a12eb3a-1eec-3d21-9b83-c1271f219248"
+      },
+      "working_directory": "/tmp/sun1245-superdex-a1-20261030/workspace",
+      "python": "/tmp/sun1245-superdex-a1-20261030/.venv-mjw/bin/python",
+      "allow_shared_gpu": true,
+      "max_process_gpu_mib": 4096,
+      "free_gpu_floor_mib": 8192
+    },
+    "1202b": {
+      "hostname": "mathhpavw1202b.math.umd.edu",
+      "account": "sun1245",
+      "gpus": {
+        "5": "GPU-87c988cb-8208-5bf6-b4cc-c23a5e61c6f7"
+      },
+      "working_directory": "/tmp/sun1245-superdex-a1-20261030/workspace",
+      "python": "/tmp/sun1245-superdex-a1-20261030/.venv-mjw/bin/python",
+      "allow_shared_gpu": true,
+      "max_process_gpu_mib": 4096,
+      "free_gpu_floor_mib": 8192
+    },
+    "1202c": {
+      "hostname": "mathhpavw1202c.math.umd.edu",
+      "account": "sun1245",
+      "gpus": {
+        "4": "GPU-8b9593e0-5540-a2a1-645d-1b9b95bc356c"
+      },
+      "working_directory": "/tmp/sun1245-superdex-a1-20261030/workspace",
+      "python": "/tmp/sun1245-superdex-a1-20261030/.venv-mjw/bin/python",
+      "allow_shared_gpu": true,
+      "max_process_gpu_mib": 4096,
+      "free_gpu_floor_mib": 8192
+    }
+  }
+}

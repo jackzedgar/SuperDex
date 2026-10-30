@@ -14,7 +14,8 @@ def near_euler(r,reference):
  return torch.where(((a-reference).square().sum(-1)<(b-reference).square().sum(-1))[...,None],a,b)
 
 class A1Env:
- def __init__(self,task_path,capture=True,determinism='constraint'):
+ def __init__(self,task_path,capture=True,determinism='constraint',*,allow_training_velocity_override=False):
+  self.allow_training_velocity_override=bool(allow_training_velocity_override)
   assert os.environ.get('CUDA_VISIBLE_DEVICES')==GPU and torch.cuda.device_count()==1
   assert str(torch.cuda.get_device_properties(0).uuid)==GPU[4:]
   self.device='cuda:0';self.n=1;self.physical_controls=0
@@ -133,10 +134,15 @@ class A1Env:
    target.copy_(v.expand_as(target))
   self.context.copy_(torch.tensor(context,device=self.device)[None]);self.context_record=dict(seed=seed,randomized=enabled,inertia_draw_rejections=rejects,context=context.tolist(),assumptions='Simulated, not measured',mass_scale=massmult)
  @torch.no_grad()
- def reset(self,phase=0,seed=0,randomize=True,snapshot=None):
+ def reset(self,phase=0,seed=0,randomize=True,snapshot=None,*,training_hand_qvel=None):
+  if training_hand_qvel is not None:
+   assert self.allow_training_velocity_override and snapshot is None,'Training velocity override requires explicit opt-in and cannot restore a snapshot'
+   training_hand_qvel=torch.as_tensor(training_hand_qvel,device=self.device,dtype=self.qvel.dtype)
+   assert training_hand_qvel.shape==(self.task.nu,) and bool(torch.isfinite(training_hand_qvel).all())
   self.hold_mode.fill_(False)
   self.randomize(seed,randomize);t=self.task;self.phase.fill_(phase);self.episode_start.fill_(phase);self.start_phase=int(phase)
   self.qpos.copy_(t.qpos[phase:phase+1]);self.qvel.copy_(t.qvel[phase:phase+1])
+  if training_hand_qvel is not None:self.qvel[:,:t.nu].copy_(training_hand_qvel.reshape(1,t.nu))
   qworld=self._world(self.qpos[:,:t.nu]);self.servo.copy_(qworld[:,:,:6]);self.history.copy_(qworld[:,:,None].expand(-1,-1,3,-1))
   self.ctrl.copy_(self.qpos[:,:t.nu]);self.hold_command.copy_(qworld)
   if snapshot is not None:

@@ -1,12 +1,15 @@
 """Lambda-only A1 GPU-process budget supervisor. Conservative whole-process wall accounting."""
-import argparse,fcntl,json,os,signal,subprocess,time,shutil,socket,getpass,shlex
+import argparse,fcntl,json,os,signal,subprocess,time,shutil,socket,getpass,shlex,sys
 from pathlib import Path
 ROOT=Path(__file__).resolve().parents[1];RUN=ROOT/'runs/a1_full_20261028'
 CAP=330*3600;PHASES={k:int(v*3600) for k,v in json.loads((ROOT/'configs/a1_execution_allocation_v2.json').read_text())['limits_hours'].items()}
 assert sum(PHASES.values())==CAP and sum(v for k,v in PHASES.items() if not k.startswith('revision'))==240*3600
 def atomic(p,x):
     t=p.with_suffix(p.suffix+'.tmp');t.write_text(json.dumps(x,indent=2)+'\n');t.replace(p)
-def elapsed(j,now):return j['seconds'] if j.get('status')=='finished' else max(0,now-j['started'])
+def elapsed(j,now):
+    if j.get('status')=='finished':return j['seconds']
+    if j.get('status')=='remote_reserved':return 0
+    return max(0,now-j['started'])
 def mutate(fn):
     RUN.mkdir(exist_ok=True)
     with (RUN/'gpu_ledger.lock').open('a') as lock:
@@ -17,8 +20,13 @@ def existing():
     p=RUN/'gpu_ledger.json'
     return json.loads(p.read_text()) if p.exists() else {'jobs':[],'used_seconds':0,'cap_seconds':CAP}
 def main():
-    p=argparse.ArgumentParser();p.add_argument('--name');p.add_argument('--gpu',type=int,choices=range(4));p.add_argument('--seconds',type=float);p.add_argument('--phase',choices=PHASES);p.add_argument('--status',action='store_true');p.add_argument('command',nargs=argparse.REMAINDER);a=p.parse_args()
+    p=argparse.ArgumentParser();p.add_argument('--name');p.add_argument('--gpu',type=int,choices=range(4));p.add_argument('--seconds',type=float);p.add_argument('--phase',choices=PHASES);p.add_argument('--status',action='store_true');p.add_argument('--remote-reserve',type=Path);p.add_argument('--remote-reconcile',type=Path);p.add_argument('command',nargs=argparse.REMAINDER);a=p.parse_args()
     if a.status:print(json.dumps(existing(),indent=2));return
+    if a.remote_reserve or a.remote_reconcile:
+        assert not (a.remote_reserve and a.remote_reconcile)
+        from a1_remote_budget import reserve,reconcile
+        result=reserve(json.loads(a.remote_reserve.read_text()),sys.modules[__name__]) if a.remote_reserve else reconcile(json.loads(a.remote_reconcile.read_text()),sys.modules[__name__])
+        print(json.dumps(result,indent=2));return
     assert socket.gethostname().lower()=='lambda' and getpass.getuser()=='youran'
     assert a.name and a.phase and a.seconds>=60 and a.command
     assert '/' not in a.name and '..' not in a.name
@@ -34,7 +42,7 @@ def main():
     def reserve(x):
         now=time.time();jobs=x['jobs']
         assert not any(j['name']==a.name for j in jobs),'Use a unique attempt name; preserve failures.'
-        assert not any(j['gpu']==a.gpu and j['status']=='running' for j in jobs),'Own active reservation on GPU'
+        assert not any(j.get('gpu_uuid')==uid and j['status']!='finished' for j in jobs),'Own active reservation on GPU'
         # Active jobs reserve their whole authorized limit, not just elapsed time.
         def total(rows):return sum(j['seconds'] if j['status']=='finished' else max(j['limit_seconds'],elapsed(j,now)) for j in rows)
         overall=total(jobs);phase=total([j for j in jobs if j['phase']==a.phase])

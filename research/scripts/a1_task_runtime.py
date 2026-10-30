@@ -6,6 +6,7 @@ from a1_state import *
 from world_model_mini import qmatrix,qmul,qconj,qlog
 from a1_data_sources import ROOT
 from a1_geometry import A1Geometry
+from a1_portable_model import load_task_model
 
 def states_from_coordinates(qp,qv,sides,base_position,base_quaternion,history=None,servo=None):
  n=qp.shape[0];s=empty_state(n,device=qp.device,dtype=qp.dtype);axes=torch.eye(3,device=qp.device,dtype=qp.dtype)
@@ -57,7 +58,7 @@ def reward_metrics(s,ref,action,last_action,mask,geom,ids,ref_keypoints,ref_sdf,
 class TaskTensors:
  def __init__(self,path,device='cuda'):
   self.path=Path(path);self.meta=json.loads((self.path/'qualification.json').read_text());self.sides=self.meta['hands']
-  self.m=mujoco.MjModel.from_xml_path(str(self.path/'scene.xml'));m=self.m
+  self.m=load_task_model(self.path);m=self.m
   self.device=device;self.nu=m.nu;self.n=len(self.sides);self.mask=torch.zeros(1,2,device=device)
   for side in self.sides:self.mask[0,['right','left'].index(side)]=1
   self.raw=dict(np.load(self.path/'reference.npz'))

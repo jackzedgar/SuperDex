@@ -1,0 +1,233 @@
+{
+  "source_dataset": "bop-benchmark/hot3d",
+  "revision": "30fe9674782f32e1e5edba98476b6ff4300132c5",
+  "public_anonymous_download_actual": true,
+  "source_records": [
+    {
+      "path": "train_quest3/clip-000000.tar",
+      "url": "https://huggingface.co/datasets/bop-benchmark/hot3d/resolve/30fe9674782f32e1e5edba98476b6ff4300132c5/train_quest3/clip-000000.tar",
+      "revision": "30fe9674782f32e1e5edba98476b6ff4300132c5",
+      "bytes": 102440960,
+      "sha256": "e78a506d43cf9b3a8fc0bc2b2b95d5222e2959c65d4ae8c2787efdca3a14ee50",
+      "expected_sha256": "e78a506d43cf9b3a8fc0bc2b2b95d5222e2959c65d4ae8c2787efdca3a14ee50",
+      "anonymous": true
+    },
+    {
+      "path": "clip_splits.json",
+      "url": "https://huggingface.co/datasets/bop-benchmark/hot3d/resolve/30fe9674782f32e1e5edba98476b6ff4300132c5/clip_splits.json",
+      "revision": "30fe9674782f32e1e5edba98476b6ff4300132c5",
+      "bytes": 57466,
+      "sha256": "54067720be3645aff6e9d79dcba2bd8d1c6d3f91e1dfba2cfae42da9ec5f497c",
+      "expected_sha256": "54067720be3645aff6e9d79dcba2bd8d1c6d3f91e1dfba2cfae42da9ec5f497c",
+      "anonymous": true
+    },
+    {
+      "path": "object_models_eval/models_info.json",
+      "url": "https://huggingface.co/datasets/bop-benchmark/hot3d/resolve/30fe9674782f32e1e5edba98476b6ff4300132c5/object_models_eval/models_info.json",
+      "revision": "30fe9674782f32e1e5edba98476b6ff4300132c5",
+      "bytes": 29485,
+      "sha256": "351e1b25a250606fa4b7500f5aeb800b55050bf1c638d05ceb464f8ddfb32e2b",
+      "expected_sha256": "351e1b25a250606fa4b7500f5aeb800b55050bf1c638d05ceb464f8ddfb32e2b",
+      "anonymous": true
+    },
+    {
+      "path": "hot3d_dataset_license_agreement.pdf",
+      "url": "https://huggingface.co/datasets/bop-benchmark/hot3d/resolve/30fe9674782f32e1e5edba98476b6ff4300132c5/hot3d_dataset_license_agreement.pdf",
+      "revision": "30fe9674782f32e1e5edba98476b6ff4300132c5",
+      "bytes": 77999,
+      "sha256": "0e2142c2920d25128a15944078870e4c13f81cd3864c39c9d69c3cda21e01868",
+      "expected_sha256": "0e2142c2920d25128a15944078870e4c13f81cd3864c39c9d69c3cda21e01868",
+      "anonymous": true
+    },
+    {
+      "path": "object_models_eval/obj_000004.glb",
+      "url": "https://huggingface.co/datasets/bop-benchmark/hot3d/resolve/30fe9674782f32e1e5edba98476b6ff4300132c5/object_models_eval/obj_000004.glb",
+      "revision": "30fe9674782f32e1e5edba98476b6ff4300132c5",
+      "bytes": 24348,
+      "sha256": "164673f728cf9597c8fb93ff5e4c51150082ed6a6c0fb4501a0cf6c334c5db84",
+      "expected_sha256": null,
+      "anonymous": true,
+      "verified_git_blob_sha1": "125bd3dc809b193462d2b3bcd9b9d7c33de67535"
+    }
+  ],
+  "processed_records": [
+    {
+      "path": "data/processed/clip000000_obj000004_right/controller_reference.npz",
+      "bytes": 19664,
+      "sha256": "ef8a2d8836deee40b7e480a6a49b0dd67e0c39210ba211c0b45c491b750c5f30"
+    },
+    {
+      "path": "data/processed/clip000000_obj000004_right/hand_imported.xml",
+      "bytes": 17215,
+      "sha256": "a3be0a456ffa2b608a484778af53412ff078178226af7efdff0a1cb706921f24"
+    },
+    {
+      "path": "data/processed/clip000000_obj000004_right/hand_object_distances.npz",
+      "bytes": 1336,
+      "sha256": "a123141e2b31f6272d36d7e2b91679b7f54507b5c449e86515e60ced5fca3a7b"
+    },
+    {
+      "path": "data/processed/clip000000_obj000004_right/hand_path_fixed.urdf",
+      "bytes": 24852,
+      "sha256": "a67403d706f46268335ddb74c2d33ae24ae0d18971552b8ca155b67e6469864e"
+    },
+    {
+      "path": "data/processed/clip000000_obj000004_right/object_collision_0.obj",
+      "bytes": 31835,
+      "sha256": "c24ff3d1bf704146eae1222f95c0a332b112fb6ab8313350aae6e36a739a6c76"
+    },
+    {
+      "path": "data/processed/clip000000_obj000004_right/object_collision_1.obj",
+      "bytes": 20291,
+      "sha256": "b327df86ae63308c87ed98358eb04f2d26c918a857761df98867dd1a47e6ab2e"
+    },
+    {
+      "path": "data/processed/clip000000_obj000004_right/object_collision_2.obj",
+      "bytes": 20129,
+      "sha256": "9e0620b090211eefb7a080a60c6d7c309c3239d2121b84ad63c68b71b9da6256"
+    },
+    {
+      "path": "data/processed/clip000000_obj000004_right/object_collision_3.obj",
+      "bytes": 9991,
+      "sha256": "6b4e989a9f5f53a9d91a5ce14493d13b8a3be84c3a7dd3d811b626cad296f99f"
+    },
+    {
+      "path": "data/processed/clip000000_obj000004_right/object_collision_4.obj",
+      "bytes": 18257,
+      "sha256": "fb15aee76861f5476e00098a0d921a20a755986064e46ff6539bc3691d774581"
+    },
+    {
+      "path": "data/processed/clip000000_obj000004_right/object_visual.obj",
+      "bytes": 63588,
+      "sha256": "e6738329b8f86445ea3210a25a2b7226853a2f5861003115fe2ea1b98e42d566"
+    },
+    {
+      "path": "data/processed/clip000000_obj000004_right/processing_report.json",
+      "bytes": 2349,
+      "sha256": "1edb4cd017f6c42d353efdba5d6446166208262b49cb70e06eae91ed853a3b42"
+    },
+    {
+      "path": "data/processed/clip000000_obj000004_right/raw_reference.npz",
+      "bytes": 108567,
+      "sha256": "4887ca4ad1a10f0066354d3e3674b3fc45265a79f8032ed7ba8934575b31b90e"
+    },
+    {
+      "path": "data/processed/clip000000_obj000004_right/scene.xml",
+      "bytes": 28343,
+      "sha256": "963d3235845dfb827ef792128c3ce77dccd805fb3a90602f527772f0025e09cf"
+    },
+    {
+      "path": "data/processed/clip000000_obj000004_right/source_frame_115.jpg",
+      "bytes": 290233,
+      "sha256": "4794ccae557812f940ba82cbc2abff9e0108f490861240999db4b5b8cb6fa99b"
+    },
+    {
+      "path": "data/processed/clip000000_obj000004_right/source_frame_118.jpg",
+      "bytes": 290110,
+      "sha256": "81bbdfe00413092b659fb24aff0be2dfd3c3a86a2fe27dc934179d5cc09a0076"
+    },
+    {
+      "path": "data/processed/clip000000_obj000004_right/source_frame_132.jpg",
+      "bytes": 337847,
+      "sha256": "b807ad350be090d8fe12ee4be1f06045f379d2ddb5cd68840ab258e61fc4b586"
+    },
+    {
+      "path": "data/processed/clip000000_obj000004_right/source_frame_133.jpg",
+      "bytes": 338699,
+      "sha256": "6ba73f55509f1c9d9d4d25ff475116608fea2e59299982ffd4704c4dbf749705"
+    },
+    {
+      "path": "data/processed/clip000000_obj000004_right/source_frame_149.jpg",
+      "bytes": 271115,
+      "sha256": "74fb927026b941b383eb2c671357ed59fcd809fb2fb15a2a06690d6763d3079c"
+    },
+    {
+      "path": "data/processed/clip000000_obj000004_right/trajectory.npz",
+      "bytes": 109877,
+      "sha256": "3df5f889302f37514a68f4f133ab101a97da86dab1ac7d889ef661a463b062a7"
+    }
+  ],
+  "selection": {
+    "source": "HOT3D-Clips/train_quest3",
+    "clip_id": 0,
+    "object_id": 4,
+    "object_name": "spoon_wooden",
+    "object_uid": "225397651484143",
+    "sequence_id": "P0002_210fc0da",
+    "source_frame_range": [
+      118,
+      149
+    ],
+    "original_frames": 150,
+    "frames_50hz": 52,
+    "duration_s": 1.0200000000000014,
+    "source_hz": 30,
+    "target_hz": 50,
+    "units": "metres, radians, seconds; source timestamps preserved as integer ns",
+    "rotations": "source wxyz active T_world_from_local; Slerp; MuJoCo wxyz",
+    "source_world_up": "Y inferred from Quest/tabletop geometry, not a gravity measurement",
+    "floor_y_m": 0.7235488925739368,
+    "floor_y_std_m": 3.604439344750978e-05,
+    "floor_fit": "lower envelope of original object vertices, minus 0.2 mm; table is not annotated",
+    "floor_offset_from_prefix_m": -0.001703727050843984,
+    "transformation": [
+      [
+        1.0,
+        0.0,
+        0.0,
+        -0.14384145023760714
+      ],
+      [
+        0.0,
+        0.0,
+        -1.0,
+        -0.3198590891335313
+      ],
+      [
+        0.0,
+        1.0,
+        0.0,
+        -0.7235488925739368
+      ],
+      [
+        0.0,
+        0.0,
+        0.0,
+        1.0
+      ]
+    ],
+    "mesh_extent_m": [
+      0.0683552511036396,
+      0.017949216064153006,
+      0.30933961272239685
+    ],
+    "collision_parts": 5,
+    "object_mass_kg": 0.04,
+    "mass_source": "pilot assumption, not measured",
+    "fingertip_error_median_m": 0.00033092214616745334,
+    "fingertip_error_p95_m": 0.003849246060215866,
+    "penetration_max_m": 0.0013980673359572683,
+    "penetration_p95_m": 0.0013937717073072683,
+    "joint_limit_violations": 0,
+    "other_hand_min_vertex_distance_m": 0.10141155072954994,
+    "selected_hand_median_min_vertex_distance_m": 0.0052507789507466075,
+    "object_translation_extent_m": [
+      0.07191494263353264,
+      0.11221047111833808,
+      0.34196391785493807
+    ],
+    "hand_toolkit_commit": "c521930d966c871977aaa4d15f33bfd4b3781f09",
+    "exclusions": "frames outside the selected single-hand subclip retained in raw_reference.npz; no missing frames interpolated",
+    "status": "retargeted; physical qualification is separate",
+    "fingertip_error_max_m": 0.004281414702504797,
+    "frames_with_tip_error_over_15mm": 0,
+    "unreachable_rule": "Any fingertip error over 15 mm marks a geometrically infeasible frame for this pilot; not a certified reachability proof.",
+    "resampled_last_source_frame": 148.60000002000004
+  },
+  "toolkit": {
+    "repository": "https://github.com/facebookresearch/hand_tracking_toolkit",
+    "commit": "c521930d966c871977aaa4d15f33bfd4b3781f09"
+  },
+  "asset_urdf_sha256": "47aa811f1657ad236a1e22f009128d58a7e38045eca59fce0cca08c65a949b74",
+  "raw_tar_members": 1051
+}

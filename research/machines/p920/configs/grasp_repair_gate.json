@@ -1,0 +1,29 @@
+{
+  "baseline_commit": "0667e7d39dbdc07b47c90a92f7031ba04f284443",
+  "evidence_directory": "runs/grasp_repair_20261026",
+  "ready_for_bounded_ppo": true,
+  "reason": "User authorizes budget-controlled exploratory PPO despite unresolved static/reference grasp failure; retain correctness, finite-state and GPU-resource checks.",
+  "reference_and_success_rule_changed": false,
+  "adopted_control_candidate": null,
+  "new_training_updates": 640,
+  "exploratory_updates_per_arm": 320,
+  "exploratory_report": "runs/explore_20261026/report.html",
+  "formal_D0": "not_ready",
+  "G1": "not_ready",
+  "parallel_diagnostic_world_counts_tested": [
+    1,
+    2,
+    8
+  ],
+  "parallel_collection_ready": false,
+  "requirements_before_reopening": [],
+  "exploratory_only": true,
+  "static_hold_prerequisite": false,
+  "reference_success_prerequisite": false,
+  "budget": "configs/learning_trend_budget.json",
+  "current_report": "runs/learning_trend_20261027/report.html",
+  "new_training_updates_scope": "Historical 2026-10-26 exploration; retained unchanged",
+  "learning_trend_updates_per_arm": 640,
+  "learning_trend_total_updates": 1280,
+  "round_complete_no_automatic_extension": true
+}

@@ -1,10 +1,12 @@
 # SuperDex research code
 
 This is a code-only snapshot of the Lambda workstation project at source
-revision `74500f19da121e0ff1e8d41865979c3079880192`, synchronized on
-2026-10-30 07:48:06 (Asia/Shanghai). Synchronization reads a fixed committed
+revision `69c392c26b697d43a5ace2abb9deb6dd14954786`, synchronized on
+2026-10-30 13:43:40 (Asia/Shanghai). Synchronization reads a fixed committed
 snapshot and does not modify the workstation checkout or its experiment jobs.
 Experiment status was not assessed during this synchronization.
+
+Additional machine snapshots and pending sources are listed in [machines/README.md](machines/README.md).
 
 The current source includes the A1 predictability experiment pipeline, shared
 PPO-Sim collection, W0/W1 world models, evaluation, and bounded reset-memory

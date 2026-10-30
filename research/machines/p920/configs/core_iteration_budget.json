@@ -1,0 +1,99 @@
+{
+  "stage": "core_policy_iteration_20261027",
+  "source_commit": "4dfd39a29ca47e6722dd838f6a2a997b5fdab7d5",
+  "total_gpu_process_seconds_cap": 21600,
+  "allocation_seconds": {
+    "development": 3600,
+    "core": 14400,
+    "confirmation": 3600
+  },
+  "gpu_uuid": "GPU-810d1bb5-dcdc-3d20-c3c5-22bffb1fcf9d",
+  "physics_worlds": 1,
+  "task": "clip000000_obj000004_right",
+  "policy_source": "runs/explore_20261026/start50/checkpoint_final.pt",
+  "model_source": "runs/learning_trend_20261027/wm/W1_final.pt",
+  "model_geometry": "runs/learning_trend_20261027/wm",
+  "candidates": [
+    {
+      "name": "rho10",
+      "model_gradient_ratio": 0.1
+    },
+    {
+      "name": "rho30",
+      "model_gradient_ratio": 0.3
+    }
+  ],
+  "ppo": {
+    "learning_rate": 0.0001,
+    "epochs": 4,
+    "rollout": 128,
+    "clip": 0.2,
+    "value_clip": 0.2,
+    "value_weight": 0.5,
+    "entropy": 0.001,
+    "gamma": 0.99,
+    "gae_lambda": 0.95,
+    "max_gradient_norm": 0.5,
+    "start_probability": 0.5,
+    "reset_std_unchanged": true
+  },
+  "auxiliary": {
+    "horizon": 4,
+    "batch": 16,
+    "frequency": "Final PPO epoch of every 128-control update",
+    "objective": "Negative undiscounted original task reward over valid remaining reference steps; deterministic actor means and differentiable predicted observations.",
+    "gradient_scale": "Detached rho * PPO-actor-gradient-norm / model-actor-gradient-norm, lambda capped at 100; combined gradient clipped at the original 0.5.",
+    "model_parameters_frozen": true,
+    "initial_states_detached": true,
+    "intermediate_states_actions_history_differentiable": true
+  },
+  "development": {
+    "seed": 41,
+    "steps_per_run": 16384,
+    "runs": [
+      "P",
+      "M_rho10",
+      "M_rho30"
+    ],
+    "selection": "Use only legacy eight dev states. Lexicographic: strict success count, median first strict failure, then position and orientation normalized common-prefix score; if within 5%, choose rho10. Freeze before core."
+  },
+  "evaluation": {
+    "development": "Original eight repeatedly used conditions, explicitly seen development set.",
+    "heldout_seed": 2026102702,
+    "heldout_count": 16,
+    "perturbation": "Same 1mm object-position and 2mrad finger-position Gaussian family, qvel unchanged.",
+    "heldout_usage": "Generate now, do not use for configuration selection, stopping or model fitting. Evaluate all saved core checkpoints after core completion.",
+    "interval_steps": 65536
+  },
+  "core": {
+    "seed": 43,
+    "max_additional_steps_per_arm": 524288,
+    "target_rule": "Measure development seconds/control, reserve 15% timing margin and fixed evaluation allowance. Round common target down to 65536, cap 524288. Both arms start fresh from same source policy/optimizer, not development endpoints."
+  },
+  "stopping": {
+    "first_decision_at_steps": 262144,
+    "rule": "On legacy dev only: stop BOTH arms at the same completed checkpoint if, for three consecutive checkpoint comparisons, neither has strict success and BOTH have median first failure <80% of their starting value, position AND orientation common-prefix errors >120% of start, and average episode length <80% of start. Early 0/8 alone never stops. Hard time/resource/nonfinite limits always apply.",
+    "switch_limit": 1,
+    "switch_rule": "Only within preauthorized candidate strengths; any core switch creates a separately labeled branch, retaining original matched P/M evidence."
+  },
+  "diagnostics": {
+    "sample_complete_training_episode_every": 16,
+    "model_diagnostics_every_updates": 16,
+    "model_probe_windows": 16,
+    "log_update_every": 8,
+    "components": true,
+    "gradient_norm_ratio_and_cosine": true
+  },
+  "confirmation": {
+    "rule": "Prefer one matched P/M replication if no sustained distribution-drift trigger. If M's observed-state 4-step model position AND reward errors both exceed 2x development baseline at two consecutive checkpoints and real dev performance degrades, allow one new-training-data-only model refresh, then compare fixed-old versus refreshed-model continuations from the same M policy/optimizer. Never fit evaluation episodes.",
+    "max_steps_per_arm": 131072
+  },
+  "backup": {
+    "max_new_task": 1,
+    "selection": "Source/reference/contact quality before policy trials; original spoon never relabeled or shortened. Backup creation optional if no credible alternative passes source-quality review.",
+    "no_policy_based_task_cherry_pick": true
+  },
+  "original_reward_success_physics_unchanged": true,
+  "baseline_and_negative_runs_preserved": true,
+  "automatic_extra_budget": false
+}

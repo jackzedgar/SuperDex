@@ -1,0 +1,626 @@
+{
+  "run": "revision3_contact_velocity_validation_20261030_001",
+  "phase": "implementation",
+  "maximum_gpu_process_seconds": 2700,
+  "checkpoint": "runs/a1_full_20261028/collector_full_v5_reset_memory_001/checkpoint_final.pt",
+  "checkpoint_sha256": "9304d4fa2e492f446d2183c2bec4e3209c344845dfcd6d3dccd468d4a5784cb4",
+  "cache_directory": "runs/a1_full_20261028/revision3_contact_velocity_cache_20261030_001",
+  "phase_seed": 301101,
+  "dr_seeds": [
+    301103,
+    301104
+  ],
+  "planned_tasks": [
+    {
+      "task": "bimanual_handover_clip-001242_o008_f000-149_rv2",
+      "stratum": "bimanual_handover",
+      "path": "data/a1_processed/tasks/bimanual_handover_clip-001242_o008_f000-149_rv2",
+      "phases": [
+        41,
+        70,
+        78
+      ],
+      "cache_file": "bimanual_handover_clip-001242_o008_f000-149_rv2.npz",
+      "cache_sha256": "ba0231cc90e08aa8d13e71c019dbb981636d2ca5ba0e9bccabaa6b7ae3512768",
+      "qpos_runtime_float32_sha256": "5ffa3c3a72d64d0a64bf1969db66c7593c0a5c70a00c1236ce224363490f2665",
+      "qvel_runtime_float32_sha256": "1fdd83e47660eeb34f723cb59416480f4fb8007bac105aa97d8f88df7da9b993"
+    },
+    {
+      "task": "bimanual_handover_clip-000484_o012_f000-059_rv2",
+      "stratum": "bimanual_handover",
+      "path": "data/a1_processed/tasks/bimanual_handover_clip-000484_o012_f000-059_rv2",
+      "phases": [
+        1,
+        4,
+        56
+      ],
+      "cache_file": "bimanual_handover_clip-000484_o012_f000-059_rv2.npz",
+      "cache_sha256": "0aba0153115c3961b230c49f7471cd8628b5ccfaaa8bada512d8d470766aec80",
+      "qpos_runtime_float32_sha256": "a015d564855cd0e2d9032e0976a57fca732e874dfd6703f3c9c4f158d140ba25",
+      "qvel_runtime_float32_sha256": "5ba18913336b9383b21eab86a851822ef4b9967750d01e03b2a27d212c297b95"
+    },
+    {
+      "task": "bimanual_handover_clip-001263_o013_f030-089_rv2",
+      "stratum": "bimanual_handover",
+      "path": "data/a1_processed/tasks/bimanual_handover_clip-001263_o013_f030-089_rv2",
+      "phases": [
+        31,
+        36,
+        38
+      ],
+      "cache_file": "bimanual_handover_clip-001263_o013_f030-089_rv2.npz",
+      "cache_sha256": "2fd650fb35e42b83e2fc290bebdfa4737323982de86be2442f6c9c1ee7f0b133",
+      "qpos_runtime_float32_sha256": "174ef18819fe062bed5a92ffd9edc0743236ba308c555cfade4a616652ed689d",
+      "qvel_runtime_float32_sha256": "72a9992180bda747b21bfde28f2e5e819cc65deeac77cad94e0337087dc1c6ce"
+    },
+    {
+      "task": "bimanual_handover_clip-000622_o030_f060-119_rv2",
+      "stratum": "bimanual_handover",
+      "path": "data/a1_processed/tasks/bimanual_handover_clip-000622_o030_f060-119_rv2",
+      "phases": [
+        7,
+        14,
+        66
+      ],
+      "cache_file": "bimanual_handover_clip-000622_o030_f060-119_rv2.npz",
+      "cache_sha256": "f36d3ac6f496e7f36cb4a6ff8b870f144a8303004c97010bce28565d501ed549",
+      "qpos_runtime_float32_sha256": "3a982f7fcdf9a177a1870b35208ff29bc2fa52d45092b1748c5fdd2f5d2d1760",
+      "qvel_runtime_float32_sha256": "b6c714af5f3f76bde45de2a642ee5bf9890a975db748ae7cdf3ebb948ed4e943"
+    },
+    {
+      "task": "bimanual_handover_clip-001257_o013_f090-149_rv2",
+      "stratum": "bimanual_handover",
+      "path": "data/a1_processed/tasks/bimanual_handover_clip-001257_o013_f090-149_rv2",
+      "phases": [
+        9,
+        46,
+        52
+      ],
+      "cache_file": "bimanual_handover_clip-001257_o013_f090-149_rv2.npz",
+      "cache_sha256": "10286a77a03f72c556e805a1930d113423133c0c9a1bde9ffafe20e905fc4be4",
+      "qpos_runtime_float32_sha256": "37a15f1b7c14cd2fa0b92b5fba1af94327157ac29c5900b94390ef4e4ba63ac0",
+      "qvel_runtime_float32_sha256": "818dc2c193b21c8c9416953e4d312aa2b041285305b54a0ab593b6a7a5f2d514"
+    },
+    {
+      "task": "bimanual_handover_clip-000060_o023_f060-119_rv2",
+      "stratum": "bimanual_handover",
+      "path": "data/a1_processed/tasks/bimanual_handover_clip-000060_o023_f060-119_rv2",
+      "phases": [
+        13,
+        27,
+        42
+      ],
+      "cache_file": "bimanual_handover_clip-000060_o023_f060-119_rv2.npz",
+      "cache_sha256": "bd49addb5d160b2325a9d85ce81fd9835d3ffb97bd037ad2d8a9ee33c388c323",
+      "qpos_runtime_float32_sha256": "50347ee02ed581cbb251da4eabb2fe4d2e42cbe68d3f1a3b7e0e1624ee0807f9",
+      "qvel_runtime_float32_sha256": "0f8aa8f899791406505eb03dce1d8eae4b244a1c9e58680ceab9bce1833d86fb"
+    },
+    {
+      "task": "bimanual_handover_clip-000909_o017_f000-059_rv2",
+      "stratum": "bimanual_handover",
+      "path": "data/a1_processed/tasks/bimanual_handover_clip-000909_o017_f000-059_rv2",
+      "phases": [
+        35,
+        53,
+        57
+      ],
+      "cache_file": "bimanual_handover_clip-000909_o017_f000-059_rv2.npz",
+      "cache_sha256": "47f59a4462fcb8c6c71e54a8888811b38a8cdd9ec6c613db77fbe9dd0abd1936",
+      "qpos_runtime_float32_sha256": "1c2e8f3388386f35331548d9d44efee13c71f4265e94bb6a74c933bb91dc51ee",
+      "qvel_runtime_float32_sha256": "8bcd50c25038d7896e0b5d396b5914442a9a799a68e50ab94ef89d57f960a3e4"
+    },
+    {
+      "task": "bimanual_handover_clip-000586_o001_f090-149_rv2",
+      "stratum": "bimanual_handover",
+      "path": "data/a1_processed/tasks/bimanual_handover_clip-000586_o001_f090-149_rv2",
+      "phases": [
+        48,
+        59,
+        61
+      ],
+      "cache_file": "bimanual_handover_clip-000586_o001_f090-149_rv2.npz",
+      "cache_sha256": "4df1c76c28770191f925866c56373bb20cb75493af906b8ff0954ab4fc5a989a",
+      "qpos_runtime_float32_sha256": "2e2d4d962e924050be6c0c2dc7c05008263446335f500676bc266e475418a543",
+      "qvel_runtime_float32_sha256": "326684c268e3e8a5186996122d10a16a8f80e936fb782399b3f050cb1903205c"
+    },
+    {
+      "task": "bimanual_handover_clip-000103_o017_f060-119_rv2",
+      "stratum": "bimanual_handover",
+      "path": "data/a1_processed/tasks/bimanual_handover_clip-000103_o017_f060-119_rv2",
+      "phases": [
+        22,
+        60,
+        64
+      ],
+      "cache_file": "bimanual_handover_clip-000103_o017_f060-119_rv2.npz",
+      "cache_sha256": "b4d6b0b744e0519c61c745fcd2e57fab932f4013ba3a5d325a458d5fde6ed194",
+      "qpos_runtime_float32_sha256": "7ec4bc0fd68dac128361c6cdb5a6fb59463669976607bad57e7558adbd14dca8",
+      "qvel_runtime_float32_sha256": "a08227d47834c087d90da6adc88c784e91e0977fe1388b7c036dcf9efe851e43"
+    },
+    {
+      "task": "bimanual_handover_clip-001239_o018_f060-119_rv2",
+      "stratum": "bimanual_handover",
+      "path": "data/a1_processed/tasks/bimanual_handover_clip-001239_o018_f060-119_rv2",
+      "phases": [
+        1,
+        46,
+        61
+      ],
+      "cache_file": "bimanual_handover_clip-001239_o018_f060-119_rv2.npz",
+      "cache_sha256": "05c37f66e2fa75d25ada0cdefd3b455216a33f91efd110d6b845161604c26f1f",
+      "qpos_runtime_float32_sha256": "f3c2196ca5689fa8b193fbeb5c306ac44b9edd34e92a2115a802c800bfaed99a",
+      "qvel_runtime_float32_sha256": "baddafa7364f6a341ae9b4cc8ad700d57da6d29f5f7f5492675701774757ccff"
+    },
+    {
+      "task": "in_hand_reorientation_or_regrasp_clip-000151_o016_f000-149_rv2",
+      "stratum": "in_hand_reorientation_or_regrasp",
+      "path": "data/a1_processed/tasks/in_hand_reorientation_or_regrasp_clip-000151_o016_f000-149_rv2",
+      "phases": [
+        65,
+        160,
+        179
+      ],
+      "cache_file": "in_hand_reorientation_or_regrasp_clip-000151_o016_f000-149_rv2.npz",
+      "cache_sha256": "00c15d9bc4d06405a07bac0bc886b684fc4096d44980deb2d09d26f3f9e11a09",
+      "qpos_runtime_float32_sha256": "7b6984f140ac4bd8f942602afc0b996e54013ae7659719fa647c37ce69103282",
+      "qvel_runtime_float32_sha256": "9027766fd8c3dc1e103f9cc161cfb3e740ff36a5ffae4ab4a3fc0f34cfe5f470"
+    },
+    {
+      "task": "in_hand_reorientation_or_regrasp_clip-001048_o016_f090-149_rv2",
+      "stratum": "in_hand_reorientation_or_regrasp",
+      "path": "data/a1_processed/tasks/in_hand_reorientation_or_regrasp_clip-001048_o016_f090-149_rv2",
+      "phases": [
+        23,
+        24,
+        28
+      ],
+      "cache_file": "in_hand_reorientation_or_regrasp_clip-001048_o016_f090-149_rv2.npz",
+      "cache_sha256": "3b539d8a57bdd3f55c3cd791f5c9c17de92e5224420cffdee0f16ebc8d2fd310",
+      "qpos_runtime_float32_sha256": "77988a24b4dc4b09f342aaa8b4c08e268040e05e5ec2dedf06a092d1b6f918dd",
+      "qvel_runtime_float32_sha256": "91a6df4e927e9b485b40380b324ec66447002dfce6fe761ed33814ee62e4718e"
+    },
+    {
+      "task": "in_hand_reorientation_or_regrasp_clip-001087_o014_f090-149_rv2",
+      "stratum": "in_hand_reorientation_or_regrasp",
+      "path": "data/a1_processed/tasks/in_hand_reorientation_or_regrasp_clip-001087_o014_f090-149_rv2",
+      "phases": [
+        18,
+        25,
+        58
+      ],
+      "cache_file": "in_hand_reorientation_or_regrasp_clip-001087_o014_f090-149_rv2.npz",
+      "cache_sha256": "9460fb0417e241c036b9cf4595ff7cc23265ff41823597fadbb211805cc7746f",
+      "qpos_runtime_float32_sha256": "937cab1ba9f4ee62d35fed802ef27f4f49291fc05a15f9d8b4ebd9e246203ec7",
+      "qvel_runtime_float32_sha256": "46175a3e6b13e7e8c1df65d577e2564b3581d70d8e66e415292d2d98252659f3"
+    },
+    {
+      "task": "in_hand_reorientation_or_regrasp_clip-000632_o014_f090-149_rv2",
+      "stratum": "in_hand_reorientation_or_regrasp",
+      "path": "data/a1_processed/tasks/in_hand_reorientation_or_regrasp_clip-000632_o014_f090-149_rv2",
+      "phases": [
+        2,
+        14,
+        38
+      ],
+      "cache_file": "in_hand_reorientation_or_regrasp_clip-000632_o014_f090-149_rv2.npz",
+      "cache_sha256": "981dc7520dd34366d5887370fb63497a7725770065b5fb10ed3e071610eb8be4",
+      "qpos_runtime_float32_sha256": "25057e2a20152a1dbbc76e0459b1002b857136c56654d23d50d3d90ea2748d44",
+      "qvel_runtime_float32_sha256": "cd39ded8aa283d60c9290340e6c3499b7928346f006ecfb6e31ceb879087aca0"
+    },
+    {
+      "task": "in_hand_reorientation_or_regrasp_clip-000077_o016_f060-119_rv2",
+      "stratum": "in_hand_reorientation_or_regrasp",
+      "path": "data/a1_processed/tasks/in_hand_reorientation_or_regrasp_clip-000077_o016_f060-119_rv2",
+      "phases": [
+        4,
+        8,
+        18
+      ],
+      "cache_file": "in_hand_reorientation_or_regrasp_clip-000077_o016_f060-119_rv2.npz",
+      "cache_sha256": "0d672c6c5ad579e39423c69789e45e95c324d81561027f9266b67d040c5a3db4",
+      "qpos_runtime_float32_sha256": "335a910779da6c037eb7b1db800f9a4e9935aec574c57365640d30ec27e0fb23",
+      "qvel_runtime_float32_sha256": "8a387d7aa4f69d4683163145865b0e81fe455f237627853bf2fe3e4115bd52ac"
+    },
+    {
+      "task": "in_hand_reorientation_or_regrasp_clip-000213_o023_f000-149_rv2",
+      "stratum": "in_hand_reorientation_or_regrasp",
+      "path": "data/a1_processed/tasks/in_hand_reorientation_or_regrasp_clip-000213_o023_f000-149_rv2",
+      "phases": [
+        36,
+        175,
+        203
+      ],
+      "cache_file": "in_hand_reorientation_or_regrasp_clip-000213_o023_f000-149_rv2.npz",
+      "cache_sha256": "08d924b87544cb41bf492281630ebfb059a412636d225d7091dec84b88c2e124",
+      "qpos_runtime_float32_sha256": "7411a7a801c3d2ce2529079442bb0ade140ffbf652b4b992bfc8b2cf40cad3c8",
+      "qvel_runtime_float32_sha256": "7c7781991d7fc3e786614955c2b60578ddcd02d71d3d8a789532bc6379fcd87c"
+    },
+    {
+      "task": "in_hand_reorientation_or_regrasp_clip-000210_o010_f000-059_rv2",
+      "stratum": "in_hand_reorientation_or_regrasp",
+      "path": "data/a1_processed/tasks/in_hand_reorientation_or_regrasp_clip-000210_o010_f000-059_rv2",
+      "phases": [
+        50,
+        58,
+        65
+      ],
+      "cache_file": "in_hand_reorientation_or_regrasp_clip-000210_o010_f000-059_rv2.npz",
+      "cache_sha256": "d86b498b1ca622a551b130e9c77bb8909933bfcea76189ab4a8261cbaa0d9b90",
+      "qpos_runtime_float32_sha256": "11855fb5f3b203012571f5150de886922d46872af608e7967cdabc5dc63742b2",
+      "qvel_runtime_float32_sha256": "1d7f27f7e1bc6ddcadf392555ae586a3c10416305acd48f01c2ae3fae48b43d8"
+    },
+    {
+      "task": "in_hand_reorientation_or_regrasp_clip-000333_o011_f000-149_rv2",
+      "stratum": "in_hand_reorientation_or_regrasp",
+      "path": "data/a1_processed/tasks/in_hand_reorientation_or_regrasp_clip-000333_o011_f000-149_rv2",
+      "phases": [
+        95,
+        144,
+        195
+      ],
+      "cache_file": "in_hand_reorientation_or_regrasp_clip-000333_o011_f000-149_rv2.npz",
+      "cache_sha256": "2e887841b02dbd696cb93e59febe13396d1a3d02cf086b0433cc40186f19640b",
+      "qpos_runtime_float32_sha256": "a8f2afd08015637e20cf72e636628ffe207341af36f3834c34a28bcfb965283a",
+      "qvel_runtime_float32_sha256": "9e2a07bcfaa359689cb65f9927a6380a94066116f13c633518ed4a58646be28b"
+    },
+    {
+      "task": "in_hand_reorientation_or_regrasp_clip-000528_o009_f090-149_rv2",
+      "stratum": "in_hand_reorientation_or_regrasp",
+      "path": "data/a1_processed/tasks/in_hand_reorientation_or_regrasp_clip-000528_o009_f090-149_rv2",
+      "phases": [
+        21,
+        37,
+        58
+      ],
+      "cache_file": "in_hand_reorientation_or_regrasp_clip-000528_o009_f090-149_rv2.npz",
+      "cache_sha256": "fb7b8421d9f38d87b9051f63843635a2b6b5184a67eee5b29b71876c2d1fac07",
+      "qpos_runtime_float32_sha256": "d149efc751b872b6b1ecb3a3f0c3630550689fdb02db0be15431b26403328968",
+      "qvel_runtime_float32_sha256": "72064780a01a5b794ee5b0ddf906170108f68cb4f115a2681194c10c6431d942"
+    },
+    {
+      "task": "in_hand_reorientation_or_regrasp_clip-000349_o013_f000-149_rv2",
+      "stratum": "in_hand_reorientation_or_regrasp",
+      "path": "data/a1_processed/tasks/in_hand_reorientation_or_regrasp_clip-000349_o013_f000-149_rv2",
+      "phases": [
+        115,
+        116,
+        172
+      ],
+      "cache_file": "in_hand_reorientation_or_regrasp_clip-000349_o013_f000-149_rv2.npz",
+      "cache_sha256": "185fd8f2373017798cbee83417eb6ee2bed2bcb33585e8dfb52519a763f281c9",
+      "qpos_runtime_float32_sha256": "c1a5b467c093d68302aea0746f833b4be960568628242a34c73f298c1fa288c3",
+      "qvel_runtime_float32_sha256": "3fa02d77615c2bc0114aedcc3f272aec4354c2684a33d70b687204ea67fa4158"
+    },
+    {
+      "task": "stable_grasp_transport_clip-000008_o031_f000-059_rv2",
+      "stratum": "stable_grasp_transport",
+      "path": "data/a1_processed/tasks/stable_grasp_transport_clip-000008_o031_f000-059_rv2",
+      "phases": [
+        11,
+        47,
+        57
+      ],
+      "cache_file": "stable_grasp_transport_clip-000008_o031_f000-059_rv2.npz",
+      "cache_sha256": "979bca6eddd458ab1f4b015c355837b2e0af849990e37974c698e42a62b96e8e",
+      "qpos_runtime_float32_sha256": "845fec30ff4700240b26026dcec5232f5ccf45eb8b406250d0466f07b1a318f6",
+      "qvel_runtime_float32_sha256": "93b0daa06cd2376df8c130a143423a3c1d326d65413222ebdfe48948d586071d"
+    },
+    {
+      "task": "stable_grasp_transport_clip-001000_o017_f090-149_rv2",
+      "stratum": "stable_grasp_transport",
+      "path": "data/a1_processed/tasks/stable_grasp_transport_clip-001000_o017_f090-149_rv2",
+      "phases": [
+        29,
+        40,
+        53
+      ],
+      "cache_file": "stable_grasp_transport_clip-001000_o017_f090-149_rv2.npz",
+      "cache_sha256": "f8afe02837b94a4c7ab931c3faf4ef819f43aba42a99f117c6232cb6dd22250a",
+      "qpos_runtime_float32_sha256": "f3d02afa2764c04a36c97c39748127b8d54dc1ff2c7c70ab38e774f12e5c91b1",
+      "qvel_runtime_float32_sha256": "84631be26e381318623d3a8976e156239c35c82c1b63e9f246fd3542d0a7cc6f"
+    },
+    {
+      "task": "stable_grasp_transport_clip-000215_o022_f090-149_rv2",
+      "stratum": "stable_grasp_transport",
+      "path": "data/a1_processed/tasks/stable_grasp_transport_clip-000215_o022_f090-149_rv2",
+      "phases": [
+        4,
+        40,
+        49
+      ],
+      "cache_file": "stable_grasp_transport_clip-000215_o022_f090-149_rv2.npz",
+      "cache_sha256": "6f48fb0d27eb9426ac27e0278299173a2bf9c89b83177006e41256570539d39d",
+      "qpos_runtime_float32_sha256": "d57e38571e5a3b70118bf4fcdaea9db8fa67c649a6a4c04d329c0de157c881a7",
+      "qvel_runtime_float32_sha256": "244557297b34df0e6830cb9a2ee2cb879484965e4bf5cc9271ec3935490b2fcb"
+    },
+    {
+      "task": "stable_grasp_transport_clip-000217_o022_f030-089_rv2",
+      "stratum": "stable_grasp_transport",
+      "path": "data/a1_processed/tasks/stable_grasp_transport_clip-000217_o022_f030-089_rv2",
+      "phases": [
+        2,
+        58,
+        64
+      ],
+      "cache_file": "stable_grasp_transport_clip-000217_o022_f030-089_rv2.npz",
+      "cache_sha256": "85b0aae3f35cd9a6b95298c03b047e2b27db4c552383c8ed78cd49d54867252f",
+      "qpos_runtime_float32_sha256": "c8dc24e46a94362a2e0eb6f6201df4cf80fba52e3c4b44e16249720cb5276b66",
+      "qvel_runtime_float32_sha256": "e9dc45b860ce4e5080a9a033e643ad5a233733b579d4838d5bde757342004413"
+    },
+    {
+      "task": "stable_grasp_transport_clip-000397_o015_f000-059_rv2",
+      "stratum": "stable_grasp_transport",
+      "path": "data/a1_processed/tasks/stable_grasp_transport_clip-000397_o015_f000-059_rv2",
+      "phases": [
+        9,
+        36,
+        66
+      ],
+      "cache_file": "stable_grasp_transport_clip-000397_o015_f000-059_rv2.npz",
+      "cache_sha256": "958c9caed39edd805e9f906b2e2a9dc4fea03bfecc03509a57c105feb9473412",
+      "qpos_runtime_float32_sha256": "d0542c9fd2db57eddbb591e73e75b94507092434315d1d98e38cb3a7c7212150",
+      "qvel_runtime_float32_sha256": "680ad24f56a2fc8ad6141c34b8aabd8d4df480816c0a927d9a03704470543e89"
+    },
+    {
+      "task": "stable_grasp_transport_clip-001049_o016_f060-119_rv2",
+      "stratum": "stable_grasp_transport",
+      "path": "data/a1_processed/tasks/stable_grasp_transport_clip-001049_o016_f060-119_rv2",
+      "phases": [
+        6,
+        35,
+        40
+      ],
+      "cache_file": "stable_grasp_transport_clip-001049_o016_f060-119_rv2.npz",
+      "cache_sha256": "0a306584d04acc7c1f12d6f07377667a8928541df871d345b965076ececd4f9c",
+      "qpos_runtime_float32_sha256": "d6ed6bcff635aa17b0927d2588b2b44d996640aef9b781ca6b1afc780d8a7ff3",
+      "qvel_runtime_float32_sha256": "737d52f764e3e7e99d66758932911f0161a711b0a513b532f07d66c396a21aa8"
+    },
+    {
+      "task": "stable_grasp_transport_clip-000799_o009_f000-149_rv2",
+      "stratum": "stable_grasp_transport",
+      "path": "data/a1_processed/tasks/stable_grasp_transport_clip-000799_o009_f000-149_rv2",
+      "phases": [
+        6,
+        13,
+        134
+      ],
+      "cache_file": "stable_grasp_transport_clip-000799_o009_f000-149_rv2.npz",
+      "cache_sha256": "a16fc2a0fd0d7fc98b9d2f85bafbcbeb4b6305bea1473a8b5a525a9a8545d0ad",
+      "qpos_runtime_float32_sha256": "04527cc33236206089949b41568f81bf4c14813c993065a8b59314d67056f2bc",
+      "qvel_runtime_float32_sha256": "7ee9abc0159af8ca354c61e927eeff557853f0d28e0a2a34bcaaaa727dc3b17a"
+    },
+    {
+      "task": "stable_grasp_transport_clip-000556_o032_f090-149_rv2",
+      "stratum": "stable_grasp_transport",
+      "path": "data/a1_processed/tasks/stable_grasp_transport_clip-000556_o032_f090-149_rv2",
+      "phases": [
+        17,
+        29,
+        61
+      ],
+      "cache_file": "stable_grasp_transport_clip-000556_o032_f090-149_rv2.npz",
+      "cache_sha256": "0b30c9f2152b34c513a7f5ab90d32b0411c5a65db85d32d5f39e095d75d906b1",
+      "qpos_runtime_float32_sha256": "5d78d5b94ac1f74e49df5839181b67b169fb560a0f16d3ec26b8426f1760f6e1",
+      "qvel_runtime_float32_sha256": "aa4b6bc4d6a5a568b29775a89ccee454660a7aca2bc7252feed01b8d43ba6437"
+    },
+    {
+      "task": "stable_grasp_transport_clip-000744_o015_f030-089_rv2",
+      "stratum": "stable_grasp_transport",
+      "path": "data/a1_processed/tasks/stable_grasp_transport_clip-000744_o015_f030-089_rv2",
+      "phases": [
+        18,
+        31,
+        64
+      ],
+      "cache_file": "stable_grasp_transport_clip-000744_o015_f030-089_rv2.npz",
+      "cache_sha256": "0851880a6f0669487d26f7057fb29a9d50b21a1e0c83de09979af9e2a31f5ea6",
+      "qpos_runtime_float32_sha256": "1c261c1f939f1ae7e6feef39638007393d43fcb6ea9df5e25592c93b88c7a181",
+      "qvel_runtime_float32_sha256": "c86acbba082df70d0f217df5f680fe2430fa70f4a9eec2b6152f6a91d69c4d47"
+    },
+    {
+      "task": "stable_grasp_transport_clip-000412_o023_f030-089_rv2",
+      "stratum": "stable_grasp_transport",
+      "path": "data/a1_processed/tasks/stable_grasp_transport_clip-000412_o023_f030-089_rv2",
+      "phases": [
+        9,
+        31,
+        46
+      ],
+      "cache_file": "stable_grasp_transport_clip-000412_o023_f030-089_rv2.npz",
+      "cache_sha256": "36b66f8a41ebf5dd00071f15ffb185d56123527564791abefb158a90b21d1fd0",
+      "qpos_runtime_float32_sha256": "d7ba60c20d0fd51d8c5788c560c914ba5ec84b0d932c128adbd54790d1654765",
+      "qvel_runtime_float32_sha256": "bf46967812a44dd65873cddd718822dde267679d7614791a5aedd6c2ee2a9cb2"
+    },
+    {
+      "task": "light_tool_oakink_9ed7b77cbb55_rv2",
+      "stratum": "light_object_tool_use_below100g",
+      "path": "data/a1_processed/tasks/light_tool_oakink_9ed7b77cbb55_rv2",
+      "phases": [
+        47,
+        153,
+        452
+      ],
+      "cache_file": "light_tool_oakink_9ed7b77cbb55_rv2.npz",
+      "cache_sha256": "764b1676187d01e3b8eba13b081962def8c9d64d1d9de21a66619984ac4809db",
+      "qpos_runtime_float32_sha256": "33570df84557706c9829d708979609dab94bfc2b422500a341d1bbd0eef14158",
+      "qvel_runtime_float32_sha256": "1fd786eb85a75f200305169027a724ab0df9bb3d3b376a95914e1fc90a66c49c"
+    },
+    {
+      "task": "light_tool_oakink_1ec3901436c4_rv2",
+      "stratum": "light_object_tool_use_below100g",
+      "path": "data/a1_processed/tasks/light_tool_oakink_1ec3901436c4_rv2",
+      "phases": [
+        83,
+        529,
+        779
+      ],
+      "cache_file": "light_tool_oakink_1ec3901436c4_rv2.npz",
+      "cache_sha256": "a8df90d0ac3ce4c9f1057a782639c5793a2df127692421c34de2d208cecdb223",
+      "qpos_runtime_float32_sha256": "bacaa87ff31c46a0fdd664def34461f592a3a9c3a48dedec508009459e98d40a",
+      "qvel_runtime_float32_sha256": "8bc3bbcd1ca8a6a366b2407f0038590625f6465e65614acca64b8b0bd4eac9de"
+    },
+    {
+      "task": "light_tool_oakink_abf0c5404698_rv2",
+      "stratum": "light_object_tool_use_below100g",
+      "path": "data/a1_processed/tasks/light_tool_oakink_abf0c5404698_rv2",
+      "phases": [
+        134,
+        917,
+        1045
+      ],
+      "cache_file": "light_tool_oakink_abf0c5404698_rv2.npz",
+      "cache_sha256": "8df3017785e640e0a3616dede2872f6938d45982b80aa2cc26936eb2417b8fa2",
+      "qpos_runtime_float32_sha256": "9e4f9319551a4f097c89ae9256129f06674bef5deaa857e081cfe057e0a7c0b1",
+      "qvel_runtime_float32_sha256": "3975bbb137f76b2a0237d294ade616dac88fc7bf481ccf3d33e247ca111906bd"
+    },
+    {
+      "task": "light_tool_oakink_24c5e5480c42_rv2",
+      "stratum": "light_object_tool_use_below100g",
+      "path": "data/a1_processed/tasks/light_tool_oakink_24c5e5480c42_rv2",
+      "phases": [
+        197,
+        495,
+        853
+      ],
+      "cache_file": "light_tool_oakink_24c5e5480c42_rv2.npz",
+      "cache_sha256": "5e3bc6358305f8576f96c58e088365048a8f5809807e7bbdeec891d10cac2071",
+      "qpos_runtime_float32_sha256": "b0bfa47f7797fe33a528e6494f8b2461cf55c4ab39ee65c243c876749754994d",
+      "qvel_runtime_float32_sha256": "db654e0fafd462710b4c28578bcff4f4ae05d477f7f6f571e203cd885f3cd8f5"
+    },
+    {
+      "task": "light_tool_oakink_76c41391479d_rv2",
+      "stratum": "light_object_tool_use_below100g",
+      "path": "data/a1_processed/tasks/light_tool_oakink_76c41391479d_rv2",
+      "phases": [
+        581,
+        1892,
+        1900
+      ],
+      "cache_file": "light_tool_oakink_76c41391479d_rv2.npz",
+      "cache_sha256": "37c4969e6bbf7df42ae8a6d7c92f27d17c9cb556b2517330b672fde390ccafc8",
+      "qpos_runtime_float32_sha256": "5b3356b174ad342ab7ef366fbbfb13cf8a5d56ac67bfeb2658886decf16b05ff",
+      "qvel_runtime_float32_sha256": "3152e21d4073c1553ef1aa12626603aac9de26766e959c097ff489405d80b447"
+    },
+    {
+      "task": "light_tool_oakink_fef7b4a2b2cb_rv2",
+      "stratum": "light_object_tool_use_below100g",
+      "path": "data/a1_processed/tasks/light_tool_oakink_fef7b4a2b2cb_rv2",
+      "phases": [
+        234,
+        610,
+        800
+      ],
+      "cache_file": "light_tool_oakink_fef7b4a2b2cb_rv2.npz",
+      "cache_sha256": "a9a91024e25634e587a669aa8ed9f87ce001c0e9907a5408159472cb2b0da424",
+      "qpos_runtime_float32_sha256": "7dce02b2e3c771901ef5c1279da39a69826f079030a9fe5736bd125543c67d5d",
+      "qvel_runtime_float32_sha256": "7e7352e9230f95e399042c80a214705d2f9eb8dd2b9ffcbc861c9d223fec33ff"
+    },
+    {
+      "task": "light_tool_oakink_637dd1621345_rv2",
+      "stratum": "light_object_tool_use_below100g",
+      "path": "data/a1_processed/tasks/light_tool_oakink_637dd1621345_rv2",
+      "phases": [
+        296,
+        555,
+        560
+      ],
+      "cache_file": "light_tool_oakink_637dd1621345_rv2.npz",
+      "cache_sha256": "865091690d3e3d10757632fa7b52c66e3a44105daad8b0a5c0dc729c637a9a9f",
+      "qpos_runtime_float32_sha256": "fbf849b877b0f6913afea04e0f971c5c19a18b4264381b52b56f1244479f03b5",
+      "qvel_runtime_float32_sha256": "73e03c591ea9ed9adf7281f94b71ddc9e6106e18b07576c7d884857db3db8e1d"
+    },
+    {
+      "task": "light_tool_oakink_417cea19b8da_rv2",
+      "stratum": "light_object_tool_use_below100g",
+      "path": "data/a1_processed/tasks/light_tool_oakink_417cea19b8da_rv2",
+      "phases": [
+        299,
+        320,
+        512
+      ],
+      "cache_file": "light_tool_oakink_417cea19b8da_rv2.npz",
+      "cache_sha256": "d9ac68d48abe442a7e64d2bf1d708dc0e8d761fe80acd8a5b4701506ec0d622a",
+      "qpos_runtime_float32_sha256": "450b71c1c0351b964f8b3eda5dfcbea16f7a6b643e566f54f428b9b2ac0f38d6",
+      "qvel_runtime_float32_sha256": "6415ab85a101d29597febc938eccfd9e851a271a6039ac3e1381e238b7aaa9b9"
+    },
+    {
+      "task": "light_tool_oakink_8457b0cc2a88_rv2",
+      "stratum": "light_object_tool_use_below100g",
+      "path": "data/a1_processed/tasks/light_tool_oakink_8457b0cc2a88_rv2",
+      "phases": [
+        221,
+        291,
+        335
+      ],
+      "cache_file": "light_tool_oakink_8457b0cc2a88_rv2.npz",
+      "cache_sha256": "327d6f75c1525d2f8c900af8fb72c761f803b387976556b2bbfce839f0ab9fb9",
+      "qpos_runtime_float32_sha256": "85c767b7067db8517b513df444e1831e49101b2523f2645f901b7803d7dedecc",
+      "qvel_runtime_float32_sha256": "a003a5ceff490ce60befc934df5371c212c123cf21b86c170f4bda9d04500e4e"
+    },
+    {
+      "task": "light_tool_oakink_00c19910c507_rv2",
+      "stratum": "light_object_tool_use_below100g",
+      "path": "data/a1_processed/tasks/light_tool_oakink_00c19910c507_rv2",
+      "phases": [
+        555,
+        556,
+        749
+      ],
+      "cache_file": "light_tool_oakink_00c19910c507_rv2.npz",
+      "cache_sha256": "fef37715c84e254c84010d015e56407d0426b9dd4abc82b0959bd71db1a70528",
+      "qpos_runtime_float32_sha256": "3f2bb43790d7291731f3de50ac485cd791217edd39f75a2df011f488125a013e",
+      "qvel_runtime_float32_sha256": "731d72320fbf5b01447d391ab2ee235a4c23266372ea70f4f11d444e95acf5c5"
+    }
+  ],
+  "conditions": 960,
+  "controls_per_condition": 32,
+  "repeats_per_mode": 2,
+  "order": "ABBA or BAAB alternating by task+phase+DR index",
+  "modes": [
+    "v5_velocity_memory",
+    "contact_velocity_projection"
+  ],
+  "candidate": "Only training-reset hand qvel projected in native hand inertia metric onto active-contact nonapproach and frozen reference-coordinate speed bounds; keep qpos/object qvel/context/reference and apply identical v5 velocity-consistent control memory.",
+  "usefulness_gates": {
+    "required_conditions": 960,
+    "required_tasks": 40,
+    "finite_all": true,
+    "matched_qpos_object_qvel_DR_and_within_mode_repeat_hashes": true,
+    "survival_gain_at_least": 0.05,
+    "survival_gain_also_at_least_twice_mean_within_mode_repeat_disagreement": true,
+    "stratified_task_cluster_95CI_survival_gain_lower_positive": true,
+    "bootstrap_draws": 10000,
+    "bootstrap_seed": 301105,
+    "common_prefix_position_and_rotation_task_mean_change_nonpositive": true,
+    "common_prefix": "minimum length across all four ABBA trajectories of the same task/phase/DR, paired before aggregation",
+    "no_stratum_survival_drop_beyond": 0.05,
+    "positive_survival_gain_in_at_least_one_hard_stratum": [
+      "bimanual_handover",
+      "light_tool"
+    ],
+    "GPU_contact_normal_velocity_projection_at_least_99pct_cases_ge_m_s": -0.0001,
+    "GPU_contact_normal_velocity_projection_all_cases_ge_m_s": -0.001,
+    "GPU_velocity_vs_native_Jacobian_max_disagreement_m_s": 0.0001
+  },
+  "caveats": [
+    "Short-prefix survival is not complete collector success or G1",
+    "CPU feasibility alone is insufficient",
+    "No PPO if any required gate fails",
+    "Formal development/collection resets and all A1/G1 thresholds remain original",
+    "No final heldout evaluation or tuning"
+  ],
+  "new_PPO_started": false,
+  "source_hashes": {
+    "scripts/diagnose_a1_contact_velocity.py": "cb04a142e1db8c3e971df7a6a92b49911173c344261e310c33e377fdb0a91be2",
+    "scripts/a1_env.py": "ecd3a15edb833df5cfc5eec90341cec3f9b77193390069b7a313a12470b8035d",
+    "scripts/a1_task_runtime.py": "eb254f6358b1c8c2ee52537464d552da2ac172611f810c90527e87a55a97a373",
+    "scripts/a1_portable_model.py": "e03d8da3b97e4594993d4736c5c7f8f81a978caf51e47aa503aaa05ba4b16d20",
+    "scripts/a1_reset_memory.py": "b14a9abbaefab2c9af08dde692a41c1a729ebf53887e3693db382460cacbc276",
+    "scripts/a1_policy.py": "449bc8c2db39ed9cfc4744d6161660e107918e1db8a2d398392af03efed8ebbf",
+    "scripts/a1_state.py": "07831d5cf51104521c8ef7305bd678797550802411eb53fcf52ead0e30a962df",
+    "scripts/a1_contacts.py": "b13831e69dbd0ced98ed35db381471863f0623df2261b4e4eb145f7da372d732",
+    "scripts/a1_contact_velocity_projection.py": "3ec5d6b708f6834e69128f48a11c4f88b2605d6144b78308680cb1da5ddbcd54",
+    "scripts/world_model_mini.py": "34acb9252f4bec501aa604064c4920a36b1b225a2e1841a70c31c7c22ee344cb",
+    "configs/a1_probe40_v1.json": "1d6cb26437721c9e89ec9add956e278bef495c5a2d4f8ba7647eb8ad7adde982"
+  }
+}

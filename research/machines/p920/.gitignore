@@ -1,0 +1,27 @@
+.venv*/
+cache/
+runs/
+references/public_audit*/
+references/hand_tracking_toolkit/
+data/
+__pycache__/
+*.pyc
+MUJOCO_LOG.TXT
+
+
+
+# Credentials and local authentication (never commit these).
+.ssh/
+.env
+.env.*
+!.env.example
+*.pem
+*.key
+*.p12
+*.pfx
+id_rsa*
+id_ed25519*
+credentials.json
+credentials*.json
+client_secret*.json
+*.token

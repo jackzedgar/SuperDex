@@ -1,0 +1,221 @@
+{
+  "status": "bounded_run_completed",
+  "updates": 160,
+  "environment_steps": 20480,
+  "training_seconds": 531.119355183997,
+  "stop_reason": "update_budget",
+  "before": {
+    "label": "before",
+    "n": 8,
+    "successes": 0,
+    "return_mean": 2.1808389872312546,
+    "episode_length_mean": 23.75,
+    "object_position_mean_m": 0.031666627270169556,
+    "object_rotation_mean_deg": 35.68724237082816,
+    "failure_counts": {
+      "horizon": 2,
+      "position_gt_15cm": 0,
+      "rotation_gt_80deg": 6,
+      "joint_limit": 0,
+      "nonfinite": 0
+    },
+    "success_rule": "Full 51 controls from source frame 118; EVERY control pos <= 3 cm and rotation <= 30 degrees; no failure. This is a pilot criterion, not final benchmark success.",
+    "caveat": "8 sequential episodes in ONE world, paired small perturbation seeds before/after. Same development clip; not independent tasks or training seeds."
+  },
+  "after": {
+    "label": "after",
+    "n": 8,
+    "successes": 0,
+    "return_mean": 1.6436229944229126,
+    "episode_length_mean": 20.25,
+    "object_position_mean_m": 0.029380928026512265,
+    "object_rotation_mean_deg": 33.761118139270565,
+    "failure_counts": {
+      "horizon": 2,
+      "position_gt_15cm": 0,
+      "rotation_gt_80deg": 6,
+      "joint_limit": 0,
+      "nonfinite": 0
+    },
+    "success_rule": "Full 51 controls from source frame 118; EVERY control pos <= 3 cm and rotation <= 30 degrees; no failure. This is a pilot criterion, not final benchmark success.",
+    "caveat": "8 sequential episodes in ONE world, paired small perturbation seeds before/after. Same development clip; not independent tasks or training seeds."
+  },
+  "peak_torch_memory_mb": 20.24448,
+  "not_D0": true,
+  "not_G1": true,
+  "data_processing": {
+    "source": "HOT3D-Clips/train_quest3",
+    "clip_id": 0,
+    "object_id": 4,
+    "object_name": "spoon_wooden",
+    "object_uid": "225397651484143",
+    "sequence_id": "P0002_210fc0da",
+    "source_frame_range": [
+      118,
+      149
+    ],
+    "original_frames": 150,
+    "frames_50hz": 52,
+    "duration_s": 1.0200000000000014,
+    "source_hz": 30,
+    "target_hz": 50,
+    "units": "metres, radians, seconds; source timestamps preserved as integer ns",
+    "rotations": "source wxyz active T_world_from_local; Slerp; MuJoCo wxyz",
+    "source_world_up": "Y inferred from Quest/tabletop geometry, not a gravity measurement",
+    "floor_y_m": 0.7235488925739368,
+    "floor_y_std_m": 3.604439344750978e-05,
+    "floor_fit": "lower envelope of original object vertices, minus 0.2 mm; table is not annotated",
+    "floor_offset_from_prefix_m": -0.001703727050843984,
+    "transformation": [
+      [
+        1.0,
+        0.0,
+        0.0,
+        -0.14384145023760714
+      ],
+      [
+        0.0,
+        0.0,
+        -1.0,
+        -0.3198590891335313
+      ],
+      [
+        0.0,
+        1.0,
+        0.0,
+        -0.7235488925739368
+      ],
+      [
+        0.0,
+        0.0,
+        0.0,
+        1.0
+      ]
+    ],
+    "mesh_extent_m": [
+      0.0683552511036396,
+      0.017949216064153006,
+      0.30933961272239685
+    ],
+    "collision_parts": 5,
+    "object_mass_kg": 0.04,
+    "mass_source": "pilot assumption, not measured",
+    "fingertip_error_median_m": 0.00033092214616745334,
+    "fingertip_error_p95_m": 0.003849246060215866,
+    "penetration_max_m": 0.0013980673359572683,
+    "penetration_p95_m": 0.0013937717073072683,
+    "joint_limit_violations": 0,
+    "other_hand_min_vertex_distance_m": 0.10141155072954994,
+    "selected_hand_median_min_vertex_distance_m": 0.0052507789507466075,
+    "object_translation_extent_m": [
+      0.07191494263353264,
+      0.11221047111833808,
+      0.34196391785493807
+    ],
+    "hand_toolkit_commit": "c521930d966c871977aaa4d15f33bfd4b3781f09",
+    "exclusions": "frames outside the selected single-hand subclip retained in raw_reference.npz; no missing frames interpolated",
+    "status": "retargeted; physical qualification is separate",
+    "fingertip_error_max_m": 0.004281414702504797,
+    "frames_with_tip_error_over_15mm": 0,
+    "unreachable_rule": "Any fingertip error over 15 mm marks a geometrically infeasible frame for this pilot; not a certified reachability proof.",
+    "resampled_last_source_frame": 148.60000002000004
+  },
+  "cpu_qualification": {
+    "checks": {
+      "no_missing_frames": true,
+      "source_rotation_valid": true,
+      "joint_limits": true,
+      "tip_p95_under_15mm": true,
+      "initial_hand_penetration_under_1mm": true,
+      "all_reference_penetration_under_2mm": true,
+      "other_hand_over_50mm": true,
+      "contact_at_initial_grasp": true,
+      "cpu_finite_no_warnings": true,
+      "wrist_servo_mean_under_30mm": true
+    },
+    "ready_for_bounded_ppo": true,
+    "cpu_trials": {
+      "stationary_hold": {
+        "steps": 100,
+        "object_position_mean_m": 0.3044045559956874,
+        "object_position_final_m": 0.3419243855114704,
+        "object_position_max_m": 0.34975906292794146,
+        "object_rotation_mean_deg": 40.90414896299681,
+        "object_rotation_final_deg": 39.76680832099262,
+        "wrist_position_mean_m": 3.6123846899099812e-06,
+        "finger_joint_rmse_rad": 5.794784992472042e-05,
+        "hand_contact_steps": 4,
+        "warnings": [
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0
+        ],
+        "finite": true
+      },
+      "reference_control": {
+        "steps": 51,
+        "object_position_mean_m": 0.07111171776911479,
+        "object_position_final_m": 0.0651066669171032,
+        "object_position_max_m": 0.14242054737382312,
+        "object_rotation_mean_deg": 20.586566589210136,
+        "object_rotation_final_deg": 9.269531732468728,
+        "wrist_position_mean_m": 0.009172339613961,
+        "finger_joint_rmse_rad": 0.019800632961115595,
+        "hand_contact_steps": 7,
+        "warnings": [
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0
+        ],
+        "finite": true
+      }
+    },
+    "reference_hand_penetration_max_m": 0.0006684023665171539,
+    "reference_floor_penetration_max_m": 0.0013980673359572683,
+    "initial_contact_count": 11,
+    "min_reference_contact_count": 0,
+    "note": "Numerical/control admission checks do not certify dynamic feasibility or task success. Object free joint is never overwritten during either physical trial. Hand self-collision and hand-floor collision disabled in this pilot."
+  },
+  "gpu_qualification": {
+    "checks": {
+      "gpu_uuid_only_0": true,
+      "zero_copy_alias": true,
+      "finite": true,
+      "complete_replay_repeat_under_5mm_1deg": true,
+      "action_changes_physical_state": true,
+      "reset_reproducible": true,
+      "cpu_gpu_object_max_difference_under_3cm": true
+    },
+    "ready_for_bounded_ppo": true,
+    "num_envs": 1,
+    "steps": 51,
+    "compile_seconds": 1.2304980369954137,
+    "measured_seconds": 1.357516766001936,
+    "control_steps_per_second": 37.5685967770414,
+    "cpu_gpu_object_mean_difference_m": 0.0019176294978043842,
+    "cpu_gpu_object_max_difference_m": 0.003474995842706524,
+    "reference_control_object_pos_mean_m": 0.030040858906931152,
+    "reference_control_object_rot_mean_deg": 21.000090423128682,
+    "reset_max_qpos_difference": 3.259629011154175e-09,
+    "peak_torch_memory_mb": 0.047104,
+    "interworld_qpos_max_difference": 0.0,
+    "interworld_object_pos_spread_m": 0.0,
+    "interworld_rotation_spread_deg": 0.0,
+    "unaffected_world_max_qpos_change": null,
+    "controlled_world_max_qpos_change": 0.06948146224021912,
+    "repeat_full_trajectory_position_max_m": 7.086614641593769e-05,
+    "repeat_full_trajectory_angle_max_deg": 0.26834073662757874,
+    "determinism_note": "CONSTRAINT enabled; complete single-world repetition measured. Multiworld consistency failed earlier; retained separately, not claimed solved. CONTACTS is a no-op in this release.",
+    "gpu_uuid": "GPU-810d1bb5-dcdc-3d20-c3c5-22bffb1fcf9d",
+    "interop": "wp.to_torch zero copy; Torch and Warp share one CUDA stream",
+    "scope": "ONE real-mesh world; not D0 throughput or fidelity acceptance"
+  }
+}
