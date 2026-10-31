@@ -39,12 +39,18 @@ class EpisodeWriter:
    for k in self.spec:self.counts[k]=entry['offsets'][k]+entry['lengths'][k]
   # Only incomplete append tails after the last committed whole-episode index
   # are recoverable temporaries. Never truncate committed data.
+  # Preflight every committed column before recovering any uncommitted tail.
+  # A missing later column must not cause earlier evidence to be truncated.
+  storage=[]
   for k,spec in self.spec.items():
    file=self.path/(k+'.bin');expected=self.counts[k]*spec['width']*np.dtype(spec['dtype']).itemsize
-   if file.exists():
-    assert file.stat().st_size>=expected
-    if file.stat().st_size>expected:
-     with file.open('r+b') as f:f.truncate(expected)
+   assert file.exists() or not self.entries,'Missing committed column: '+k
+   size=file.stat().st_size if file.exists() else 0
+   assert size>=expected,'Truncated committed column: '+k
+   storage.append((file,size,expected))
+  for file,size,expected in storage:
+   if size>expected:
+    with file.open('r+b') as f:f.truncate(expected)
   self.index=index
  def append(self,arrays,seed,phase_start,termination,metadata=None):
   assert set(arrays)==set(self.spec),(set(arrays)^set(self.spec))
@@ -84,7 +90,11 @@ class EpisodeShard:
     self.episodes.append(small)
   self.arrays={}
   for k,spec in self.meta['columns'].items():
-   file=self.path/(k+'.bin');self.arrays[k]=np.memmap(file,dtype=spec['dtype'],mode='r').reshape(-1,spec['width'])
+   file=self.path/(k+'.bin')
+   if file.stat().st_size==0:
+    assert k=='contact_details' and all(e['lengths'][k]==0 and e['offsets'][k]==0 for e in self.episodes),'Missing committed nonempty column: '+k
+    self.arrays[k]=np.empty((0,spec['width']),dtype=spec['dtype'])
+   else:self.arrays[k]=np.memmap(file,dtype=spec['dtype'],mode='r').reshape(-1,spec['width'])
  def window(self,episode_ids,times,horizon):
   ids=np.asarray(episode_ids);times=np.asarray(times);es=[self.episodes[int(i)] for i in ids]
   assert all(is_complete_episode(e) for e in es),'Incomplete physical episodes are ineligible for formal windows'

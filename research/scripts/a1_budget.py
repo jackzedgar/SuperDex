@@ -2,8 +2,8 @@
 import argparse,fcntl,json,os,signal,subprocess,time,shutil,socket,getpass,shlex,sys
 from pathlib import Path
 ROOT=Path(__file__).resolve().parents[1];RUN=ROOT/'runs/a1_full_20261028'
-CAP=330*3600;PHASES={k:int(v*3600) for k,v in json.loads((ROOT/'configs/a1_execution_allocation_v2.json').read_text())['limits_hours'].items()}
-assert sum(PHASES.values())==CAP and sum(v for k,v in PHASES.items() if not k.startswith('revision'))==240*3600
+CAP=330*3600;PHASES={k:int(v*3600) for k,v in json.loads((ROOT/'configs/a1_execution_allocation_v3_specialist_short_20261030.json').read_text())['limits_hours'].items()}
+assert sum(PHASES.values())==CAP and all(v>=0 for v in PHASES.values())
 def atomic(p,x):
     t=p.with_suffix(p.suffix+'.tmp');t.write_text(json.dumps(x,indent=2)+'\n');t.replace(p)
 def elapsed(j,now):
@@ -41,6 +41,7 @@ def main():
     start=time.time()
     def reserve(x):
         now=time.time();jobs=x['jobs']
+        assert x['cap_seconds']==CAP and x['phase_caps']==PHASES,'Active ledger allocation mismatch'
         assert not any(j['name']==a.name for j in jobs),'Use a unique attempt name; preserve failures.'
         assert not any(j.get('gpu_uuid')==uid and j['status']!='finished' for j in jobs),'Own active reservation on GPU'
         # Active jobs reserve their whole authorized limit, not just elapsed time.

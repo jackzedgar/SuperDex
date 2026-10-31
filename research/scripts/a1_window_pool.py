@@ -8,9 +8,11 @@ from a1_episode_data import EpisodeShard
 from a1_episode_contract import is_complete_episode
 from a1_geometry import A1Geometry
 from a1_data_sources import ROOT
+from a1_frozen_integrity import verify_frozen_manifest
 class WindowPool:
  def __init__(self,manifest,split,horizon=8):
   self.path=Path(manifest);self.meta=json.loads(self.path.read_text());self.split=split;self.horizon=horizon
+  self.integrity=verify_frozen_manifest(ROOT,self.meta)
   soft,hard=resource.getrlimit(resource.RLIMIT_NOFILE);needed=64+40*len(self.meta['shards'])
   if soft<needed:
    assert hard>=needed,'Per-process file descriptor hard limit insufficient for frozen shards'

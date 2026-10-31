@@ -8,11 +8,12 @@ from a1_policy import CollectorPolicy
 from train_a1_collector import Runner
 from a1_episode_data import EpisodeWriter,pack_state
 from a1_episode_contract import is_complete_episode,complete_controls
+from a1_collection_protocol import formal_collection_reset_mode
 stop=False
 def onstop(*_):
  global stop;stop=True
 def main():
- p=argparse.ArgumentParser();p.add_argument('--task',required=True);p.add_argument('--checkpoint',type=Path,required=True);p.add_argument('--quality',required=True);p.add_argument('--controls',type=int,required=True);p.add_argument('--output',type=Path,required=True);p.add_argument('--seed',type=int,default=1800043000);p.add_argument('--smoke',action='store_true');p.add_argument('--passport',type=Path);a=p.parse_args()
+ p=argparse.ArgumentParser();p.add_argument('--task',required=True);p.add_argument('--checkpoint',type=Path,required=True);p.add_argument('--quality',required=True);p.add_argument('--controls',type=int,required=True);p.add_argument('--output',type=Path,required=True);p.add_argument('--seed',type=int,default=1800043000);p.add_argument('--smoke',action='store_true');p.add_argument('--passport',type=Path);p.add_argument('--independent-worlds',type=int,choices=[1,8],default=1);a=p.parse_args()
  signal.signal(signal.SIGTERM,onstop);signal.signal(signal.SIGINT,onstop);torch.set_num_threads(2);torch.manual_seed(a.seed)
  assert a.checkpoint.resolve().is_relative_to(ROOT)
  checkpoint_sha=hashlib.sha256(a.checkpoint.read_bytes()).hexdigest()
@@ -20,14 +21,35 @@ def main():
   assert a.passport is not None,'Formal collection needs frozenProbe40 and evaluated quality checkpoint'
   passport=json.loads(a.passport.read_text());assert passport['checkpoint_sha256']==checkpoint_sha and passport['quality']==a.quality and passport['status']=='DEVELOPMENT_BAND_REACHED'
   assert passport['probe40_frozen'] and passport.get('formal') is True and a.task in passport['task_ids']
-  assert passport.get('reset_mode')=='uniform_reference','Original A1 PPO-Sim requires uniform reference initialization, not adaptive SuperDex resets'
+  # Training provenance and the frozen collection protocol are checked after loading the checkpoint.
  else:assert a.output.resolve().is_relative_to(RUN),'Smoke episodes cannot be mixed into formal dataset'
+ if a.independent_worlds==8:
+  torch.set_num_threads(1)
+  # Existing checkpoint/quality/frozen-probe/task gates above also protect this
+  # execution path. Do not build GPU environments before those gates pass.
+  checkpoint=torch.load(a.checkpoint,map_location='cpu',weights_only=False)
+  training_mode=checkpoint.get('configuration',{}).get('reset_mode','adaptive_anchor')
+  collection_mode=training_mode if a.smoke else formal_collection_reset_mode(checkpoint,passport)
+  assert collection_mode=='uniform_reference','Independent-world collection preserves the frozen uniform reference protocol'
+  from a1_collection_original_pool import CollectionPool
+  policy=CollectorPolicy().cuda();policy.load_state_dict(checkpoint['policy'])
+  for param in policy.parameters():param.requires_grad_(False)
+  policy.logstd.fill_(math.log(.1));policy.eval()
+  task_path=ROOT/'data/a1_processed/tasks'/a.task;source=json.loads((task_path/'source_selection.json').read_text())
+  if source['source']=='hot3d':
+   definitions=json.loads((ROOT/'data/raw/hot3d/clip_definitions.json').read_text());family=definitions[str(int(source['clip'].split('-')[1]))]['sequence_id']
+  else:family=source['sequence']
+  pool=CollectionPool(task_path,policy,a.output,a.seed,dict(path=str(a.checkpoint.resolve().relative_to(ROOT)),sha256=checkpoint_sha),family,training_mode,quality=a.quality,formal=not a.smoke,should_stop=lambda:stop)
+  def progress(row):write(a.output/'progress.json',dict(**row,formal=not a.smoke,execution='independent_original_nworld1'))
+  summary=pool.collect(a.controls,lambda:stop,progress);summary['policy_checkpoint_sha256']=checkpoint_sha
+  write(a.output/'summary.json',summary);print(json.dumps(summary,indent=2),flush=True);return
  env=A1Env(ROOT/'data/a1_processed/tasks'/a.task);policy=CollectorPolicy().to(env.device)
  checkpoint=torch.load(a.checkpoint,map_location='cpu',weights_only=False);policy.load_state_dict(checkpoint['policy'])
  for param in policy.parameters():param.requires_grad_(False)
  policy.logstd.fill_(math.log(.1));policy.eval()
  reset_mode=checkpoint.get('configuration',{}).get('reset_mode','adaptive_anchor')
- if not a.smoke:assert reset_mode=='uniform_reference'
+ training_reset_mode=reset_mode
+ if not a.smoke:reset_mode=formal_collection_reset_mode(checkpoint,passport)
  runner=Runner(env,policy,a.seed,reset_mode=reset_mode)
  if 'sampler' in checkpoint:runner.sampler.load_state_dict(checkpoint['sampler'])
  if 'samplers' in checkpoint:runner.sampler.load_state_dict(checkpoint['samplers'][a.task])
@@ -69,7 +91,7 @@ def main():
   if bool(info['failure']):reason='physics_failure_'+str(int(info['reason']))
   elif bool(env.timeout):reason='reference_end'
   else:reason='budget_truncation'
-  entry=writer.append({k:np.asarray(v) for k,v in arrays.items()},seed,start_phase,reason,metadata=dict(formal=not a.smoke,reset_mode=reset_mode,initial_solver_warmstart=initial_warm.tolist(),context=env.context_record,policy_noise_sigma=.1,full_reference_start=start_phase==0,regular_success=bool(info['regular_success']),strict_success=bool(info['strict_success']),bootstrap=runner.bootstrap))
+  entry=writer.append({k:np.asarray(v) for k,v in arrays.items()},seed,start_phase,reason,metadata=dict(formal=not a.smoke,reset_mode=reset_mode,training_reset_mode=training_reset_mode,collection_reset_memory_mode='original',initial_solver_warmstart=initial_warm.tolist(),context=env.context_record,policy_noise_sigma=.1,full_reference_start=start_phase==0,regular_success=bool(info['regular_success']),strict_success=bool(info['strict_success']),bootstrap=runner.bootstrap))
   if is_complete_episode(entry):total+=entry['controls']
   episode+=1
   if episode%10==0:

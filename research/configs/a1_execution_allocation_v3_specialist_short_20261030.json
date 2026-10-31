@@ -1,0 +1,75 @@
+{
+  "status": "AUTHORIZED_TWELFTH_EXACT_FEEDBACK_VALIDATION",
+  "cap_gpu_hours": 330,
+  "initial_cap_gpu_hours": 235.5,
+  "limits_hours": {
+    "implementation": 7.0,
+    "collectors": 45.0,
+    "collection": 145.5,
+    "models_initial": 30.0,
+    "evaluation": 8.0,
+    "revision1": 44.25,
+    "revision2": 43.853611111111114,
+    "revision3_specialist_short": 2.0,
+    "revision3_specialist_pool_followup": 1.0,
+    "revision4_formal_start_validation": 0.5,
+    "revision5_control_witness": 0.1,
+    "revision6_original_action_search": 0.3963888888888889,
+    "revision7_paired_constraint_search": 0.75,
+    "revision8_grouped_dr_validation": 0.15,
+    "revision9_teacher_warmstart_validation": 0.05,
+    "revision10_matched_frozen_validation": 0.05,
+    "revision11_teacher_coverage_validation": 0.4,
+    "revision12_exact_feedback_validation": 1.0
+  },
+  "basis": {
+    "collector_smoke_global_steps": 1024,
+    "collector_smoke_update_wall_seconds": 40.4718,
+    "collector_workers": 4,
+    "collector_development_evaluation_conditions": 160,
+    "noisy_collection_steps_per_second": {
+      "single_hand_prior": 22.5645,
+      "bimanual_new_logger": 21.5173,
+      "tool_new_logger": 24.3505
+    },
+    "model_compiled_microbatch_forward_backward_seconds": {
+      "W0": 0.1155,
+      "W1_range": [
+        0.208,
+        0.28
+      ]
+    }
+  },
+  "limits": "Conservative whole-process wall time includes waits, compilation, failures, inline evaluations and warmups. Reserve>=1GPUhour for evaluation; no additional authorization inferred.",
+  "uncertainty": "12m collection estimate depends on task/failure distribution; monitor measured rate and storage. Stop at hard aggregate cap, do not reduce data target silently.",
+  "parent_allocation": "configs/a1_execution_allocation_v2.json",
+  "authorization": "reports/a1_specialist_short_authorization_20261030.json",
+  "time_beijing": "2026-10-30T16:05:10.952294+08:00",
+  "reallocation": {
+    "from_phase": "collection",
+    "to_phase": "revision3_specialist_short",
+    "gpu_hours": 2,
+    "global_cap_unchanged": 330
+  },
+  "followup_registration": "reports/a1_specialist_pool_registration_20261030.json",
+  "followup_reallocation": {
+    "phase": "revision3_specialist_pool_followup",
+    "cap_gpu_hours": 1.5,
+    "per_task_seconds": 2700,
+    "shared_cap_gpu_hours": 330,
+    "reallocate_from": "collection",
+    "collection_before_hours": 148,
+    "collection_after_hours": 146.5,
+    "previous_short_phase_cap_unchanged": 2,
+    "all_warmup_eval_failure_time_included": true
+  },
+  "fourth_revision_authorization": "reports/a1_formal_start_registration_20261030.json",
+  "fifth_revision_authorization": "reports/a1_control_witness_registration_20261030.json",
+  "sixth_revision_authorization": "reports/a1_original_action_search_registration_20261030.json",
+  "seventh_revision_authorization": "reports/a1_paired_constraint_registration_20261031.json",
+  "eighth_authorization": "reports/a1_grouped_dr_registration_20261031.json",
+  "ninth_authorization": "reports/a1_teacher_warmstart_registration_20261031.json",
+  "tenth_authorization": "reports/a1_matched_frozen_registration_20261031.json",
+  "eleventh_authorization": "reports/a1_teacher_coverage_registration_20261031.json",
+  "twelfth_authorization": "reports/a1_exact_feedback_registration_20261031.json"
+}
